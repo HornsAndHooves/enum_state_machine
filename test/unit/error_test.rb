@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class ErrorByDefaultTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(@machine)
   end
   
   def test_should_not_have_any_nodes
@@ -22,12 +22,12 @@ end
 
 class ErrorWithMessageTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(@machine)
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) { StateMachine::NodeCollection.new(@machine, :invalid => true) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::NodeCollection.new(@machine, :invalid => true) }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   

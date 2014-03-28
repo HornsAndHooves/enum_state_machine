@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class AssertionsBaseTest < Test::Unit::TestCase
-  include StateMachine::Assertions
+  include EnumStateMachine::Assertions
   
   def default_test
   end

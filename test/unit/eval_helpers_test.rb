@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class EvalHelpersBaseTest < Test::Unit::TestCase
-  include StateMachine::EvalHelpers
+  include EnumStateMachine::EvalHelpers
   
   def default_test
   end

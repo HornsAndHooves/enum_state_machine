@@ -2,23 +2,23 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class TransitionCollectionTest < Test::Unit::TestCase
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {StateMachine::TransitionCollection.new([], :invalid => true)}
+    exception = assert_raise(ArgumentError) {EnumStateMachine::TransitionCollection.new([], :invalid => true)}
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_raise_exception_if_multiple_transitions_for_same_attribute_specified
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     
     exception = assert_raise(ArgumentError) do
-      StateMachine::TransitionCollection.new([
-        StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-        StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      EnumStateMachine::TransitionCollection.new([
+        EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+        EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
       ])
     end
     assert_equal 'Cannot perform multiple transitions in parallel for the same state machine attribute', exception.message
@@ -27,7 +27,7 @@ end
 
 class TransitionCollectionByDefaultTest < Test::Unit::TestCase
   def setup
-    @transitions = StateMachine::TransitionCollection.new
+    @transitions = EnumStateMachine::TransitionCollection.new
   end
   
   def test_should_not_skip_actions
@@ -49,7 +49,7 @@ end
 
 class TransitionCollectionEmptyWithoutBlockTest < Test::Unit::TestCase
   def setup
-    @transitions = StateMachine::TransitionCollection.new
+    @transitions = EnumStateMachine::TransitionCollection.new
     @result = @transitions.perform
   end
   
@@ -61,7 +61,7 @@ end
 
 class TransitionCollectionEmptyWithBlockTest < Test::Unit::TestCase
   def setup
-    @transitions = StateMachine::TransitionCollection.new
+    @transitions = EnumStateMachine::TransitionCollection.new
   end
   
   def test_should_raise_exception_if_perform_raises_exception
@@ -83,7 +83,7 @@ end
 
 class TransitionCollectionInvalidTest < Test::Unit::TestCase
   def setup
-    @transitions = StateMachine::TransitionCollection.new([false])
+    @transitions = EnumStateMachine::TransitionCollection.new([false])
   end
   
   def test_should_be_empty
@@ -109,7 +109,7 @@ class TransitionCollectionPartialInvalidTest < Test::Unit::TestCase
     
     @callbacks = []
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :idling
     @machine.event :ignite
     @machine.before_transition {@callbacks << :before}
@@ -124,8 +124,8 @@ class TransitionCollectionPartialInvalidTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
       false
     ])
   end
@@ -191,18 +191,18 @@ class TransitionCollectionValidTest < Test::Unit::TestCase
       end
     end
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @state.state :idling
     @state.event :ignite
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
     
-    @result = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @result = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ]).perform
   end
   
@@ -231,7 +231,7 @@ class TransitionCollectionWithoutTransactionsTest < Test::Unit::TestCase
       attr_accessor :ran_transaction
     end
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :idling
     @machine.event :ignite
     
@@ -242,8 +242,8 @@ class TransitionCollectionWithoutTransactionsTest < Test::Unit::TestCase
     end
     
     @object = @klass.new
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ], :transaction => false)
     @transitions.perform
   end
@@ -259,7 +259,7 @@ class TransitionCollectionWithTransactionsTest < Test::Unit::TestCase
       attr_accessor :running_transaction, :cancelled_transaction
     end
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :idling
     @machine.event :ignite
     
@@ -272,8 +272,8 @@ class TransitionCollectionWithTransactionsTest < Test::Unit::TestCase
     end
     
     @object = @klass.new
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ], :transaction => true)
   end
   
@@ -321,19 +321,19 @@ class TransitionCollectionWithEmptyActionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     
     @object.state = 'idling'
@@ -375,14 +375,14 @@ class TransitionCollectionWithSkippedActionsTest < Test::Unit::TestCase
     
     @callbacks = []
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save_state)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save_state)
     @state.state :idling
     @state.event :ignite
     @state.before_transition {@callbacks << :state_before}
     @state.after_transition {@callbacks << :state_after}
     @state.around_transition {|block| @callbacks << :state_around_before; block.call; @callbacks << :state_around_after}
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save_status)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save_status)
     @status.state :second_gear
     @status.event :shift_up
     @status.before_transition {@callbacks << :status_before}
@@ -391,9 +391,9 @@ class TransitionCollectionWithSkippedActionsTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ], :actions => false)
     @result = @transitions.perform
   end
@@ -429,14 +429,14 @@ class TransitionCollectionWithSkippedActionsAndBlockTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save_state)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save_state)
     @machine.state :idling
     @machine.event :ignite
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ], :actions => false)
     @result = @transitions.perform { @ran_block = true; 1 }
   end
@@ -469,19 +469,19 @@ class TransitionCollectionWithDuplicateActionsTest < Test::Unit::TestCase
       end
     end
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     @result = @transitions.perform
   end
@@ -521,19 +521,19 @@ class TransitionCollectionWithDifferentActionsTest < Test::Unit::TestCase
       end
     end
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save_state)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save_state)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save_status)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save_status)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
   end
   
@@ -688,19 +688,19 @@ class TransitionCollectionWithMixedActionsTest < Test::Unit::TestCase
       end
     end
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     @result = @transitions.perform
   end
@@ -730,18 +730,18 @@ class TransitionCollectionWithBlockTest < Test::Unit::TestCase
       end
     end
     
-    @state = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @state.state  :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
-    @transitions = StateMachine::TransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     @result = @transitions.perform { 1 }
   end
@@ -778,7 +778,7 @@ class TransitionCollectionWithActionFailedTest < Test::Unit::TestCase
     @around_after_count = 0
     @failure_count = 0
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -789,8 +789,8 @@ class TransitionCollectionWithActionFailedTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -837,7 +837,7 @@ class TransitionCollectionWithActionErrorTest < Test::Unit::TestCase
     @around_after_count = 0
     @failure_count = 0
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -848,8 +848,8 @@ class TransitionCollectionWithActionErrorTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     
     @raised = true
@@ -902,14 +902,14 @@ class TransitionCollectionWithCallbacksTest < Test::Unit::TestCase
     @before_callbacks = []
     @after_callbacks = []
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     @state.before_transition {@before_callbacks << :state_before}
     @state.after_transition {@after_callbacks << :state_after}
     @state.around_transition {|block| @before_callbacks << :state_around; block.call; @after_callbacks << :state_around}
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     @status.before_transition {@before_callbacks << :status_before}
@@ -917,9 +917,9 @@ class TransitionCollectionWithCallbacksTest < Test::Unit::TestCase
     @status.around_transition {|block| @before_callbacks << :status_around; block.call; @after_callbacks << :status_around}
     
     @object = @klass.new
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
   end
   
@@ -1035,7 +1035,7 @@ class TransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::TestCase
     @before_count = 0
     @after_count = 0
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1046,8 +1046,8 @@ class TransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -1085,7 +1085,7 @@ class TransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestCase
     @before_count = 0
     @after_count = 0
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1096,8 +1096,8 @@ class TransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -1125,15 +1125,15 @@ class TransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::TestCase
     
     @callbacks = []
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :idling
     @machine.event :ignite
     @machine.after_transition {@callbacks << :after}
     
     @object = @klass.new
     
-    @transitions = StateMachine::TransitionCollection.new([
-      @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::TransitionCollection.new([
+      @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ], :after => false)
     @result = @transitions.perform
   end
@@ -1147,27 +1147,27 @@ class TransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::TestCase
   end
   
   def test_should_run_after_callbacks_on_subsequent_perform
-    StateMachine::TransitionCollection.new([@transition]).perform
+    EnumStateMachine::TransitionCollection.new([@transition]).perform
     assert @callbacks.include?(:after)
   end
 end
 
-if StateMachine::Transition.pause_supported?
+if EnumStateMachine::Transition.pause_supported?
   class TransitionCollectionWithSkippedAfterCallbacksAndAroundCallbacksTest < Test::Unit::TestCase
     def setup
       @klass = Class.new
       
       @callbacks = []
       
-      @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
       @machine.state :idling
       @machine.event :ignite
       @machine.around_transition {|block| @callbacks << :around_before; block.call; @callbacks << :around_after}
       
       @object = @klass.new
       
-      @transitions = StateMachine::TransitionCollection.new([
-        @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      @transitions = EnumStateMachine::TransitionCollection.new([
+        @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
       ], :after => false)
       @result = @transitions.perform
     end
@@ -1181,13 +1181,13 @@ if StateMachine::Transition.pause_supported?
     end
     
     def test_should_run_around_callbacks_after_yield_on_subsequent_perform
-      StateMachine::TransitionCollection.new([@transition]).perform
+      EnumStateMachine::TransitionCollection.new([@transition]).perform
       assert @callbacks.include?(:around_after)
     end
     
     def test_should_not_rerun_around_callbacks_before_yield_on_subsequent_perform
       @callbacks = []
-      StateMachine::TransitionCollection.new([@transition]).perform
+      EnumStateMachine::TransitionCollection.new([@transition]).perform
       
       assert !@callbacks.include?(:around_before)
     end
@@ -1199,15 +1199,15 @@ else
       
       @callbacks = []
       
-      @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
       @machine.state :idling
       @machine.event :ignite
       @machine.around_transition {|block| @callbacks << :around_before; block.call; @callbacks << :around_after}
       
       @object = @klass.new
       
-      @transitions = StateMachine::TransitionCollection.new([
-        @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      @transitions = EnumStateMachine::TransitionCollection.new([
+        @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
       ], :after => false)
     end
     
@@ -1237,13 +1237,13 @@ class TransitionCollectionWithActionHookBaseTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
     @object = @klass.new
     
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def default_test
@@ -1253,7 +1253,7 @@ end
 class TransitionCollectionWithActionHookAndSkippedActionTest < TransitionCollectionWithActionHookBaseTest
   def setup
     super
-    @result = StateMachine::TransitionCollection.new([@transition], :actions => false).perform
+    @result = EnumStateMachine::TransitionCollection.new([@transition], :actions => false).perform
   end
   
   def test_should_succeed
@@ -1268,7 +1268,7 @@ end
 class TransitionCollectionWithActionHookAndSkippedAfterCallbacksTest < TransitionCollectionWithActionHookBaseTest
   def setup
     super
-    @result = StateMachine::TransitionCollection.new([@transition], :after => false).perform
+    @result = EnumStateMachine::TransitionCollection.new([@transition], :after => false).perform
   end
   
   def test_should_succeed
@@ -1303,7 +1303,7 @@ end
 class TransitionCollectionWithActionHookAndBlockTest < TransitionCollectionWithActionHookBaseTest
   def setup
     super
-    @result = StateMachine::TransitionCollection.new([@transition]).perform { true }
+    @result = EnumStateMachine::TransitionCollection.new([@transition]).perform { true }
   end
   
   def test_should_succeed
@@ -1318,7 +1318,7 @@ end
 class TransitionCollectionWithActionHookInvalidTest < TransitionCollectionWithActionHookBaseTest
   def setup
     super
-    @result = StateMachine::TransitionCollection.new([@transition, nil]).perform
+    @result = EnumStateMachine::TransitionCollection.new([@transition, nil]).perform
   end
   
   def test_should_not_succeed
@@ -1334,11 +1334,11 @@ class TransitionCollectionWithActionHookWithNilActionTest < TransitionCollection
   def setup
     super
     
-    @machine = StateMachine::Machine.new(@klass, :status, :initial => :first_gear)
+    @machine = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear)
     @machine.state :second_gear
     @machine.event :shift_up
     
-    @result = StateMachine::TransitionCollection.new([@transition, StateMachine::Transition.new(@object, @machine, :shift_up, :first_gear, :second_gear)]).perform
+    @result = EnumStateMachine::TransitionCollection.new([@transition, EnumStateMachine::Transition.new(@object, @machine, :shift_up, :first_gear, :second_gear)]).perform
   end
   
   def test_should_succeed
@@ -1380,11 +1380,11 @@ class TransitionCollectionWithActionHookWithDifferentActionsTest < TransitionCol
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save_status)
+    @machine = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save_status)
     @machine.state :second_gear
     @machine.event :shift_up
     
-    @result = StateMachine::TransitionCollection.new([@transition, StateMachine::Transition.new(@object, @machine, :shift_up, :first_gear, :second_gear)]).perform
+    @result = EnumStateMachine::TransitionCollection.new([@transition, EnumStateMachine::Transition.new(@object, @machine, :shift_up, :first_gear, :second_gear)]).perform
   end
   
   def test_should_succeed
@@ -1419,7 +1419,7 @@ end
 class TransitionCollectionWithActionHookTest < TransitionCollectionWithActionHookBaseTest
   def setup
     super
-    @result = StateMachine::TransitionCollection.new([@transition]).perform
+    @result = EnumStateMachine::TransitionCollection.new([@transition]).perform
   end
   
   def test_should_succeed
@@ -1463,7 +1463,7 @@ class TransitionCollectionWithActionHookMultipleTest < TransitionCollectionWithA
   def setup
     super
     
-    @status_machine = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status_machine.state :second_gear
     @status_machine.event :shift_up
     
@@ -1485,10 +1485,10 @@ class TransitionCollectionWithActionHookMultipleTest < TransitionCollectionWithA
     end
     
     @object = @klass.new
-    @state_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
-    @status_transition = StateMachine::Transition.new(@object, @status_machine, :shift_up, :first_gear, :second_gear)
+    @state_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @status_transition = EnumStateMachine::Transition.new(@object, @status_machine, :shift_up, :first_gear, :second_gear)
     
-    @result = StateMachine::TransitionCollection.new([@state_transition, @status_transition]).perform
+    @result = EnumStateMachine::TransitionCollection.new([@state_transition, @status_transition]).perform
   end
   
   def test_should_succeed
@@ -1546,7 +1546,7 @@ class TransitionCollectionWithActionHookErrorTest < TransitionCollectionWithActi
       end
     end
     
-    begin; StateMachine::TransitionCollection.new([@transition]).perform; rescue; end
+    begin; EnumStateMachine::TransitionCollection.new([@transition]).perform; rescue; end
   end
   
   def test_should_not_write_event
@@ -1560,7 +1560,7 @@ end
 
 class AttributeTransitionCollectionByDefaultTest < Test::Unit::TestCase
   def setup
-    @transitions = StateMachine::AttributeTransitionCollection.new
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new
   end
   
   def test_should_skip_actions
@@ -1584,11 +1584,11 @@ class AttributeTransitionCollectionWithEventsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
@@ -1596,9 +1596,9 @@ class AttributeTransitionCollectionWithEventsTest < Test::Unit::TestCase
     @object.state_event = 'ignite'
     @object.status_event = 'shift_up'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     @result = @transitions.perform
   end
@@ -1627,19 +1627,19 @@ class AttributeTransitionCollectionWithEventTransitionsTest < Test::Unit::TestCa
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
-    @object.send(:state_event_transition=, @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling))
-    @object.send(:status_event_transition=, @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear))
+    @object.send(:state_event_transition=, @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling))
+    @object.send(:status_event_transition=, @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear))
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([@state_transition, @status_transition])
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([@state_transition, @status_transition])
     @result = @transitions.perform
   end
   
@@ -1667,11 +1667,11 @@ class AttributeTransitionCollectionWithActionFailedTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
@@ -1679,9 +1679,9 @@ class AttributeTransitionCollectionWithActionFailedTest < Test::Unit::TestCase
     @object.state_event = 'ignite'
     @object.status_event = 'shift_up'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     @result = @transitions.perform { false }
   end
@@ -1710,11 +1710,11 @@ class AttributeTransitionCollectionWithActionErrorTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
@@ -1722,9 +1722,9 @@ class AttributeTransitionCollectionWithActionErrorTest < Test::Unit::TestCase
     @object.state_event = 'ignite'
     @object.status_event = 'shift_up'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
     
     begin; @transitions.perform { raise ArgumentError }; rescue; end
@@ -1750,19 +1750,19 @@ class AttributeTransitionCollectionWithCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
     @object = @klass.new
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ])
   end
   
@@ -1817,7 +1817,7 @@ class AttributeTransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::Test
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1826,8 +1826,8 @@ class AttributeTransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::Test
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -1849,7 +1849,7 @@ class AttributeTransitionCollectionWithBeforeCallbackErrorTest < Test::Unit::Tes
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1858,8 +1858,8 @@ class AttributeTransitionCollectionWithBeforeCallbackErrorTest < Test::Unit::Tes
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     begin; @transitions.perform; rescue; end
   end
@@ -1877,7 +1877,7 @@ class AttributeTransitionCollectionWithAroundCallbackBeforeYieldHaltTest < Test:
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1886,8 +1886,8 @@ class AttributeTransitionCollectionWithAroundCallbackBeforeYieldHaltTest < Test:
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -1909,7 +1909,7 @@ class AttributeTransitionCollectionWithAroundAfterYieldCallbackErrorTest < Test:
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1918,8 +1918,8 @@ class AttributeTransitionCollectionWithAroundAfterYieldCallbackErrorTest < Test:
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     begin; @transitions.perform; rescue; end
   end
@@ -1937,11 +1937,11 @@ class AttributeTransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::T
   def setup
     @klass = Class.new
     
-    @state = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @state = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @state.state :idling
     @state.event :ignite
     
-    @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @status.state :second_gear
     @status.event :shift_up
     
@@ -1949,9 +1949,9 @@ class AttributeTransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::T
     @object.state_event = 'ignite'
     @object.status_event = 'shift_up'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      @state_transition = StateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
-      @status_transition = StateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      @state_transition = EnumStateMachine::Transition.new(@object, @state, :ignite, :parked, :idling),
+      @status_transition = EnumStateMachine::Transition.new(@object, @status, :shift_up, :first_gear, :second_gear)
     ], :after => false)
   end
   
@@ -1978,7 +1978,7 @@ class AttributeTransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestC
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -1987,8 +1987,8 @@ class AttributeTransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestC
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -2010,7 +2010,7 @@ class AttributeTransitionCollectionWithAfterCallbackErrorTest < Test::Unit::Test
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -2019,8 +2019,8 @@ class AttributeTransitionCollectionWithAfterCallbackErrorTest < Test::Unit::Test
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     begin; @transitions.perform; rescue; end
   end
@@ -2038,7 +2038,7 @@ class AttributeTransitionCollectionWithAroundCallbackAfterYieldHaltTest < Test::
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -2047,8 +2047,8 @@ class AttributeTransitionCollectionWithAroundCallbackAfterYieldHaltTest < Test::
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     @result = @transitions.perform
   end
@@ -2070,7 +2070,7 @@ class AttributeTransitionCollectionWithAroundCallbackAfterYieldErrorTest < Test:
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -2079,8 +2079,8 @@ class AttributeTransitionCollectionWithAroundCallbackAfterYieldErrorTest < Test:
     @object = @klass.new
     @object.state_event = 'ignite'
     
-    @transitions = StateMachine::AttributeTransitionCollection.new([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transitions = EnumStateMachine::AttributeTransitionCollection.new([
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     begin; @transitions.perform; rescue; end
   end
@@ -2099,7 +2099,7 @@ class AttributeTransitionCollectionMarshallingTest < Test::Unit::TestCase
     @klass = Class.new
     self.class.const_set('Example', @klass)
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
     @machine.state :idling
     @machine.event :ignite
     
@@ -2137,7 +2137,7 @@ class AttributeTransitionCollectionMarshallingTest < Test::Unit::TestCase
     end
   end
   
-  if StateMachine::Transition.pause_supported?
+  if EnumStateMachine::Transition.pause_supported?
     def test_should_marshal_during_around_callbacks_before_yield
       @machine.around_transition {|object, transition, block| Marshal.dump(object); block.call}
       assert_nothing_raised do
@@ -2161,8 +2161,8 @@ class AttributeTransitionCollectionMarshallingTest < Test::Unit::TestCase
   
   private
     def transitions(options = {})
-      StateMachine::AttributeTransitionCollection.new([
-        StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      EnumStateMachine::AttributeTransitionCollection.new([
+        EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
       ], options)
     end
 end

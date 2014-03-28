@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class StateByDefaultTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
   end
   
   def test_should_have_a_machine
@@ -42,17 +42,17 @@ end
 
 class StateTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {StateMachine::State.new(@machine, :parked, :invalid => true)}
+    exception = assert_raise(ArgumentError) {EnumStateMachine::State.new(@machine, :parked, :invalid => true)}
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_allow_changing_machine
-    new_machine = StateMachine::Machine.new(Class.new)
+    new_machine = EnumStateMachine::Machine.new(Class.new)
     @state.machine = new_machine
     assert_equal new_machine, @state.machine
   end
@@ -79,15 +79,15 @@ class StateTest < Test::Unit::TestCase
   end
   
   def test_should_use_pretty_inspect
-    assert_equal '#<StateMachine::State name=:parked value="parked" initial=false>', @state.inspect
+    assert_equal '#<EnumStateMachine::State name=:parked value="parked" initial=false>', @state.inspect
   end
 end
 
 class StateWithoutNameTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, nil)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, nil)
   end
   
   def test_should_have_a_nil_name
@@ -124,8 +124,8 @@ end
 class StateWithNameTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
   end
   
   def test_should_have_a_name
@@ -166,8 +166,8 @@ end
 class StateWithNilValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => nil)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => nil)
   end
   
   def test_should_have_a_name
@@ -200,8 +200,8 @@ end
 class StateWithSymbolicValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => :parked)
   end
   
   def test_should_use_custom_value
@@ -231,8 +231,8 @@ end
 class StateWithIntegerValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => 1)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => 1)
   end
   
   def test_should_use_custom_value
@@ -263,9 +263,9 @@ class StateWithLambdaValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     @args = nil
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @value = lambda {|*args| @args = args; :parked}
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => @value)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => @value)
   end
   
   def test_should_use_evaluated_value_by_default
@@ -298,9 +298,9 @@ end
 class StateWithCachedLambdaValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @dynamic_value = lambda {'value'}
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => @dynamic_value, :cache => true)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => @dynamic_value, :cache => true)
   end
   
   def test_should_be_caching
@@ -326,9 +326,9 @@ end
 class StateWithoutCachedLambdaValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @dynamic_value = lambda {'value'}
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => @dynamic_value)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => @dynamic_value)
   end
   
   def test_should_not_be_caching
@@ -351,8 +351,8 @@ class StateWithMatcherTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     @args = nil
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :if => lambda {|value| value == 1})
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :if => lambda {|value| value == 1})
   end
   
   def test_should_not_match_actual_value
@@ -367,8 +367,8 @@ end
 class StateWithHumanNameTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :human_name => 'stopped')
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :human_name => 'stopped')
   end
   
   def test_should_use_custom_human_name
@@ -379,8 +379,8 @@ end
 class StateWithDynamicHumanNameTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :human_name => lambda {|state, object| ['stopped', object]})
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :human_name => lambda {|state, object| ['stopped', object]})
   end
   
   def test_should_use_custom_human_name
@@ -402,8 +402,8 @@ end
 
 class StateInitialTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :initial => true)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :initial => true)
   end
   
   def test_should_be_initial
@@ -414,8 +414,8 @@ end
 
 class StateNotInitialTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked, :initial => false)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :initial => false)
   end
   
   def test_should_not_be_initial
@@ -426,8 +426,8 @@ end
 
 class StateFinalTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
   end
   
   def test_should_be_final_without_input_transitions
@@ -453,8 +453,8 @@ end
 
 class StateNotFinalTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
   end
   
   def test_should_not_be_final_with_outgoing_whitelist_transitions
@@ -493,7 +493,7 @@ class StateWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
       end
     end
     @klass = Class.new(@superclass)
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked
     @object = @klass.new
   end
@@ -503,7 +503,7 @@ class StateWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
   end
   
   def test_should_output_warning
-    assert_equal "Instance method \"parked?\" is already defined in #{@superclass.to_s}, use generic helper instead or set StateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Instance method \"parked?\" is already defined in #{@superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
   end
   
   def teardown
@@ -521,7 +521,7 @@ class StateWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
         0
       end
     end
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked
     @object = @klass.new
   end
@@ -555,27 +555,27 @@ class StateWithConflictingMachineTest < Test::Unit::TestCase
     @original_stderr, $stderr = $stderr, StringIO.new
     
     @klass = Class.new
-    @state_machine = StateMachine::Machine.new(@klass, :state)
-    @state_machine.states << @state = StateMachine::State.new(@state_machine, :parked)
+    @state_machine = EnumStateMachine::Machine.new(@klass, :state)
+    @state_machine.states << @state = EnumStateMachine::State.new(@state_machine, :parked)
   end
   
   def test_should_output_warning_if_using_different_attribute
-    @status_machine = StateMachine::Machine.new(@klass, :status)
-    @status_machine.states << @state = StateMachine::State.new(@status_machine, :parked)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status)
+    @status_machine.states << @state = EnumStateMachine::State.new(@status_machine, :parked)
     
     assert_equal "State :parked for :status is already defined in :state\n", $stderr.string
   end
   
   def test_should_not_output_warning_if_using_same_attribute
-    @status_machine = StateMachine::Machine.new(@klass, :status, :attribute => :state)
-    @status_machine.states << @state = StateMachine::State.new(@status_machine, :parked)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status, :attribute => :state)
+    @status_machine.states << @state = EnumStateMachine::State.new(@status_machine, :parked)
     
     assert_equal '', $stderr.string
   end
   
   def test_should_not_output_warning_if_using_different_namespace
-    @status_machine = StateMachine::Machine.new(@klass, :status, :namespace => 'alarm')
-    @status_machine.states << @state = StateMachine::State.new(@status_machine, :parked)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status, :namespace => 'alarm')
+    @status_machine.states << @state = EnumStateMachine::State.new(@status_machine, :parked)
     
     assert_equal '', $stderr.string
   end
@@ -591,12 +591,12 @@ class StateWithConflictingMachineNameTest < Test::Unit::TestCase
     @original_stderr, $stderr = $stderr, StringIO.new
     
     @klass = Class.new
-    @state_machine = StateMachine::Machine.new(@klass, :state)
+    @state_machine = EnumStateMachine::Machine.new(@klass, :state)
   end
   
   def test_should_output_warning_if_name_conflicts
-    StateMachine::State.new(@state_machine, :state)
-    assert_equal "Instance method \"state?\" is already defined in #{@klass} :state instance helpers, use generic helper instead or set StateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    EnumStateMachine::State.new(@state_machine, :state)
+    assert_equal "Instance method \"state?\" is already defined in #{@klass} :state instance helpers, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
   end
   
   def teardown
@@ -607,8 +607,8 @@ end
 class StateWithNamespaceTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :namespace => 'alarm')
-    @machine.states << @state = StateMachine::State.new(@machine, :active)
+    @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :active)
     @object = @klass.new
   end
   
@@ -627,8 +627,8 @@ end
 
 class StateAfterBeingCopiedTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.states << @state = StateMachine::State.new(@machine, :parked)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
     @copied_state = @state.dup
   end
   
@@ -646,9 +646,9 @@ end
 class StateWithContextTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @ancestors = @klass.ancestors
-    @machine.states << @state = StateMachine::State.new(@machine, :idling)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :idling)
     
     context = nil
     speed_method = nil
@@ -703,9 +703,9 @@ end
 class StateWithMultipleContextsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @ancestors = @klass.ancestors
-    @machine.states << @state = StateMachine::State.new(@machine, :idling)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :idling)
     
     context = nil
     speed_method = nil
@@ -764,8 +764,8 @@ class StateWithExistingContextMethodTest < Test::Unit::TestCase
     end
     @original_speed_method = @klass.instance_method(:speed)
     
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, :idling)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :idling)
     @state.context do
       def speed
         0
@@ -781,8 +781,8 @@ end
 class StateWithRedefinedContextMethodTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.states << @state = StateMachine::State.new(@machine, 'on')
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, 'on')
     
     old_context = nil
     old_speed_method = nil
@@ -821,9 +821,9 @@ end
 class StateWithInvalidMethodCallTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @ancestors = @klass.ancestors
-    @machine.states << @state = StateMachine::State.new(@machine, :idling)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :idling)
     @state.context do
       def speed
         0
@@ -841,9 +841,9 @@ end
 class StateWithValidMethodCallForDifferentStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @ancestors = @klass.ancestors
-    @machine.states << @state = StateMachine::State.new(@machine, :idling)
+    @machine.states << @state = EnumStateMachine::State.new(@machine, :idling)
     @state.context do
       def speed
         0
@@ -858,7 +858,7 @@ class StateWithValidMethodCallForDifferentStateTest < Test::Unit::TestCase
   end
   
   def test_should_raise_invalid_context_on_no_method_error
-    exception = assert_raise(StateMachine::InvalidContext) do
+    exception = assert_raise(EnumStateMachine::InvalidContext) do
       @state.call(@object, :speed, :method_missing => lambda { raise NoMethodError.new('Invalid', :speed, [])})
     end
     assert_equal @object, exception.object
@@ -881,7 +881,7 @@ end
 class StateWithValidMethodCallForCurrentStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :idling)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :idling)
     @ancestors = @klass.ancestors
     @state = @machine.state(:idling)
     @state.context do
@@ -919,7 +919,7 @@ if RUBY_VERSION > '1.8.7'
         end
       end
       @klass = Class.new(@superclass)
-      @machine = StateMachine::Machine.new(@klass, :initial => :idling)
+      @machine = EnumStateMachine::Machine.new(@klass, :initial => :idling)
       @ancestors = @klass.ancestors
       @state = @machine.state(:idling)
       @state.context do
@@ -957,13 +957,13 @@ begin
   
   class StateDrawingTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => 1)
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => 1)
       @machine.event :ignite do
         transition :parked => :idling
       end
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       @state.draw(graph)
       @node = graph.get_node('parked')
     end
@@ -987,13 +987,13 @@ begin
   
   class StateDrawingInitialTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, :parked, :initial => true)
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :initial => true)
       @machine.event :ignite do
         transition :parked => :idling
       end
       
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       @state.draw(@graph)
       @node = @graph.get_node('parked')
     end
@@ -1010,10 +1010,10 @@ begin
   
   class StateDrawingNilNameTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, nil)
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, nil)
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       @state.draw(graph)
       @node = graph.get_node('nil')
     end
@@ -1029,10 +1029,10 @@ begin
   
   class StateDrawingLambdaValueTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, :parked, :value => lambda {})
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :value => lambda {})
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       @state.draw(graph)
       @node = graph.get_node('parked')
     end
@@ -1048,13 +1048,13 @@ begin
   
   class StateDrawingNonFinalTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, :parked)
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
       @machine.event :ignite do
         transition :parked => :idling
       end
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       @state.draw(graph)
       @node = graph.get_node('parked')
     end
@@ -1066,10 +1066,10 @@ begin
   
   class StateDrawingFinalTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, :parked)
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, :parked)
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       @state.draw(graph)
       @node = graph.get_node('parked')
     end
@@ -1081,13 +1081,13 @@ begin
   
   class StateDrawingWithHumanNameTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
-      @machine.states << @state = StateMachine::State.new(@machine, :parked, :human_name => 'Parked')
+      @machine = EnumStateMachine::Machine.new(Class.new)
+      @machine.states << @state = EnumStateMachine::State.new(@machine, :parked, :human_name => 'Parked')
       @machine.event :ignite do
         transition :parked => :idling
       end
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       @state.draw(graph, :human_name => true)
       @node = graph.get_node('parked')
     end
@@ -1097,5 +1097,5 @@ begin
     end
   end
 rescue LoadError
-  $stderr.puts 'Skipping GraphViz StateMachine::State tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
+  $stderr.puts 'Skipping GraphViz EnumStateMachine::State tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
 end unless ENV['TRAVIS']

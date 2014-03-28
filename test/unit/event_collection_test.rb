@@ -3,8 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class EventCollectionByDefaultTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     @object = @klass.new
   end
   
@@ -27,10 +27,10 @@ end
 
 class EventCollectionTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new, :namespace => 'alarm')
-    @events = StateMachine::EventCollection.new(machine)
+    machine = EnumStateMachine::Machine.new(Class.new, :namespace => 'alarm')
+    @events = EnumStateMachine::EventCollection.new(machine)
     
-    @events << @open = StateMachine::Event.new(machine, :enable)
+    @events << @open = EnumStateMachine::Event.new(machine, :enable)
     machine.events.concat(@events)
   end
   
@@ -57,10 +57,10 @@ end
 
 class EventStringCollectionTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new, :namespace => 'alarm')
-    @events = StateMachine::EventCollection.new(machine)
+    machine = EnumStateMachine::Machine.new(Class.new, :namespace => 'alarm')
+    @events = EnumStateMachine::EventCollection.new(machine)
     
-    @events << @open = StateMachine::Event.new(machine, 'enable')
+    @events << @open = EnumStateMachine::Event.new(machine, 'enable')
     machine.events.concat(@events)
   end
   
@@ -88,18 +88,18 @@ end
 class EventCollectionWithEventsWithTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     
     @machine.state :idling, :first_gear
     
-    @events << @ignite = StateMachine::Event.new(@machine, :ignite)
+    @events << @ignite = EnumStateMachine::Event.new(@machine, :ignite)
     @ignite.transition :parked => :idling
     
-    @events << @park = StateMachine::Event.new(@machine, :park)
+    @events << @park = EnumStateMachine::Event.new(@machine, :park)
     @park.transition :idling => :parked
     
-    @events << @shift_up = StateMachine::Event.new(@machine, :shift_up)
+    @events << @shift_up = EnumStateMachine::Event.new(@machine, :shift_up)
     @shift_up.transition :parked => :first_gear
     @shift_up.transition :idling => :first_gear, :if => lambda{false}
     
@@ -134,21 +134,21 @@ class EventCollectionWithEventsWithTransitionsTest < Test::Unit::TestCase
   
   def test_should_find_valid_transitions_based_on_current_state
     assert_equal [
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      StateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      EnumStateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)
     ], @events.transitions_for(@object)
   end
   
   def test_should_filter_valid_transitions_by_from_state
-    assert_equal [StateMachine::Transition.new(@object, @machine, :park, :idling, :parked)], @events.transitions_for(@object, :from => :idling)
+    assert_equal [EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked)], @events.transitions_for(@object, :from => :idling)
   end
   
   def test_should_filter_valid_transitions_by_to_state
-    assert_equal [StateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)], @events.transitions_for(@object, :to => :first_gear)
+    assert_equal [EnumStateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)], @events.transitions_for(@object, :to => :first_gear)
   end
   
   def test_should_filter_valid_transitions_by_event
-    assert_equal [StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)], @events.transitions_for(@object, :on => :ignite)
+    assert_equal [EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)], @events.transitions_for(@object, :on => :ignite)
   end
   
   def test_should_filter_valid_transitions_by_multiple_requirements
@@ -156,15 +156,15 @@ class EventCollectionWithEventsWithTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_allow_finding_valid_transitions_without_guards
-    assert_equal [StateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)], @events.transitions_for(@object, :from => :idling, :to => :first_gear, :guard => false)
+    assert_equal [EnumStateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)], @events.transitions_for(@object, :from => :idling, :to => :first_gear, :guard => false)
   end
 end
 
 class EventCollectionWithMultipleEventsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     
     @machine.state :first_gear
     @park, @shift_down = @machine.event :park, :shift_down
@@ -188,9 +188,9 @@ end
 class EventCollectionWithoutMachineActionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
-    @events = StateMachine::EventCollection.new(@machine)
-    @events << StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
+    @events = EnumStateMachine::EventCollection.new(@machine)
+    @events << EnumStateMachine::Event.new(@machine, :ignite)
     @machine.events.concat(@events)
     
     @object = @klass.new
@@ -208,11 +208,11 @@ class EventCollectionAttributeWithMachineActionTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     
     @machine.state :parked, :idling
-    @events << @ignite = StateMachine::Event.new(@machine, :ignite)
+    @events << @ignite = EnumStateMachine::Event.new(@machine, :ignite)
     @machine.events.concat(@events)
     
     @object = @klass.new
@@ -242,7 +242,7 @@ class EventCollectionAttributeWithMachineActionTest < Test::Unit::TestCase
     @ignite.transition :parked => :idling
     @object.state_event = 'ignite'
     
-    assert_instance_of StateMachine::Transition, @events.attribute_transition_for(@object)
+    assert_instance_of EnumStateMachine::Transition, @events.attribute_transition_for(@object)
   end
   
   def test_should_have_valid_transition_if_already_defined_in_transition_cache
@@ -269,11 +269,11 @@ class EventCollectionAttributeWithNamespacedMachineTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :namespace => 'alarm', :initial => :active, :action => :save)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm', :initial => :active, :action => :save)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     
     @machine.state :active, :off
-    @events << @disable = StateMachine::Event.new(@machine, :disable)
+    @events << @disable = EnumStateMachine::Event.new(@machine, :disable)
     @machine.events.concat(@events)
     
     @object = @klass.new
@@ -293,14 +293,14 @@ class EventCollectionAttributeWithNamespacedMachineTest < Test::Unit::TestCase
     @disable.transition :active => :off
     @object.state_event = 'disable'
     
-    assert_instance_of StateMachine::Transition, @events.attribute_transition_for(@object)
+    assert_instance_of EnumStateMachine::Transition, @events.attribute_transition_for(@object)
   end
 end
 
 class EventCollectionWithValidationsTest < Test::Unit::TestCase
   def setup
-    StateMachine::Integrations.const_set('Custom', Module.new do
-      include StateMachine::Integrations::Base
+    EnumStateMachine::Integrations.const_set('Custom', Module.new do
+      include EnumStateMachine::Integrations::Base
       
       def invalidate(object, attribute, message, values = [])
         (object.errors ||= []) << generate_message(message, values)
@@ -320,11 +320,11 @@ class EventCollectionWithValidationsTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked, :action => :save, :integration => :custom)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked, :action => :save, :integration => :custom)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     
     @parked, @idling = @machine.state :parked, :idling
-    @events << @ignite = StateMachine::Event.new(@machine, :ignite)
+    @events << @ignite = EnumStateMachine::Event.new(@machine, :ignite)
     @machine.events.concat(@events)
     
     @object = @klass.new
@@ -363,7 +363,7 @@ class EventCollectionWithValidationsTest < Test::Unit::TestCase
   end
   
   def teardown
-    StateMachine::Integrations.send(:remove_const, 'Custom')
+    EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
@@ -374,11 +374,11 @@ class EventCollectionWithCustomMachineAttributeTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :state, :attribute => :state_id, :initial => :parked, :action => :save)
-    @events = StateMachine::EventCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :state, :attribute => :state_id, :initial => :parked, :action => :save)
+    @events = EnumStateMachine::EventCollection.new(@machine)
     
     @machine.state :parked, :idling
-    @events << @ignite = StateMachine::Event.new(@machine, :ignite)
+    @events << @ignite = EnumStateMachine::Event.new(@machine, :ignite)
     @machine.events.concat(@events)
     
     @object = @klass.new
@@ -393,6 +393,6 @@ class EventCollectionWithCustomMachineAttributeTest < Test::Unit::TestCase
     @ignite.transition :parked => :idling
     @object.state_event = 'ignite'
     
-    assert_instance_of StateMachine::Transition, @events.attribute_transition_for(@object)
+    assert_instance_of EnumStateMachine::Transition, @events.attribute_transition_for(@object)
   end
 end

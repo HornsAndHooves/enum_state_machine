@@ -8,8 +8,8 @@ end
 
 class NodeCollectionByDefaultTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(@machine)
   end
   
   def test_should_not_have_any_nodes
@@ -28,12 +28,12 @@ end
 
 class NodeCollectionTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(@machine)
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) { StateMachine::NodeCollection.new(@machine, :invalid => true) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::NodeCollection.new(@machine, :invalid => true) }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
@@ -50,8 +50,8 @@ end
 
 class NodeCollectionAfterBeingCopiedTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine)
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine)
     @collection << @parked = Node.new(:parked)
     
     @contexts_run = contexts_run = []
@@ -94,8 +94,8 @@ end
 
 class NodeCollectionWithoutIndicesTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine, :index => {})
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine, :index => {})
   end
   
   def test_should_allow_adding_node
@@ -123,8 +123,8 @@ end
 
 class NodeCollectionWithIndicesTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine, :index => [:name, :value])
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
     
     @object = Node.new(:parked, 1)
     @collection << @object
@@ -163,8 +163,8 @@ end
 
 class NodeCollectionWithNodesTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(@machine)
     
     @parked = Node.new(:parked, nil, @machine)
     @idling = Node.new(:idling, nil, @machine)
@@ -196,7 +196,7 @@ class NodeCollectionWithNodesTest < Test::Unit::TestCase
   end
   
   def test_should_deep_copy_machine_changes
-    new_machine = StateMachine::Machine.new(Class.new)
+    new_machine = EnumStateMachine::Machine.new(Class.new)
     @collection.machine = new_machine
     
     assert_equal new_machine, @collection.machine
@@ -207,8 +207,8 @@ end
 
 class NodeCollectionAfterUpdateTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine, :index => [:name, :value])
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
     
     @parked = Node.new(:parked, 1)
     @idling = Node.new(:idling, 2)
@@ -241,8 +241,8 @@ end
 
 class NodeCollectionWithStringIndexTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine, :index => [:name, :value])
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
     
     @parked = Node.new(:parked, 1)
     @collection << @parked
@@ -259,8 +259,8 @@ end
 
 class NodeCollectionWithSymbolIndexTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine, :index => [:name, :value])
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
     
     @parked = Node.new('parked', 1)
     @collection << @parked
@@ -277,8 +277,8 @@ end
 
 class NodeCollectionWithNumericIndexTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine, :index => [:name, :value])
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
     
     @parked = Node.new(10, 1)
     @collection << @parked
@@ -299,8 +299,8 @@ end
 
 class NodeCollectionWithPredefinedContextsTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine)
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine)
     
     @contexts_run = contexts_run = []
     @collection.context([:parked]) { contexts_run << :parked }
@@ -320,8 +320,8 @@ end
 
 class NodeCollectionWithPostdefinedContextsTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine)
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine)
     @collection << Node.new(:parked)
   end
   
@@ -340,20 +340,20 @@ end
 
 class NodeCollectionWithMatcherContextsTest < Test::Unit::TestCase
   def setup
-    machine = StateMachine::Machine.new(Class.new)
-    @collection = StateMachine::NodeCollection.new(machine)
+    machine = EnumStateMachine::Machine.new(Class.new)
+    @collection = EnumStateMachine::NodeCollection.new(machine)
     @collection << Node.new(:parked)
   end
   
   def test_should_always_run_all_matcher_context
     contexts_run = []
-    @collection.context([StateMachine::AllMatcher.instance]) { contexts_run << :all }
+    @collection.context([EnumStateMachine::AllMatcher.instance]) { contexts_run << :all }
     assert_equal [:all], contexts_run
   end
   
   def test_should_only_run_blacklist_matcher_if_not_matched
     contexts_run = []
-    @collection.context([StateMachine::BlacklistMatcher.new([:parked])]) { contexts_run << :blacklist }
+    @collection.context([EnumStateMachine::BlacklistMatcher.new([:parked])]) { contexts_run << :blacklist }
     assert_equal [], contexts_run
     
     @collection << Node.new(:idling)

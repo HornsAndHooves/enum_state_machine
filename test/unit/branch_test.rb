@@ -2,11 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class BranchTest < Test::Unit::TestCase
   def setup
-    @branch = StateMachine::Branch.new(:from => :parked, :to => :idling)
+    @branch = EnumStateMachine::Branch.new(:from => :parked, :to => :idling)
   end
   
   def test_should_not_raise_exception_if_implicit_option_specified
-    assert_nothing_raised { StateMachine::Branch.new(:invalid => :valid) }
+    assert_nothing_raised { EnumStateMachine::Branch.new(:invalid => :valid) }
   end
   
   def test_should_not_have_an_if_condition
@@ -30,19 +30,19 @@ end
 class BranchWithNoRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new
+    @branch = EnumStateMachine::Branch.new
   end
   
   def test_should_use_all_matcher_for_event_requirement
-    assert_equal StateMachine::AllMatcher.instance, @branch.event_requirement
+    assert_equal EnumStateMachine::AllMatcher.instance, @branch.event_requirement
   end
   
   def test_should_use_all_matcher_for_from_state_requirement
-    assert_equal StateMachine::AllMatcher.instance, @branch.state_requirements.first[:from]
+    assert_equal EnumStateMachine::AllMatcher.instance, @branch.state_requirements.first[:from]
   end
   
   def test_should_use_all_matcher_for_to_state_requirement
-    assert_equal StateMachine::AllMatcher.instance, @branch.state_requirements.first[:to]
+    assert_equal EnumStateMachine::AllMatcher.instance, @branch.state_requirements.first[:to]
   end
   
   def test_should_match_empty_query
@@ -65,11 +65,11 @@ end
 class BranchWithFromRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:from => :parked)
+    @branch = EnumStateMachine::Branch.new(:from => :parked)
   end
   
   def test_should_use_a_whitelist_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.state_requirements.first[:from]
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.state_requirements.first[:from]
   end
   
   def test_should_match_if_not_specified
@@ -109,7 +109,7 @@ end
 class BranchWithMultipleFromRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:from => [:idling, :parked])
+    @branch = EnumStateMachine::Branch.new(:from => [:idling, :parked])
   end
   
   def test_should_match_if_included
@@ -128,7 +128,7 @@ end
 class BranchWithFromMatcherRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:from => StateMachine::BlacklistMatcher.new([:idling, :parked]))
+    @branch = EnumStateMachine::Branch.new(:from => EnumStateMachine::BlacklistMatcher.new([:idling, :parked]))
   end
   
   def test_should_match_if_included
@@ -147,11 +147,11 @@ end
 class BranchWithToRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:to => :idling)
+    @branch = EnumStateMachine::Branch.new(:to => :idling)
   end
   
   def test_should_use_a_whitelist_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.state_requirements.first[:to]
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.state_requirements.first[:to]
   end
   
   def test_should_match_if_not_specified
@@ -191,7 +191,7 @@ end
 class BranchWithMultipleToRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:to => [:idling, :parked])
+    @branch = EnumStateMachine::Branch.new(:to => [:idling, :parked])
   end
   
   def test_should_match_if_included
@@ -210,7 +210,7 @@ end
 class BranchWithToMatcherRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:to => StateMachine::BlacklistMatcher.new([:idling, :parked]))
+    @branch = EnumStateMachine::Branch.new(:to => EnumStateMachine::BlacklistMatcher.new([:idling, :parked]))
   end
   
   def test_should_match_if_included
@@ -229,11 +229,11 @@ end
 class BranchWithOnRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:on => :ignite)
+    @branch = EnumStateMachine::Branch.new(:on => :ignite)
   end
   
   def test_should_use_a_whitelist_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.event_requirement
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.event_requirement
   end
   
   def test_should_match_if_not_specified
@@ -273,7 +273,7 @@ end
 class BranchWithMultipleOnRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:on => [:ignite, :park])
+    @branch = EnumStateMachine::Branch.new(:on => [:ignite, :park])
   end
   
   def test_should_match_if_included
@@ -288,7 +288,7 @@ end
 class BranchWithOnMatcherRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:on => StateMachine::BlacklistMatcher.new([:ignite, :park]))
+    @branch = EnumStateMachine::Branch.new(:on => EnumStateMachine::BlacklistMatcher.new([:ignite, :park]))
   end
   
   def test_should_match_if_included
@@ -303,11 +303,11 @@ end
 class BranchWithExceptFromRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:except_from => :parked)
+    @branch = EnumStateMachine::Branch.new(:except_from => :parked)
   end
   
   def test_should_use_a_blacklist_matcher
-    assert_instance_of StateMachine::BlacklistMatcher, @branch.state_requirements.first[:from]
+    assert_instance_of EnumStateMachine::BlacklistMatcher, @branch.state_requirements.first[:from]
   end
   
   def test_should_match_if_not_included
@@ -338,7 +338,7 @@ end
 class BranchWithMultipleExceptFromRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:except_from => [:idling, :parked])
+    @branch = EnumStateMachine::Branch.new(:except_from => [:idling, :parked])
   end
   
   def test_should_match_if_not_included
@@ -356,7 +356,7 @@ end
 
 class BranchWithExceptFromMatcherRequirementTest < Test::Unit::TestCase
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { StateMachine::Branch.new(:except_from => StateMachine::AllMatcher.instance) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:except_from => EnumStateMachine::AllMatcher.instance) }
     assert_equal ':except_from option cannot use matchers; use :from instead', exception.message
   end
 end
@@ -364,11 +364,11 @@ end
 class BranchWithExceptToRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:except_to => :idling)
+    @branch = EnumStateMachine::Branch.new(:except_to => :idling)
   end
   
   def test_should_use_a_blacklist_matcher
-    assert_instance_of StateMachine::BlacklistMatcher, @branch.state_requirements.first[:to]
+    assert_instance_of EnumStateMachine::BlacklistMatcher, @branch.state_requirements.first[:to]
   end
   
   def test_should_match_if_not_included
@@ -399,7 +399,7 @@ end
 class BranchWithMultipleExceptToRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:except_to => [:idling, :parked])
+    @branch = EnumStateMachine::Branch.new(:except_to => [:idling, :parked])
   end
   
   def test_should_match_if_not_included
@@ -417,7 +417,7 @@ end
 
 class BranchWithExceptToMatcherRequirementTest < Test::Unit::TestCase
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { StateMachine::Branch.new(:except_to => StateMachine::AllMatcher.instance) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:except_to => EnumStateMachine::AllMatcher.instance) }
     assert_equal ':except_to option cannot use matchers; use :to instead', exception.message
   end
 end
@@ -425,11 +425,11 @@ end
 class BranchWithExceptOnRequirementTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:except_on => :ignite)
+    @branch = EnumStateMachine::Branch.new(:except_on => :ignite)
   end
   
   def test_should_use_a_blacklist_matcher
-    assert_instance_of StateMachine::BlacklistMatcher, @branch.event_requirement
+    assert_instance_of EnumStateMachine::BlacklistMatcher, @branch.event_requirement
   end
   
   def test_should_match_if_not_included
@@ -459,7 +459,7 @@ end
 
 class BranchWithExceptOnMatcherRequirementTest < Test::Unit::TestCase
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { StateMachine::Branch.new(:except_on => StateMachine::AllMatcher.instance) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:except_on => EnumStateMachine::AllMatcher.instance) }
     assert_equal ':except_on option cannot use matchers; use :on instead', exception.message
   end
 end
@@ -467,7 +467,7 @@ end
 class BranchWithMultipleExceptOnRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:except_on => [:ignite, :park])
+    @branch = EnumStateMachine::Branch.new(:except_on => [:ignite, :park])
   end
   
   def test_should_match_if_not_included
@@ -481,21 +481,21 @@ end
 
 class BranchWithConflictingFromRequirementsTest < Test::Unit::TestCase
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { StateMachine::Branch.new(:from => :parked, :except_from => :parked) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:from => :parked, :except_from => :parked) }
     assert_equal 'Conflicting keys: from, except_from', exception.message
   end
 end
 
 class BranchWithConflictingToRequirementsTest < Test::Unit::TestCase
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { StateMachine::Branch.new(:to => :idling, :except_to => :idling) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:to => :idling, :except_to => :idling) }
     assert_equal 'Conflicting keys: to, except_to', exception.message
   end
 end
 
 class BranchWithConflictingOnRequirementsTest < Test::Unit::TestCase
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { StateMachine::Branch.new(:on => :ignite, :except_on => :ignite) }
+    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:on => :ignite, :except_on => :ignite) }
     assert_equal 'Conflicting keys: on, except_on', exception.message
   end
 end
@@ -503,7 +503,7 @@ end
 class BranchWithDifferentRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:from => :parked, :to => :idling, :on => :ignite)
+    @branch = EnumStateMachine::Branch.new(:from => :parked, :to => :idling, :on => :ignite)
   end
   
   def test_should_match_empty_query
@@ -535,7 +535,7 @@ class BranchWithDifferentRequirementsTest < Test::Unit::TestCase
   end
   
   def test_should_not_duplicate_known_statse
-    branch = StateMachine::Branch.new(:except_from => :idling, :to => :idling, :on => :ignite)
+    branch = EnumStateMachine::Branch.new(:except_from => :idling, :to => :idling, :on => :ignite)
     assert_equal [:idling], branch.known_states
   end
 end
@@ -543,7 +543,7 @@ end
 class BranchWithNilRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:from => nil, :to => nil)
+    @branch = EnumStateMachine::Branch.new(:from => nil, :to => nil)
   end
   
   def test_should_match_empty_query
@@ -569,27 +569,27 @@ end
 
 class BranchWithImplicitRequirementTest < Test::Unit::TestCase
   def setup
-    @branch = StateMachine::Branch.new(:parked => :idling, :on => :ignite)
+    @branch = EnumStateMachine::Branch.new(:parked => :idling, :on => :ignite)
   end
   
   def test_should_create_an_event_requirement
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.event_requirement
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.event_requirement
     assert_equal [:ignite], @branch.event_requirement.values
   end
   
   def test_should_use_a_whitelist_from_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.state_requirements.first[:from]
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.state_requirements.first[:from]
   end
   
   def test_should_use_a_whitelist_to_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.state_requirements.first[:to]
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.state_requirements.first[:to]
   end
 end
 
 class BranchWithMultipleImplicitRequirementsTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @branch = StateMachine::Branch.new(:parked => :idling, :idling => :first_gear, :on => :ignite)
+    @branch = EnumStateMachine::Branch.new(:parked => :idling, :idling => :first_gear, :on => :ignite)
   end
   
   def test_should_create_multiple_state_requirements
@@ -633,15 +633,15 @@ class BranchWithMultipleImplicitRequirementsTest < Test::Unit::TestCase
   end
   
   def test_should_not_duplicate_known_statse
-    branch = StateMachine::Branch.new(:parked => :idling, :first_gear => :idling)
+    branch = EnumStateMachine::Branch.new(:parked => :idling, :first_gear => :idling)
     assert_equal [:first_gear, :idling, :parked], branch.known_states.sort_by {|state| state.to_s}
   end
 end
 
 class BranchWithImplicitFromRequirementMatcherTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::BlacklistMatcher.new(:parked)
-    @branch = StateMachine::Branch.new(@matcher => :idling)
+    @matcher = EnumStateMachine::BlacklistMatcher.new(:parked)
+    @branch = EnumStateMachine::Branch.new(@matcher => :idling)
   end
   
   def test_should_not_convert_from_to_whitelist_matcher
@@ -649,18 +649,18 @@ class BranchWithImplicitFromRequirementMatcherTest < Test::Unit::TestCase
   end
   
   def test_should_convert_to_to_whitelist_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.state_requirements.first[:to]
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.state_requirements.first[:to]
   end
 end
 
 class BranchWithImplicitToRequirementMatcherTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::BlacklistMatcher.new(:idling)
-    @branch = StateMachine::Branch.new(:parked => @matcher)
+    @matcher = EnumStateMachine::BlacklistMatcher.new(:idling)
+    @branch = EnumStateMachine::Branch.new(:parked => @matcher)
   end
   
   def test_should_convert_from_to_whitelist_matcher
-    assert_instance_of StateMachine::WhitelistMatcher, @branch.state_requirements.first[:from]
+    assert_instance_of EnumStateMachine::WhitelistMatcher, @branch.state_requirements.first[:from]
   end
   
   def test_should_not_convert_to_to_whitelist_matcher
@@ -670,7 +670,7 @@ end
 
 class BranchWithImplicitAndExplicitRequirementsTest < Test::Unit::TestCase
   def setup
-    @branch = StateMachine::Branch.new(:parked => :idling, :from => :parked)
+    @branch = EnumStateMachine::Branch.new(:parked => :idling, :from => :parked)
   end
   
   def test_should_create_multiple_requirements
@@ -696,22 +696,22 @@ class BranchWithIfConditionalTest < Test::Unit::TestCase
   end
   
   def test_should_have_an_if_condition
-    branch = StateMachine::Branch.new(:if => lambda {true})
+    branch = EnumStateMachine::Branch.new(:if => lambda {true})
     assert_not_nil branch.if_condition
   end
   
   def test_should_match_if_true
-    branch = StateMachine::Branch.new(:if => lambda {true})
+    branch = EnumStateMachine::Branch.new(:if => lambda {true})
     assert branch.matches?(@object)
   end
   
   def test_should_not_match_if_false
-    branch = StateMachine::Branch.new(:if => lambda {false})
+    branch = EnumStateMachine::Branch.new(:if => lambda {false})
     assert !branch.matches?(@object)
   end
   
   def test_should_be_nil_if_unmatched
-    branch = StateMachine::Branch.new(:if => lambda {false})
+    branch = EnumStateMachine::Branch.new(:if => lambda {false})
     assert_nil branch.match(@object)
   end
 end
@@ -722,15 +722,15 @@ class BranchWithMultipleIfConditionalsTest < Test::Unit::TestCase
   end
   
   def test_should_match_if_all_are_true
-    branch = StateMachine::Branch.new(:if => [lambda {true}, lambda {true}])
+    branch = EnumStateMachine::Branch.new(:if => [lambda {true}, lambda {true}])
     assert branch.match(@object)
   end
   
   def test_should_not_match_if_any_are_false
-    branch = StateMachine::Branch.new(:if => [lambda {true}, lambda {false}])
+    branch = EnumStateMachine::Branch.new(:if => [lambda {true}, lambda {false}])
     assert !branch.match(@object)
     
-    branch = StateMachine::Branch.new(:if => [lambda {false}, lambda {true}])
+    branch = EnumStateMachine::Branch.new(:if => [lambda {false}, lambda {true}])
     assert !branch.match(@object)
   end
 end
@@ -741,22 +741,22 @@ class BranchWithUnlessConditionalTest < Test::Unit::TestCase
   end
   
   def test_should_have_an_unless_condition
-    branch = StateMachine::Branch.new(:unless => lambda {true})
+    branch = EnumStateMachine::Branch.new(:unless => lambda {true})
     assert_not_nil branch.unless_condition
   end
   
   def test_should_match_if_false
-    branch = StateMachine::Branch.new(:unless => lambda {false})
+    branch = EnumStateMachine::Branch.new(:unless => lambda {false})
     assert branch.matches?(@object)
   end
   
   def test_should_not_match_if_true
-    branch = StateMachine::Branch.new(:unless => lambda {true})
+    branch = EnumStateMachine::Branch.new(:unless => lambda {true})
     assert !branch.matches?(@object)
   end
   
   def test_should_be_nil_if_unmatched
-    branch = StateMachine::Branch.new(:unless => lambda {true})
+    branch = EnumStateMachine::Branch.new(:unless => lambda {true})
     assert_nil branch.match(@object)
   end
 end
@@ -767,15 +767,15 @@ class BranchWithMultipleUnlessConditionalsTest < Test::Unit::TestCase
   end
   
   def test_should_match_if_all_are_false
-    branch = StateMachine::Branch.new(:unless => [lambda {false}, lambda {false}])
+    branch = EnumStateMachine::Branch.new(:unless => [lambda {false}, lambda {false}])
     assert branch.match(@object)
   end
   
   def test_should_not_match_if_any_are_true
-    branch = StateMachine::Branch.new(:unless => [lambda {true}, lambda {false}])
+    branch = EnumStateMachine::Branch.new(:unless => [lambda {true}, lambda {false}])
     assert !branch.match(@object)
     
-    branch = StateMachine::Branch.new(:unless => [lambda {false}, lambda {true}])
+    branch = EnumStateMachine::Branch.new(:unless => [lambda {false}, lambda {true}])
     assert !branch.match(@object)
   end
 end
@@ -786,22 +786,22 @@ class BranchWithConflictingConditionalsTest < Test::Unit::TestCase
   end
   
   def test_should_match_if_if_is_true_and_unless_is_false
-    branch = StateMachine::Branch.new(:if => lambda {true}, :unless => lambda {false})
+    branch = EnumStateMachine::Branch.new(:if => lambda {true}, :unless => lambda {false})
     assert branch.match(@object)
   end
   
   def test_should_not_match_if_if_is_false_and_unless_is_true
-    branch = StateMachine::Branch.new(:if => lambda {false}, :unless => lambda {true})
+    branch = EnumStateMachine::Branch.new(:if => lambda {false}, :unless => lambda {true})
     assert !branch.match(@object)
   end
   
   def test_should_not_match_if_if_is_false_and_unless_is_false
-    branch = StateMachine::Branch.new(:if => lambda {false}, :unless => lambda {false})
+    branch = EnumStateMachine::Branch.new(:if => lambda {false}, :unless => lambda {false})
     assert !branch.match(@object)
   end
   
   def test_should_not_match_if_if_is_true_and_unless_is_true
-    branch = StateMachine::Branch.new(:if => lambda {true}, :unless => lambda {true})
+    branch = EnumStateMachine::Branch.new(:if => lambda {true}, :unless => lambda {true})
     assert !branch.match(@object)
   end
 end
@@ -812,22 +812,22 @@ class BranchWithoutGuardsTest < Test::Unit::TestCase
   end
   
   def test_should_match_if_if_is_false
-    branch = StateMachine::Branch.new(:if => lambda {false})
+    branch = EnumStateMachine::Branch.new(:if => lambda {false})
     assert branch.matches?(@object, :guard => false)
   end
   
   def test_should_match_if_if_is_true
-    branch = StateMachine::Branch.new(:if => lambda {true})
+    branch = EnumStateMachine::Branch.new(:if => lambda {true})
     assert branch.matches?(@object, :guard => false)
   end
   
   def test_should_match_if_unless_is_false
-    branch = StateMachine::Branch.new(:unless => lambda {false})
+    branch = EnumStateMachine::Branch.new(:unless => lambda {false})
     assert branch.matches?(@object, :guard => false)
   end
   
   def test_should_match_if_unless_is_true
-    branch = StateMachine::Branch.new(:unless => lambda {true})
+    branch = EnumStateMachine::Branch.new(:unless => lambda {true})
     assert branch.matches?(@object, :guard => false)
   end
 end
@@ -838,13 +838,13 @@ begin
   
   class BranchDrawingTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
+      @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling]
       
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       states.each {|state| @graph.add_nodes(state.to_s)}
       
-      @branch = StateMachine::Branch.new(:from => :idling, :to => :parked)
+      @branch = EnumStateMachine::Branch.new(:from => :idling, :to => :parked)
       @branch.draw(@graph, :park, states)
       @edge = @graph.get_edge_at_index(0)
     end
@@ -868,13 +868,13 @@ begin
   
   class BranchDrawingWithFromRequirementTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
+      @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling, :first_gear]
       
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       states.each {|state| @graph.add_nodes(state.to_s)}
       
-      @branch = StateMachine::Branch.new(:from => [:idling, :first_gear], :to => :parked)
+      @branch = EnumStateMachine::Branch.new(:from => [:idling, :first_gear], :to => :parked)
       @branch.draw(@graph, :park, states)
     end
     
@@ -889,13 +889,13 @@ begin
   
   class BranchDrawingWithExceptFromRequirementTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
+      @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling, :first_gear]
       
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       states.each {|state| @graph.add_nodes(state.to_s)}
       
-      @branch = StateMachine::Branch.new(:except_from => :parked, :to => :parked)
+      @branch = EnumStateMachine::Branch.new(:except_from => :parked, :to => :parked)
       @branch.draw(@graph, :park, states)
     end
     
@@ -910,13 +910,13 @@ begin
   
   class BranchDrawingWithoutFromRequirementTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
+      @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling, :first_gear]
       
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       states.each {|state| @graph.add_nodes(state.to_s)}
       
-      @branch = StateMachine::Branch.new(:to => :parked)
+      @branch = EnumStateMachine::Branch.new(:to => :parked)
       @branch.draw(@graph, :park, states)
     end
     
@@ -931,12 +931,12 @@ begin
   
   class BranchDrawingWithoutToRequirementTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
+      @machine = EnumStateMachine::Machine.new(Class.new)
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       graph.add_nodes('parked')
       
-      @branch = StateMachine::Branch.new(:from => :parked)
+      @branch = EnumStateMachine::Branch.new(:from => :parked)
       @branch.draw(graph, :park, [:parked])
       @edge = graph.get_edge_at_index(0)
     end
@@ -949,12 +949,12 @@ begin
   
   class BranchDrawingWithNilStateTest < Test::Unit::TestCase
     def setup
-      @machine = StateMachine::Machine.new(Class.new)
+      @machine = EnumStateMachine::Machine.new(Class.new)
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       graph.add_nodes('parked')
       
-      @branch = StateMachine::Branch.new(:from => :idling, :to => nil)
+      @branch = EnumStateMachine::Branch.new(:from => :idling, :to => nil)
       @branch.draw(graph, :park, [nil, :idling])
       @edge = graph.get_edge_at_index(0)
     end
@@ -965,5 +965,5 @@ begin
     end
   end
 rescue LoadError
-  $stderr.puts 'Skipping GraphViz StateMachine::Branch tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
+  $stderr.puts 'Skipping GraphViz EnumStateMachine::Branch tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
 end unless ENV['TRAVIS']

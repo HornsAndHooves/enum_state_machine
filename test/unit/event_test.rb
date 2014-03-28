@@ -3,8 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class EventByDefaultTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     
     @object = @klass.new
   end
@@ -60,13 +60,13 @@ end
 
 class EventTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition :parked => :idling
   end
   
   def test_should_allow_changing_machine
-    new_machine = StateMachine::Machine.new(Class.new)
+    new_machine = EnumStateMachine::Machine.new(Class.new)
     @event.machine = new_machine
     assert_equal new_machine, @event.machine
   end
@@ -83,19 +83,19 @@ class EventTest < Test::Unit::TestCase
       matchers = [all, any, same]
     end
     
-    assert_equal [StateMachine::AllMatcher.instance, StateMachine::AllMatcher.instance, StateMachine::LoopbackMatcher.instance], matchers
+    assert_equal [EnumStateMachine::AllMatcher.instance, EnumStateMachine::AllMatcher.instance, EnumStateMachine::LoopbackMatcher.instance], matchers
   end
   
   def test_should_use_pretty_inspect
-    assert_match "#<StateMachine::Event name=:ignite transitions=[:parked => :idling]>", @event.inspect
+    assert_match "#<EnumStateMachine::Event name=:ignite transitions=[:parked => :idling]>", @event.inspect
   end
 end
 
 class EventWithHumanNameTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite, :human_name => 'start')
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite, :human_name => 'start')
   end
   
   def test_should_use_custom_human_name
@@ -106,8 +106,8 @@ end
 class EventWithDynamicHumanNameTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite, :human_name => lambda {|event, object| ['start', object]})
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite, :human_name => lambda {|event, object| ['start', object]})
   end
   
   def test_should_use_custom_human_name
@@ -150,8 +150,8 @@ class EventWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
       end
     end
     @klass = Class.new(@superclass)
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @object = @klass.new
   end
   
@@ -173,7 +173,7 @@ class EventWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
   
   def test_should_output_warning
     expected = %w(can_ignite? ignite_transition ignite ignite!).map do |method|
-      "Instance method \"#{method}\" is already defined in #{@superclass.to_s}, use generic helper instead or set StateMachine::Machine.ignore_method_conflicts = true.\n"
+      "Instance method \"#{method}\" is already defined in #{@superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n"
     end.join
     
     assert_equal expected, $stderr.string
@@ -206,8 +206,8 @@ class EventWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
         0
       end
     end
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @object = @klass.new
   end
   
@@ -249,7 +249,7 @@ class EventWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
     assert_equal false, @object.can_ignite?
     assert_equal nil, @object.ignite_transition
     assert_equal false, @object.ignite
-    assert_raise(StateMachine::InvalidTransition) { @object.ignite! }
+    assert_raise(EnumStateMachine::InvalidTransition) { @object.ignite! }
   end
   
   def test_should_not_output_warning
@@ -267,15 +267,15 @@ class EventWithConflictingMachineTest < Test::Unit::TestCase
     @original_stderr, $stderr = $stderr, StringIO.new
     
     @klass = Class.new
-    @state_machine = StateMachine::Machine.new(@klass, :state)
+    @state_machine = EnumStateMachine::Machine.new(@klass, :state)
     @state_machine.state :parked, :idling
-    @state_machine.events << @state_event = StateMachine::Event.new(@state_machine, :ignite)
+    @state_machine.events << @state_event = EnumStateMachine::Event.new(@state_machine, :ignite)
   end
   
   def test_should_not_overwrite_first_event
-    @status_machine = StateMachine::Machine.new(@klass, :status)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status)
     @status_machine.state :first_gear, :second_gear
-    @status_machine.events << @status_event = StateMachine::Event.new(@status_machine, :ignite)
+    @status_machine.events << @status_event = EnumStateMachine::Event.new(@status_machine, :ignite)
     
     @object = @klass.new
     @object.state = 'parked'
@@ -290,15 +290,15 @@ class EventWithConflictingMachineTest < Test::Unit::TestCase
   end
   
   def test_should_output_warning
-    @status_machine = StateMachine::Machine.new(@klass, :status)
-    @status_machine.events << @status_event = StateMachine::Event.new(@status_machine, :ignite)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status)
+    @status_machine.events << @status_event = EnumStateMachine::Event.new(@status_machine, :ignite)
     
     assert_equal "Event :ignite for :status is already defined in :state\n", $stderr.string
   end
   
   def test_should_not_output_warning_if_using_different_namespace
-    @status_machine = StateMachine::Machine.new(@klass, :status, :namespace => 'alarm')
-    @status_machine.events << @status_event = StateMachine::Event.new(@status_machine, :ignite)
+    @status_machine = EnumStateMachine::Machine.new(@klass, :status, :namespace => 'alarm')
+    @status_machine.events << @status_event = EnumStateMachine::Event.new(@status_machine, :ignite)
     
     assert_equal '', $stderr.string
   end
@@ -311,8 +311,8 @@ end
 class EventWithNamespaceTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :namespace => 'alarm')
-    @machine.events << @event = StateMachine::Event.new(@machine, :enable)
+    @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :enable)
     @object = @klass.new
   end
   
@@ -344,8 +344,8 @@ end
 class EventContextTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite, :human_name => 'start')
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite, :human_name => 'start')
   end
   
   def test_should_evaluate_within_the_event
@@ -357,8 +357,8 @@ end
 
 class EventTransitionsTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
   end
   
   def test_should_not_raise_exception_if_implicit_option_specified
@@ -372,7 +372,7 @@ class EventTransitionsTest < Test::Unit::TestCase
   
   def test_should_automatically_set_on_option
     branch = @event.transition(:to => :idling)
-    assert_instance_of StateMachine::WhitelistMatcher, branch.event_requirement
+    assert_instance_of EnumStateMachine::WhitelistMatcher, branch.event_requirement
     assert_equal [:ignite], branch.event_requirement.values
   end
   
@@ -417,8 +417,8 @@ end
 
 class EventAfterBeingCopiedTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @copied_event = @event.dup
   end
   
@@ -434,8 +434,8 @@ end
 class EventWithoutTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @object = @klass.new
   end
   
@@ -460,8 +460,8 @@ end
 class EventWithTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling)
     @event.transition(:first_gear => :idling)
   end
@@ -483,17 +483,17 @@ class EventWithTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_use_pretty_inspect
-    assert_match "#<StateMachine::Event name=:ignite transitions=[:parked => :idling, :first_gear => :idling]>", @event.inspect
+    assert_match "#<EnumStateMachine::Event name=:ignite transitions=[:parked => :idling, :first_gear => :idling]>", @event.inspect
   end
 end
 
 class EventWithoutMatchingTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling)
     
     @object = @klass.new
@@ -528,8 +528,8 @@ end
 
 class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
   def setup
-    StateMachine::Integrations.const_set('Custom', Module.new do
-      include StateMachine::Integrations::Base
+    EnumStateMachine::Integrations.const_set('Custom', Module.new do
+      include EnumStateMachine::Integrations::Base
       
       def invalidate(object, attribute, message, values = [])
         (object.errors ||= []) << generate_message(message, values)
@@ -544,10 +544,10 @@ class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
       attr_accessor :errors
     end
     
-    @machine = StateMachine::Machine.new(@klass, :integration => :custom)
+    @machine = EnumStateMachine::Machine.new(@klass, :integration => :custom)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling, :if => lambda {false})
     
     @object = @klass.new
@@ -595,11 +595,11 @@ class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
       attr_accessor :errors
     end
     
-    machine = StateMachine::Machine.new(klass, :integration => :custom, :messages => {:invalid_transition => 'cannot transition via "%s" from "%s"'})
+    machine = EnumStateMachine::Machine.new(klass, :integration => :custom, :messages => {:invalid_transition => 'cannot transition via "%s" from "%s"'})
     parked, idling = machine.state :parked, :idling
     parked.human_name = 'stopped'
     
-    machine.events << event = StateMachine::Event.new(machine, :ignite)
+    machine.events << event = EnumStateMachine::Event.new(machine, :ignite)
     event.transition(:parked => :idling, :if => lambda {false})
     
     object = @klass.new
@@ -633,14 +633,14 @@ class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
   end
   
   def teardown
-    StateMachine::Integrations.send(:remove_const, 'Custom')
+    EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
 class EventWithMatchingEnabledTransitionsTest < Test::Unit::TestCase
   def setup
-    StateMachine::Integrations.const_set('Custom', Module.new do
-      include StateMachine::Integrations::Base
+    EnumStateMachine::Integrations.const_set('Custom', Module.new do
+      include EnumStateMachine::Integrations::Base
       
       def invalidate(object, attribute, message, values = [])
         (object.errors ||= []) << generate_message(message, values)
@@ -655,10 +655,10 @@ class EventWithMatchingEnabledTransitionsTest < Test::Unit::TestCase
       attr_accessor :errors
     end
     
-    @machine = StateMachine::Machine.new(@klass, :integration => :custom)
+    @machine = EnumStateMachine::Machine.new(@klass, :integration => :custom)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling)
     
     @object = @klass.new
@@ -704,17 +704,17 @@ class EventWithMatchingEnabledTransitionsTest < Test::Unit::TestCase
   end
   
   def teardown
-    StateMachine::Integrations.send(:remove_const, 'Custom')
+    EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
 class EventWithTransitionWithoutToStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :park)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :park)
     @event.transition(:from => :parked)
     
     @object = @klass.new
@@ -746,10 +746,10 @@ end
 class EventWithTransitionWithNilToStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state nil, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :park)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :park)
     @event.transition(:idling => nil)
     
     @object = @klass.new
@@ -781,11 +781,11 @@ end
 class EventWithTransitionWithLoopbackStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :park)
-    @event.transition(:from => :parked, :to => StateMachine::LoopbackMatcher.instance)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :park)
+    @event.transition(:from => :parked, :to => EnumStateMachine::LoopbackMatcher.instance)
     
     @object = @klass.new
     @object.state = 'parked'
@@ -816,11 +816,11 @@ end
 class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :parked, :idling, :first_gear, :second_gear
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
-    @event.transition(:from => :parked, :to => StateMachine::BlacklistMatcher.new([:parked, :idling]))
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
+    @event.transition(:from => :parked, :to => EnumStateMachine::BlacklistMatcher.new([:parked, :idling]))
     
     @object = @klass.new
     @object.state = 'parked'
@@ -839,7 +839,7 @@ class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
   end
   
   def test_should_allow_loopback_first_when_possible
-    @event.transition(:from => :second_gear, :to => StateMachine::BlacklistMatcher.new([:parked, :idling]))
+    @event.transition(:from => :second_gear, :to => EnumStateMachine::BlacklistMatcher.new([:parked, :idling]))
     @object.state = 'second_gear'
 
     transition = @event.transition_for(@object)
@@ -876,11 +876,11 @@ end
 class EventWithTransitionWithWhitelistedToStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @machine.state :parked, :idling, :first_gear, :second_gear
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
-    @event.transition(:from => :parked, :to => StateMachine::WhitelistMatcher.new([:first_gear, :second_gear]))
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
+    @event.transition(:from => :parked, :to => EnumStateMachine::WhitelistMatcher.new([:first_gear, :second_gear]))
     
     @object = @klass.new
     @object.state = 'parked'
@@ -925,10 +925,10 @@ end
 class EventWithMultipleTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:idling => :idling)
     @event.transition(:parked => :idling)
     @event.transition(:parked => :parked)
@@ -992,10 +992,10 @@ class EventWithMachineActionTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling)
     
     @object = @klass.new
@@ -1016,10 +1016,10 @@ end
 class EventWithInvalidCurrentStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling)
     
     @object = @klass.new
@@ -1044,8 +1044,8 @@ end
 
 class EventOnFailureTest < Test::Unit::TestCase
   def setup
-    StateMachine::Integrations.const_set('Custom', Module.new do
-      include StateMachine::Integrations::Base
+    EnumStateMachine::Integrations.const_set('Custom', Module.new do
+      include EnumStateMachine::Integrations::Base
       
       def invalidate(object, attribute, message, values = [])
         (object.errors ||= []) << generate_message(message, values)
@@ -1060,9 +1060,9 @@ class EventOnFailureTest < Test::Unit::TestCase
       attr_accessor :errors
     end
     
-    @machine = StateMachine::Machine.new(@klass, :integration => :custom)
+    @machine = EnumStateMachine::Machine.new(@klass, :integration => :custom)
     @machine.state :parked
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     
     @object = @klass.new
     @object.state = 'parked'
@@ -1090,7 +1090,7 @@ class EventOnFailureTest < Test::Unit::TestCase
   end
   
   def teardown
-    StateMachine::Integrations.send(:remove_const, 'Custom')
+    EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
@@ -1103,10 +1103,10 @@ class EventWithMarshallingTest < Test::Unit::TestCase
     end
     self.class.const_set('Example', @klass)
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     
-    @machine.events << @event = StateMachine::Event.new(@machine, :ignite)
+    @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
     @event.transition(:parked => :idling)
     
     @object = @klass.new
@@ -1147,13 +1147,13 @@ begin
     def setup
       states = [:parked, :idling, :first_gear]
       
-      @machine = StateMachine::Machine.new(Class.new, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(Class.new, :initial => :parked)
       @machine.other_states(*states)
       
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       states.each {|state| @graph.add_nodes(state.to_s)}
       
-      @machine.events << @event = StateMachine::Event.new(@machine , :park)
+      @machine.events << @event = EnumStateMachine::Event.new(@machine , :park)
       @event.transition :parked => :idling
       @event.transition :first_gear => :parked
       @event.transition :except_from => :parked, :to => :parked
@@ -1174,13 +1174,13 @@ begin
     def setup
       states = [:parked, :idling]
       
-      @machine = StateMachine::Machine.new(Class.new, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(Class.new, :initial => :parked)
       @machine.other_states(*states)
       
-      graph = StateMachine::Graph.new('test')
+      graph = EnumStateMachine::Graph.new('test')
       states.each {|state| graph.add_nodes(state.to_s)}
       
-      @machine.events << @event = StateMachine::Event.new(@machine , :park, :human_name => 'Park')
+      @machine.events << @event = EnumStateMachine::Event.new(@machine , :park, :human_name => 'Park')
       @event.transition :parked => :idling
       
       @event.draw(graph, :human_name => true)
@@ -1192,5 +1192,5 @@ begin
     end
   end
 rescue LoadError
-  $stderr.puts 'Skipping GraphViz StateMachine::Event tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
+  $stderr.puts 'Skipping GraphViz EnumStateMachine::Event tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
 end unless ENV['TRAVIS']

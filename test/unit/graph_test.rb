@@ -6,7 +6,7 @@ begin
   
   class GraphDefaultTest < Test::Unit::TestCase
     def setup
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
     end
     
     def test_should_have_a_default_font
@@ -28,7 +28,7 @@ begin
   
   class GraphNodesTest < Test::Unit::TestCase
     def setup
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       @node = @graph.add_nodes('parked', :shape => 'ellipse')
     end
     
@@ -51,7 +51,7 @@ begin
   
   class GraphEdgesTest < Test::Unit::TestCase
     def setup
-      @graph = StateMachine::Graph.new('test')
+      @graph = EnumStateMachine::Graph.new('test')
       @graph.add_nodes('parked', :shape => 'ellipse')
       @graph.add_nodes('idling', :shape => 'ellipse')
       @edge = @graph.add_edges('parked', 'idling', :label => 'ignite')
@@ -78,7 +78,7 @@ begin
   class GraphOutputTest < Test::Unit::TestCase
     def setup
       @graph_name = "test_#{rand(1000000)}"
-      @graph = StateMachine::Graph.new(@graph_name)
+      @graph = EnumStateMachine::Graph.new(@graph_name)
       @graph.add_nodes('parked', :shape => 'ellipse')
       @graph.add_nodes('idling', :shape => 'ellipse')
       @graph.add_edges('parked', 'idling', :label => 'ignite')
@@ -94,5 +94,5 @@ begin
     end
   end
 rescue LoadError
-  $stderr.puts 'Skipping GraphViz StateMachine::Graph tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
+  $stderr.puts 'Skipping GraphViz EnumStateMachine::Graph tests. `gem install ruby-graphviz` >= v0.9.17 and try again.'
 end unless ENV['TRAVIS']

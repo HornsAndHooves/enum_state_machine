@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class MatcherByDefaultTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::Matcher.new
+    @matcher = EnumStateMachine::Matcher.new
   end
   
   def test_should_have_no_values
@@ -16,7 +16,7 @@ end
 
 class MatcherWithValueTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::Matcher.new(nil)
+    @matcher = EnumStateMachine::Matcher.new(nil)
   end
   
   def test_should_have_values
@@ -30,7 +30,7 @@ end
 
 class MatcherWithMultipleValuesTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::Matcher.new([:parked, :idling])
+    @matcher = EnumStateMachine::Matcher.new([:parked, :idling])
   end
   
   def test_should_have_values
@@ -44,7 +44,7 @@ end
 
 class AllMatcherTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::AllMatcher.instance
+    @matcher = EnumStateMachine::AllMatcher.instance
   end
   
   def test_should_have_no_values
@@ -61,7 +61,7 @@ class AllMatcherTest < Test::Unit::TestCase
   
   def test_should_generate_blacklist_matcher_after_subtraction
     matcher = @matcher - [:parked, :idling]
-    assert_instance_of StateMachine::BlacklistMatcher, matcher
+    assert_instance_of EnumStateMachine::BlacklistMatcher, matcher
     assert_equal [:parked, :idling], matcher.values
   end
   
@@ -72,7 +72,7 @@ end
 
 class WhitelistMatcherTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::WhitelistMatcher.new([:parked, :idling])
+    @matcher = EnumStateMachine::WhitelistMatcher.new([:parked, :idling])
   end
   
   def test_should_have_values
@@ -94,14 +94,14 @@ class WhitelistMatcherTest < Test::Unit::TestCase
   def test_should_have_a_description
     assert_equal '[:parked, :idling]', @matcher.description
     
-    matcher = StateMachine::WhitelistMatcher.new([:parked])
+    matcher = EnumStateMachine::WhitelistMatcher.new([:parked])
     assert_equal ':parked', matcher.description
   end
 end
 
 class BlacklistMatcherTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::BlacklistMatcher.new([:parked, :idling])
+    @matcher = EnumStateMachine::BlacklistMatcher.new([:parked, :idling])
   end
   
   def test_should_have_values
@@ -123,14 +123,14 @@ class BlacklistMatcherTest < Test::Unit::TestCase
   def test_should_have_a_description
     assert_equal 'all - [:parked, :idling]', @matcher.description
     
-    matcher = StateMachine::BlacklistMatcher.new([:parked])
+    matcher = EnumStateMachine::BlacklistMatcher.new([:parked])
     assert_equal 'all - :parked', matcher.description
   end
 end
 
 class LoopbackMatcherTest < Test::Unit::TestCase
   def setup
-    @matcher = StateMachine::LoopbackMatcher.instance
+    @matcher = EnumStateMachine::LoopbackMatcher.instance
   end
   
   def test_should_have_no_values

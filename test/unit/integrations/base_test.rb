@@ -6,33 +6,33 @@ require 'rubygems'
 module BaseTest  
   class IntegrationTest < Test::Unit::TestCase
     def test_should_have_an_integration_name
-      assert_equal :base, StateMachine::Integrations::Base.integration_name
+      assert_equal :base, EnumStateMachine::Integrations::Base.integration_name
     end
     
     def test_should_not_be_available
-      assert !StateMachine::Integrations::Base.available?
+      assert !EnumStateMachine::Integrations::Base.available?
     end
     
     def test_should_not_have_any_matching_ancestors
-      assert_equal [], StateMachine::Integrations::Base.matching_ancestors
+      assert_equal [], EnumStateMachine::Integrations::Base.matching_ancestors
     end
     
     def test_should_not_match_any_classes
-      assert !StateMachine::Integrations::Base.matches?(Class.new)
+      assert !EnumStateMachine::Integrations::Base.matches?(Class.new)
     end
     
     def test_should_not_have_a_locale_path
-      assert_nil StateMachine::Integrations::Base.locale_path
+      assert_nil EnumStateMachine::Integrations::Base.locale_path
     end
   end
   
   class IncludedTest < Test::Unit::TestCase
     def setup
       @integration = Module.new
-      StateMachine::Integrations.const_set('Custom', @integration)
+      EnumStateMachine::Integrations.const_set('Custom', @integration)
       
       @integration.class_eval do
-        include StateMachine::Integrations::Base
+        include EnumStateMachine::Integrations::Base
       end
     end
     
@@ -91,13 +91,13 @@ module BaseTest
         end
       end
       
-      @machine = StateMachine::Machine.new(Class.new, :integration => :custom)
+      @machine = EnumStateMachine::Machine.new(Class.new, :integration => :custom)
       assert @machine.version1_included?
       assert !@machine.version2_included?
     end
     
     def teardown
-      StateMachine::Integrations.send(:remove_const, 'Custom')
+      EnumStateMachine::Integrations.send(:remove_const, 'Custom')
       super
     end
   end

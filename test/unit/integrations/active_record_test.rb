@@ -77,27 +77,27 @@ module ActiveRecordTest
   
   class IntegrationTest < BaseTestCase
     def test_should_have_an_integration_name
-      assert_equal :active_record, StateMachine::Integrations::ActiveRecord.integration_name
+      assert_equal :active_record, EnumStateMachine::Integrations::ActiveRecord.integration_name
     end
     
     def test_should_be_available
-      assert StateMachine::Integrations::ActiveRecord.available?
+      assert EnumStateMachine::Integrations::ActiveRecord.available?
     end
     
     def test_should_match_if_class_inherits_from_active_record
-      assert StateMachine::Integrations::ActiveRecord.matches?(new_model)
+      assert EnumStateMachine::Integrations::ActiveRecord.matches?(new_model)
     end
     
     def test_should_not_match_if_class_does_not_inherit_from_active_record
-      assert !StateMachine::Integrations::ActiveRecord.matches?(Class.new)
+      assert !EnumStateMachine::Integrations::ActiveRecord.matches?(Class.new)
     end
     
     def test_should_have_defaults
-      assert_equal({:action => :save}, StateMachine::Integrations::ActiveRecord.defaults)
+      assert_equal({:action => :save}, EnumStateMachine::Integrations::ActiveRecord.defaults)
     end
     
     def test_should_have_a_locale_path
-      assert_not_nil StateMachine::Integrations::ActiveRecord.locale_path
+      assert_not_nil EnumStateMachine::Integrations::ActiveRecord.locale_path
     end
   end
   
@@ -116,7 +116,7 @@ module ActiveRecordTest
     end
     
     def test_should_allow_machine_creation
-      assert_nothing_raised { StateMachine::Machine.new(@model) }
+      assert_nothing_raised { EnumStateMachine::Machine.new(@model) }
     end
   end
   
@@ -129,14 +129,14 @@ module ActiveRecordTest
     end
     
     def test_should_allow_machine_creation
-      assert_nothing_raised { StateMachine::Machine.new(@model) }
+      assert_nothing_raised { EnumStateMachine::Machine.new(@model) }
     end
   end
   
   class MachineByDefaultTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
     end
     
     def test_should_use_save_as_action
@@ -159,7 +159,7 @@ module ActiveRecordTest
   class MachineWithStatesTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :first_gear
     end
     
@@ -173,7 +173,7 @@ module ActiveRecordTest
       @model = new_model(:vehicle) do
         attr_accessor :value
       end
-      @machine = StateMachine::Machine.new(@model, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
     end
     
     def test_should_set_initial_state_on_created_object
@@ -340,7 +340,7 @@ module ActiveRecordTest
       @model = new_model do
         attr_accessor :value
       end
-      @machine = StateMachine::Machine.new(@model, :initial => lambda {|object| :parked})
+      @machine = EnumStateMachine::Machine.new(@model, :initial => lambda {|object| :parked})
       @machine.state :parked
     end
     
@@ -439,7 +439,7 @@ module ActiveRecordTest
   class MachineWithEventsTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.event :shift_up
     end
     
@@ -455,7 +455,7 @@ module ActiveRecordTest
       @model = new_model do
         connection.add_column table_name, :status, :string, :default => 'parked'
       end
-      @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
       @record = @model.new
     end
     
@@ -480,7 +480,7 @@ module ActiveRecordTest
       @model = new_model do
         connection.add_column table_name, :status, :string, :default => 'idling'
       end
-      @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
       @record = @model.new
     end
     
@@ -505,7 +505,7 @@ module ActiveRecordTest
       @model = new_model do
         connection.add_column table_name, :status, :integer, :default => 0
       end
-      @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
       @machine.state :parked, :value => 1
       @record = @model.new
     end
@@ -532,7 +532,7 @@ module ActiveRecordTest
         end
       end
       
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @record = @model.new
     end
     
@@ -550,14 +550,14 @@ module ActiveRecordTest
     end
     
     def test_should_output_warning_with_same_machine_name
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :state
       
       assert_match(/^Instance method "state\?" is already defined in ActiveRecordTest::Foo, use generic helper instead.*\n$/, $stderr.string)
     end
     
     def test_should_output_warning_with_same_machine_attribute
-      @machine = StateMachine::Machine.new(@model, :public_state, :attribute => :state)
+      @machine = EnumStateMachine::Machine.new(@model, :public_state, :attribute => :state)
       @machine.state :state
       
       assert_match(/^Instance method "state\?" is already defined in ActiveRecordTest::Foo, use generic helper instead.*\n$/, $stderr.string)
@@ -572,7 +572,7 @@ module ActiveRecordTest
   class MachineWithColumnStateAttributeTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
       @machine.other_states(:idling)
       
       @record = @model.new
@@ -622,7 +622,7 @@ module ActiveRecordTest
         end
       end
       
-      @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
       @machine.other_states(:idling)
       @record = @model.new
     end
@@ -656,7 +656,7 @@ module ActiveRecordTest
         end
       end
       
-      @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
       @machine.other_states(:idling)
       @record = @model.new
     end
@@ -684,7 +684,7 @@ module ActiveRecordTest
         alias_attribute :vehicle_status, :state
       end
       
-      @machine = StateMachine::Machine.new(@model, :status, :attribute => :vehicle_status)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :attribute => :vehicle_status)
       @machine.state :parked
       
       @record = @model.new
@@ -705,7 +705,7 @@ module ActiveRecordTest
       @original_stderr, $stderr = $stderr, StringIO.new
       
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :public_state, :attribute => :state)
+      @machine = EnumStateMachine::Machine.new(@model, :public_state, :attribute => :state)
       @record = @model.new
     end
     
@@ -722,7 +722,7 @@ module ActiveRecordTest
   class MachineWithInitializedStateTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
       @machine.state :idling
     end
     
@@ -767,8 +767,8 @@ module ActiveRecordTest
       @model = new_model do
         connection.add_column table_name, :status, :string
       end
-      @state_machine = StateMachine::Machine.new(@model, :initial => :parked)
-      @status_machine = StateMachine::Machine.new(@model, :status, :initial => :idling)
+      @state_machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
+      @status_machine = EnumStateMachine::Machine.new(@model, :status, :initial => :idling)
     end
     
     def test_should_should_initialize_each_state
@@ -784,11 +784,11 @@ module ActiveRecordTest
         connection.add_column table_name, :updated_at, :datetime
       end
       
-      @machine = StateMachine::Machine.new(@model, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
       @machine.event :park
       
       @record = @model.create(:updated_at => Time.now - 1)
-      @transition = StateMachine::Transition.new(@record, @machine, :park, :parked, :parked)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :park, :parked, :parked)
       
       @timestamp = @record.updated_at
       @transition.perform
@@ -809,13 +809,13 @@ module ActiveRecordTest
     class MachineWithDirtyAttributesTest < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model, :initial => :parked)
+        @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
         @machine.event :ignite
         @machine.state :idling
         
         @record = @model.create
         
-        @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+        @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
         @transition.perform(false)
       end
       
@@ -828,7 +828,7 @@ module ActiveRecordTest
       end
       
       def test_should_not_reset_changes_on_multiple_transitions
-        transition = StateMachine::Transition.new(@record, @machine, :ignite, :idling, :idling)
+        transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :idling, :idling)
         transition.perform(false)
         
         assert_equal %w(parked idling), @record.changes['state']
@@ -843,12 +843,12 @@ module ActiveRecordTest
     class MachineWithDirtyAttributesDuringLoopbackTest < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model, :initial => :parked)
+        @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
         @machine.event :park
         
         @record = @model.create
         
-        @transition = StateMachine::Transition.new(@record, @machine, :park, :parked, :parked)
+        @transition = EnumStateMachine::Transition.new(@record, @machine, :park, :parked, :parked)
         @transition.perform(false)
       end
       
@@ -866,13 +866,13 @@ module ActiveRecordTest
         @model = new_model do
           connection.add_column table_name, :status, :string
         end
-        @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+        @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
         @machine.event :ignite
         @machine.state :idling
         
         @record = @model.create
         
-        @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+        @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
         @transition.perform(false)
       end
       
@@ -885,7 +885,7 @@ module ActiveRecordTest
       end
       
       def test_should_not_reset_changes_on_multiple_transitions
-        transition = StateMachine::Transition.new(@record, @machine, :ignite, :idling, :idling)
+        transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :idling, :idling)
         transition.perform(false)
         
         assert_equal %w(parked idling), @record.changes['status']
@@ -897,12 +897,12 @@ module ActiveRecordTest
         @model = new_model do
           connection.add_column table_name, :status, :string
         end
-        @machine = StateMachine::Machine.new(@model, :status, :initial => :parked)
+        @machine = EnumStateMachine::Machine.new(@model, :status, :initial => :parked)
         @machine.event :park
         
         @record = @model.create
         
-        @transition = StateMachine::Transition.new(@record, @machine, :park, :parked, :parked)
+        @transition = EnumStateMachine::Transition.new(@record, @machine, :park, :parked, :parked)
         @transition.perform(false)
       end
       
@@ -918,7 +918,7 @@ module ActiveRecordTest
     class MachineWithDirtyAttributeAndStateEventsTest < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model, :initial => :parked)
+        @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
         @machine.event :ignite
         
         @record = @model.create
@@ -940,7 +940,7 @@ module ActiveRecordTest
   class MachineWithoutTransactionsTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :use_transactions => false)
+      @machine = EnumStateMachine::Machine.new(@model, :use_transactions => false)
     end
     
     def test_should_not_rollback_transaction_if_false
@@ -965,7 +965,7 @@ module ActiveRecordTest
   class MachineWithTransactionsTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :use_transactions => true)
+      @machine = EnumStateMachine::Machine.new(@model, :use_transactions => true)
     end
     
     def test_should_rollback_transaction_if_false
@@ -990,12 +990,12 @@ module ActiveRecordTest
   class MachineWithCallbacksTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :initial => :parked)
+      @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
       @machine.other_states :idling
       @machine.event :ignite
       
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
     end
     
     def test_should_run_before_callbacks
@@ -1066,14 +1066,14 @@ module ActiveRecordTest
       model = new_model do
         after_save { nil }
       end
-      machine = StateMachine::Machine.new(model, :initial => :parked)
+      machine = EnumStateMachine::Machine.new(model, :initial => :parked)
       machine.other_states :idling
       machine.event :ignite
       after_called = false
       machine.after_transition {after_called = true}
       
       record = model.new(:state => 'parked')
-      transition = StateMachine::Transition.new(record, machine, :ignite, :parked, :idling)
+      transition = EnumStateMachine::Transition.new(record, machine, :ignite, :parked, :idling)
       transition.perform
       assert_equal true, after_called
     end
@@ -1162,7 +1162,7 @@ module ActiveRecordTest
       @callbacks = []
       
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked, :idling
       @machine.event :ignite
       @machine.before_transition {@callbacks << :before_1; false}
@@ -1171,7 +1171,7 @@ module ActiveRecordTest
       @machine.around_transition {|block| @callbacks << :around_before; block.call; @callbacks << :around_after}
       
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
       @result = @transition.perform
     end
     
@@ -1197,7 +1197,7 @@ module ActiveRecordTest
       @callbacks = []
       
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.event :ignite do
         transition :parked => :idling
       end
@@ -1234,7 +1234,7 @@ module ActiveRecordTest
         validates_inclusion_of :state, :in => %w(first_gear)
       end
       
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked, :idling
       @machine.event :ignite
       
@@ -1245,7 +1245,7 @@ module ActiveRecordTest
       @machine.around_transition {|block| @callbacks << :around_before; block.call; @callbacks << :around_after}
       
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
       @result = @transition.perform
     end
     
@@ -1271,7 +1271,7 @@ module ActiveRecordTest
       @callbacks = []
       
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked, :idling
       @machine.event :ignite
       @machine.after_transition {@callbacks << :after_1; false}
@@ -1279,7 +1279,7 @@ module ActiveRecordTest
       @machine.around_transition {|block| @callbacks << :around_before; block.call; @callbacks << :around_after}
       
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
       @result = @transition.perform
     end
     
@@ -1303,7 +1303,7 @@ module ActiveRecordTest
   class MachineWithValidationsTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked
       
       @record = @model.new
@@ -1348,7 +1348,7 @@ module ActiveRecordTest
   class MachineWithValidationsAndCustomAttributeTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :status, :attribute => :state)
+      @machine = EnumStateMachine::Machine.new(@model, :status, :attribute => :state)
       @machine.state :parked
       
       @record = @model.new
@@ -1368,7 +1368,7 @@ module ActiveRecordTest
   class MachineErrorsTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @record = @model.new
     end
     
@@ -1389,7 +1389,7 @@ module ActiveRecordTest
         attr_accessor :seatbelt
       end
       
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :first_gear, :second_gear do
         validates_presence_of :seatbelt
       end
@@ -1415,7 +1415,7 @@ module ActiveRecordTest
   class MachineWithEventAttributesOnValidationTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.event :ignite do
         transition :parked => :idling
       end
@@ -1456,7 +1456,7 @@ module ActiveRecordTest
       begin
         @record.valid?
       rescue ArgumentError
-        raise if StateMachine::Transition.pause_supported?
+        raise if EnumStateMachine::Transition.pause_supported?
       end
       assert ran_callback
     end
@@ -1507,7 +1507,7 @@ module ActiveRecordTest
       begin
         @record.valid?
       rescue ArgumentError
-        raise if StateMachine::Transition.pause_supported?
+        raise if EnumStateMachine::Transition.pause_supported?
       end
       assert !ran_callback
     end
@@ -1540,7 +1540,7 @@ module ActiveRecordTest
   class MachineWithEventAttributesOnSaveTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.event :ignite do
         transition :parked => :idling
       end
@@ -1722,7 +1722,7 @@ module ActiveRecordTest
         @owner_model = new_model(:owner)
         ActiveRecordTest.const_set('Owner', @owner_model)
         
-        machine = StateMachine::Machine.new(@vehicle_model)
+        machine = EnumStateMachine::Machine.new(@vehicle_model)
         machine.event :ignite do
           transition :parked => :idling
         end
@@ -1763,7 +1763,7 @@ module ActiveRecordTest
   class MachineWithEventAttributesOnSaveBangTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.event :ignite do
         transition :parked => :idling
       end
@@ -1849,7 +1849,7 @@ module ActiveRecordTest
         end
       end
       @model = Class.new(@superclass)
-      @machine = StateMachine::Machine.new(@model, :action => :persist)
+      @machine = EnumStateMachine::Machine.new(@model, :action => :persist)
       @machine.event :ignite do
         transition :parked => :idling
       end
@@ -1883,11 +1883,11 @@ module ActiveRecordTest
   class MachineWithObserversTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked, :idling
       @machine.event :ignite
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
     end
     
     def test_should_call_all_transition_callback_permutations
@@ -2013,7 +2013,7 @@ module ActiveRecordTest
       
       instance = observer.instance
       
-      transition = StateMachine::Transition.new(@record, @machine, :ignite, nil, :idling)
+      transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, nil, :idling)
       transition.perform
       assert_equal callbacks, instance.notifications
     end
@@ -2036,7 +2036,7 @@ module ActiveRecordTest
       
       instance = observer.instance
       
-      transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, nil)
+      transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, nil)
       transition.perform
       assert_equal callbacks, instance.notifications
     end
@@ -2045,11 +2045,11 @@ module ActiveRecordTest
   class MachineWithNamespacedObserversTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model, :state, :namespace => 'alarm')
+      @machine = EnumStateMachine::Machine.new(@model, :state, :namespace => 'alarm')
       @machine.state :active, :off
       @machine.event :enable
       @record = @model.new(:state => 'off')
-      @transition = StateMachine::Transition.new(@record, @machine, :enable, :off, :active)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :enable, :off, :active)
     end
     
     def test_should_call_namespaced_before_event_method
@@ -2080,11 +2080,11 @@ module ActiveRecordTest
   class MachineWithFailureCallbacksTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked, :idling
       @machine.event :ignite
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
       
       @notifications = []
       
@@ -2122,11 +2122,11 @@ module ActiveRecordTest
   class MachineWithMixedCallbacksTest < BaseTestCase
     def setup
       @model = new_model
-      @machine = StateMachine::Machine.new(@model)
+      @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :parked, :idling
       @machine.event :ignite
       @record = @model.new(:state => 'parked')
-      @transition = StateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
+      @transition = EnumStateMachine::Transition.new(@record, @machine, :ignite, :parked, :idling)
       
       @notifications = []
       
@@ -2183,7 +2183,7 @@ module ActiveRecordTest
     class MachineWithScopesTest < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model)
+        @machine = EnumStateMachine::Machine.new(@model)
         @machine.state :parked, :first_gear
         @machine.state :idling, :value => lambda {'idling'}
       end
@@ -2251,7 +2251,7 @@ module ActiveRecordTest
     class MachineWithScopesAndOwnerSubclassTest < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model, :state)
+        @machine = EnumStateMachine::Machine.new(@model, :state)
         
         @subclass = Class.new(@model)
         @subclass_machine = @subclass.state_machine(:state) {}
@@ -2277,7 +2277,7 @@ module ActiveRecordTest
     class MachineWithComplexPluralizationScopesTest < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model, :status)
+        @machine = EnumStateMachine::Machine.new(@model, :status)
       end
       
       def test_should_create_singular_with_scope
@@ -2300,8 +2300,8 @@ module ActiveRecordTest
         end
         ActiveRecordTest.const_set('Vehicle', @vehicle)
         
-        @company_machine = StateMachine::Machine.new(@company, :initial => :active)
-        @vehicle_machine = StateMachine::Machine.new(@vehicle, :initial => :parked)
+        @company_machine = EnumStateMachine::Machine.new(@company, :initial => :active)
+        @vehicle_machine = EnumStateMachine::Machine.new(@vehicle, :initial => :parked)
         @vehicle_machine.state :idling
         
         @ford = @company.create
@@ -2333,7 +2333,7 @@ module ActiveRecordTest
     class MachineWithDefaultScope < BaseTestCase
       def setup
         @model = new_model
-        @machine = StateMachine::Machine.new(@model, :initial => :parked)
+        @machine = EnumStateMachine::Machine.new(@model, :initial => :parked)
         @machine.state :idling
         
         @model.class_eval do
@@ -2356,7 +2356,7 @@ module ActiveRecordTest
         I18n.backend = I18n::Backend::Simple.new
         
         # Initialize the backend
-        StateMachine::Machine.new(new_model)
+        EnumStateMachine::Machine.new(new_model)
         I18n.backend.translate(:en, 'activerecord.errors.messages.invalid_transition', :event => 'ignite', :value => 'idling')
         
         @model = new_model
@@ -2367,7 +2367,7 @@ module ActiveRecordTest
           :activerecord => {:errors => {:messages => {:invalid_transition => "cannot #{interpolation_key('event')}"}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.state :parked, :idling
         machine.event :ignite
         
@@ -2382,7 +2382,7 @@ module ActiveRecordTest
           :activerecord => {:errors => {:messages => {:bad_transition => "cannot #{interpolation_key('event')}"}}}
         })
         
-        machine = StateMachine::Machine.new(@model, :messages => {:invalid_transition => :bad_transition})
+        machine = EnumStateMachine::Machine.new(@model, :messages => {:invalid_transition => :bad_transition})
         machine.state :parked, :idling
         
         record = @model.new(:state => 'idling')
@@ -2392,7 +2392,7 @@ module ActiveRecordTest
       end
       
       def test_should_allow_customized_error_string
-        machine = StateMachine::Machine.new(@model, :messages => {:invalid_transition => "cannot #{interpolation_key('event')}"})
+        machine = EnumStateMachine::Machine.new(@model, :messages => {:invalid_transition => "cannot #{interpolation_key('event')}"})
         machine.state :parked, :idling
         
         record = @model.new(:state => 'idling')
@@ -2406,7 +2406,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:'active_record_test/foo' => {:state => {:states => {:parked => 'shutdown'}}}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.state :parked
         
         assert_equal 'shutdown', machine.state(:parked).human_name
@@ -2417,7 +2417,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:'active_record_test/foo' => {:states => {:parked => 'shutdown'}}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.state :parked
         
         assert_equal 'shutdown', machine.state(:parked).human_name
@@ -2428,7 +2428,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:state => {:states => {:parked => 'shutdown'}}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.state :parked
         
         assert_equal 'shutdown', machine.state(:parked).human_name
@@ -2439,7 +2439,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:states => {:parked => 'shutdown'}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.state :parked
         
         assert_equal 'shutdown', machine.state(:parked).human_name
@@ -2450,7 +2450,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:states => {:nil => 'empty'}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         
         assert_equal 'empty', machine.state(nil).human_name
       end
@@ -2460,7 +2460,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:'active_record_test/foo' => {:state => {:events => {:park => 'stop'}}}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.event :park
         
         assert_equal 'stop', machine.event(:park).human_name
@@ -2471,7 +2471,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:'active_record_test/foo' => {:events => {:park => 'stop'}}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.event :park
         
         assert_equal 'stop', machine.event(:park).human_name
@@ -2482,7 +2482,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:state => {:events => {:park => 'stop'}}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.event :park
         
         assert_equal 'stop', machine.event(:park).human_name
@@ -2493,7 +2493,7 @@ module ActiveRecordTest
           :activerecord => {:state_machines => {:events => {:park => 'stop'}}}
         })
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.event :park
         
         assert_equal 'stop', machine.event(:park).human_name
@@ -2516,7 +2516,7 @@ module ActiveRecordTest
         default_locale = File.dirname(__FILE__) + '/../../../lib/state_machine/integrations/active_record/locale.rb'
         I18n.load_path = [app_locale]
         
-        StateMachine::Machine.new(@model)
+        EnumStateMachine::Machine.new(@model)
         
         assert_equal [default_locale, app_locale].map {|path| File.expand_path(path)}, I18n.load_path.map {|path| File.expand_path(path)}
       ensure
@@ -2528,7 +2528,7 @@ module ActiveRecordTest
         I18n.backend = I18n::Backend::Simple.new
         I18n.load_path = [File.dirname(__FILE__) + '/../../files/en.yml']
         
-        machine = StateMachine::Machine.new(@model)
+        machine = EnumStateMachine::Machine.new(@model)
         machine.state :parked, :idling
         machine.event :ignite
         

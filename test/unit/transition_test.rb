@@ -3,14 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class TransitionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
     
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_have_an_object
@@ -91,14 +91,14 @@ class TransitionTest < Test::Unit::TestCase
   end
   
   def test_should_use_pretty_inspect
-    assert_equal '#<StateMachine::Transition attribute=:state event=:ignite from="parked" from_name=:parked to="idling" to_name=:idling>', @transition.inspect
+    assert_equal '#<EnumStateMachine::Transition attribute=:state event=:ignite from="parked" from_name=:parked to="idling" to_name=:idling>', @transition.inspect
   end
 end
 
 class TransitionWithInvalidNodesTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
@@ -107,33 +107,33 @@ class TransitionWithInvalidNodesTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_without_event
-    assert_raise(IndexError) { StateMachine::Transition.new(@object, @machine, nil, :parked, :idling) }
+    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, nil, :parked, :idling) }
   end
   
   def test_should_raise_exception_with_invalid_event
-    assert_raise(IndexError) { StateMachine::Transition.new(@object, @machine, :invalid, :parked, :idling) }
+    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :invalid, :parked, :idling) }
   end
   
   def test_should_raise_exception_with_invalid_from_state
-    assert_raise(IndexError) { StateMachine::Transition.new(@object, @machine, :ignite, :invalid, :idling) }
+    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :ignite, :invalid, :idling) }
   end
   
   def test_should_raise_exception_with_invalid_to_state
-    assert_raise(IndexError) { StateMachine::Transition.new(@object, @machine, :ignite, :parked, :invalid) }
+    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :invalid) }
   end
 end
 
 class TransitionWithDynamicToValueTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked
     @machine.state :idling, :value => lambda {1}
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_evaluate_to_value
@@ -144,13 +144,13 @@ end
 class TransitionLoopbackTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked
     @machine.event :park
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :park, :parked, :parked)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :park, :parked, :parked)
   end
   
   def test_should_be_loopback
@@ -161,13 +161,13 @@ end
 class TransitionWithDifferentStatesTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_not_be_loopback
@@ -178,14 +178,14 @@ end
 class TransitionWithNamespaceTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :namespace => 'alarm')
+    @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
     @machine.state :off, :active
     @machine.event :activate
     
     @object = @klass.new
     @object.state = 'off'
     
-    @transition = StateMachine::Transition.new(@object, @machine, :activate, :off, :active)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :activate, :off, :active)
   end
   
   def test_should_have_an_event
@@ -224,7 +224,7 @@ end
 class TransitionWithCustomMachineAttributeTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :state, :attribute => :state_id)
+    @machine = EnumStateMachine::Machine.new(@klass, :state, :attribute => :state_id)
     @machine.state :off, :value => 1
     @machine.state :active, :value => 2
     @machine.event :activate
@@ -232,7 +232,7 @@ class TransitionWithCustomMachineAttributeTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state_id = 1
     
-    @transition = StateMachine::Transition.new(@object, @machine, :activate, :off, :active)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :activate, :off, :active)
   end
   
   def test_should_persist
@@ -251,13 +251,13 @@ end
 class TransitionWithoutReadingStateTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'idling'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling, false)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling, false)
   end
   
   def test_should_not_read_from_value_from_object
@@ -276,14 +276,14 @@ class TransitionWithActionTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
     
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_have_an_action
@@ -298,14 +298,14 @@ end
 class TransitionAfterBeingPersistedTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
     
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     @transition.persist
   end
   
@@ -343,14 +343,14 @@ end
 class TransitionAfterBeingRolledBackTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
     
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     @object.state = 'idling'
     
     @transition.rollback
@@ -378,13 +378,13 @@ class TransitionWithoutCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_succeed
@@ -410,13 +410,13 @@ class TransitionWithBeforeCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_before_callbacks
@@ -514,13 +514,13 @@ class TransitionWithMultipleBeforeCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_in_the_order_they_were_defined
@@ -553,13 +553,13 @@ class TransitionWithAfterCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_after_callbacks
@@ -646,13 +646,13 @@ class TransitionWithMultipleAfterCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_in_the_order_they_were_defined
@@ -685,13 +685,13 @@ class TransitionWithAroundCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_around_callbacks
@@ -828,13 +828,13 @@ class TransitionWithMultipleAroundCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_before_yield_in_the_order_they_were_defined
@@ -941,13 +941,13 @@ class TransitionWithFailureCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_only_run_those_that_match_transition_context
@@ -1025,13 +1025,13 @@ class TransitionWithMultipleFailureCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_in_the_order_they_were_defined
@@ -1064,13 +1064,13 @@ class TransitionWithMixedCallbacksTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_before_and_around_callbacks_in_order_defined
@@ -1168,13 +1168,13 @@ class TransitionWithBeforeCallbacksSkippedTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_not_run_before_callbacks
@@ -1197,13 +1197,13 @@ class TransitionWithAfterCallbacksSkippedTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_run_before_callbacks
@@ -1221,7 +1221,7 @@ class TransitionWithAfterCallbacksSkippedTest < Test::Unit::TestCase
     assert !@run
   end
   
-  if StateMachine::Transition.pause_supported?
+  if EnumStateMachine::Transition.pause_supported?
     def test_should_run_around_callbacks_before_yield
       @machine.around_transition {|block| @run = true; block.call}
       
@@ -1331,13 +1331,13 @@ class TransitionAfterBeingPerformedTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     @result = @transition.perform
   end
   
@@ -1376,13 +1376,13 @@ class TransitionWithPerformArgumentsTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_have_arguments
@@ -1410,14 +1410,14 @@ class TransitionWithoutRunningActionTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     @machine.after_transition {|object| @run_after = true}
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     @result = @transition.perform(false)
   end
   
@@ -1461,13 +1461,13 @@ class TransitionWithTransactionsTest < Test::Unit::TestCase
       end
     end
     
-    @machine = StateMachine::Machine.new(@klass, :action => :save)
+    @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     
     class << @machine
       def within_transaction(object)
@@ -1491,13 +1491,13 @@ class TransitionTransientTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     @transition.transient = true
   end
   
@@ -1510,49 +1510,49 @@ class TransitionEqualityTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     @object.state = 'parked'
-    @transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    @transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
   end
   
   def test_should_be_equal_with_same_properties
-    transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+    transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     assert_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_machines
-    machine = StateMachine::Machine.new(@klass, :status, :namespace => :other)
+    machine = EnumStateMachine::Machine.new(@klass, :status, :namespace => :other)
     machine.state :parked, :idling
     machine.event :ignite
-    transition = StateMachine::Transition.new(@object, machine, :ignite, :parked, :idling)
+    transition = EnumStateMachine::Transition.new(@object, machine, :ignite, :parked, :idling)
     
     assert_not_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_objects
-    transition = StateMachine::Transition.new(@klass.new, @machine, :ignite, :parked, :idling)
+    transition = EnumStateMachine::Transition.new(@klass.new, @machine, :ignite, :parked, :idling)
     assert_not_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_event_names
     @machine.event :park
-    transition = StateMachine::Transition.new(@object, @machine, :park, :parked, :idling)
+    transition = EnumStateMachine::Transition.new(@object, @machine, :park, :parked, :idling)
     assert_not_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_from_state_names
     @machine.state :first_gear
-    transition = StateMachine::Transition.new(@object, @machine, :ignite, :first_gear, :idling)
+    transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :first_gear, :idling)
     assert_not_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_to_state_names
     @machine.state :first_gear
-    transition = StateMachine::Transition.new(@object, @machine, :ignite, :idling, :first_gear)
+    transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :idling, :first_gear)
     assert_not_equal transition, @transition
   end
 end

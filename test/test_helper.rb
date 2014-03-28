@@ -4,4 +4,4 @@ if ENV['COVERAGE']
 end
 
 require 'test/unit'
-require 'state_machine'
+require 'enum_state_machine'

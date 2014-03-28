@@ -10,7 +10,7 @@ require 'appraisal'
 desc 'Default: run all tests.'
 task :default => :test
 
-desc "Test state_machine."
+desc "Test enum_state_machine."
 Rake::TestTask.new(:test) do |t|
   integration = %w(active_model active_record).detect do |name|
     Bundler.default_gemfile.to_s.include?(name)
@@ -38,4 +38,4 @@ namespace :appraisal do
   end
 end
 
-load File.dirname(__FILE__) + '/lib/tasks/state_machine.rake'
+load File.dirname(__FILE__) + '/lib/tasks/enum_state_machine.rake'

@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class MachineCollectionByDefaultTest < Test::Unit::TestCase
   def setup
-    @machines = StateMachine::MachineCollection.new
+    @machines = EnumStateMachine::MachineCollection.new
   end
   
   def test_should_not_have_any_machines
@@ -12,12 +12,12 @@ end
 
 class MachineCollectionStateInitializationTest < Test::Unit::TestCase
   def setup
-    @machines = StateMachine::MachineCollection.new
+    @machines = EnumStateMachine::MachineCollection.new
     
     @klass = Class.new
     
-    @machines[:state] = StateMachine::Machine.new(@klass, :state, :initial => :parked)
-    @machines[:alarm_state] = StateMachine::Machine.new(@klass, :alarm_state, :initial => lambda {|object| :active})
+    @machines[:state] = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked)
+    @machines[:alarm_state] = EnumStateMachine::Machine.new(@klass, :alarm_state, :initial => lambda {|object| :active})
     @machines[:alarm_state].state :active, :value => lambda {'active'}
     
     # Prevent the auto-initialization hook from firing
@@ -112,7 +112,7 @@ end
 
 class MachineCollectionFireTest < Test::Unit::TestCase
   def setup
-    @machines = StateMachine::MachineCollection.new
+    @machines = EnumStateMachine::MachineCollection.new
     
     @klass = Class.new do
       attr_reader :saved
@@ -123,7 +123,7 @@ class MachineCollectionFireTest < Test::Unit::TestCase
     end
     
     # First machine
-    @machines[:state] = @state = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines[:state] = @state = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @state.event :ignite do
       transition :parked => :idling
     end
@@ -132,7 +132,7 @@ class MachineCollectionFireTest < Test::Unit::TestCase
     end
     
     # Second machine
-    @machines[:alarm_state] = @alarm_state = StateMachine::Machine.new(@klass, :alarm_state, :initial => :active, :action => :save, :namespace => 'alarm')
+    @machines[:alarm_state] = @alarm_state = EnumStateMachine::Machine.new(@klass, :alarm_state, :initial => :active, :action => :save, :namespace => 'alarm')
     @alarm_state.event :enable do
       transition :off => :active
     end
@@ -144,10 +144,10 @@ class MachineCollectionFireTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_invalid_event_specified
-    exception = assert_raise(StateMachine::InvalidEvent) { @machines.fire_events(@object, :invalid) }
+    exception = assert_raise(EnumStateMachine::InvalidEvent) { @machines.fire_events(@object, :invalid) }
     assert_equal :invalid, exception.event
     
-    exception = assert_raise(StateMachine::InvalidEvent) { @machines.fire_events(@object, :ignite, :invalid) }
+    exception = assert_raise(EnumStateMachine::InvalidEvent) { @machines.fire_events(@object, :ignite, :invalid) }
     assert_equal :invalid, exception.event
   end
   
@@ -191,7 +191,7 @@ end
 
 class MachineCollectionFireWithTransactionsTest < Test::Unit::TestCase
   def setup
-    @machines = StateMachine::MachineCollection.new
+    @machines = EnumStateMachine::MachineCollection.new
     
     @klass = Class.new do
       attr_accessor :allow_save
@@ -201,8 +201,8 @@ class MachineCollectionFireWithTransactionsTest < Test::Unit::TestCase
       end
     end
     
-    StateMachine::Integrations.const_set('Custom', Module.new do
-      include StateMachine::Integrations::Base
+    EnumStateMachine::Integrations.const_set('Custom', Module.new do
+      include EnumStateMachine::Integrations::Base
       
       attr_reader :rolled_back
       
@@ -212,13 +212,13 @@ class MachineCollectionFireWithTransactionsTest < Test::Unit::TestCase
     end)
     
     # First machine
-    @machines[:state] = @state = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save, :integration => :custom)
+    @machines[:state] = @state = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save, :integration => :custom)
     @state.event :ignite do
       transition :parked => :idling
     end
     
     # Second machine
-    @machines[:alarm_state] = @alarm_state = StateMachine::Machine.new(@klass, :alarm_state, :initial => :active, :action => :save, :namespace => 'alarm', :integration => :custom)
+    @machines[:alarm_state] = @alarm_state = EnumStateMachine::Machine.new(@klass, :alarm_state, :initial => :active, :action => :save, :namespace => 'alarm', :integration => :custom)
     @alarm_state.event :disable do
       transition :active => :off
     end
@@ -259,14 +259,14 @@ class MachineCollectionFireWithTransactionsTest < Test::Unit::TestCase
   end
   
   def teardown
-    StateMachine::Integrations.send(:remove_const, 'Custom')
+    EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
 class MachineCollectionFireWithValidationsTest < Test::Unit::TestCase
   def setup
-    StateMachine::Integrations.const_set('Custom', Module.new do
-      include StateMachine::Integrations::Base
+    EnumStateMachine::Integrations.const_set('Custom', Module.new do
+      include EnumStateMachine::Integrations::Base
       
       def invalidate(object, attribute, message, values = [])
         (object.errors ||= []) << generate_message(message, values)
@@ -286,13 +286,13 @@ class MachineCollectionFireWithValidationsTest < Test::Unit::TestCase
       end
     end
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @state = StateMachine::Machine.new(@klass, :state, :initial => :parked, :integration => :custom)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @state = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :integration => :custom)
     @state.event :ignite do
       transition :parked => :idling
     end
     
-    @machines[:alarm_state] = @alarm_state = StateMachine::Machine.new(@klass, :alarm_state, :initial => :active, :namespace => 'alarm', :integration => :custom)
+    @machines[:alarm_state] = @alarm_state = EnumStateMachine::Machine.new(@klass, :alarm_state, :initial => :active, :namespace => 'alarm', :integration => :custom)
     @alarm_state.event :disable do
       transition :active => :off
     end
@@ -327,7 +327,7 @@ class MachineCollectionFireWithValidationsTest < Test::Unit::TestCase
   end
   
   def teardown
-    StateMachine::Integrations.send(:remove_const, 'Custom')
+    EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
@@ -335,8 +335,8 @@ class MachineCollectionTransitionsWithoutEventsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
@@ -359,8 +359,8 @@ class MachineCollectionTransitionsWithBlankEventsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
@@ -383,8 +383,8 @@ class MachineCollectionTransitionsWithInvalidEventsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
@@ -407,8 +407,8 @@ class MachineCollectionTransitionsWithoutTransitionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
@@ -432,8 +432,8 @@ class MachineCollectionTransitionsWithTransitionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
@@ -456,12 +456,12 @@ class MachineCollectionTransitionsWithSameActionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
-    @machines[:status] = @machine = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
+    @machines[:status] = @machine = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :save)
     @machine.event :shift_up do
       transition :first_gear => :second_gear
     end
@@ -485,12 +485,12 @@ class MachineCollectionTransitionsWithDifferentActionsTest < Test::Unit::TestCas
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @state = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @state = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @state.event :ignite do
       transition :parked => :idling
     end
-    @machines[:status] = @status = StateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :persist)
+    @machines[:status] = @status = EnumStateMachine::Machine.new(@klass, :status, :initial => :first_gear, :action => :persist)
     @status.event :shift_up do
       transition :first_gear => :second_gear
     end
@@ -510,14 +510,14 @@ class MachineCollectionTransitionsWithExisitingTransitionsTest < Test::Unit::Tes
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
     
     @object = @klass.new
-    @object.send(:state_event_transition=, StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling))
+    @object.send(:state_event_transition=, EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling))
     @transitions = @machines.transitions(@object, :save)
   end
   
@@ -534,8 +534,8 @@ class MachineCollectionTransitionsWithCustomOptionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end
@@ -560,8 +560,8 @@ class MachineCollectionFireAttributesWithValidationsTest < Test::Unit::TestCase
       end
     end
     
-    @machines = StateMachine::MachineCollection.new
-    @machines[:state] = @machine = StateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
+    @machines = EnumStateMachine::MachineCollection.new
+    @machines[:state] = @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :action => :save)
     @machine.event :ignite do
       transition :parked => :idling
     end

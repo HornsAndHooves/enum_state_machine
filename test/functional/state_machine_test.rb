@@ -336,8 +336,8 @@ class VehicleUnsavedTest < Test::Unit::TestCase
   
   def test_should_have_a_list_of_possible_paths
     assert_equal [[
-      StateMachine::Transition.new(@vehicle, Vehicle.state_machine, :ignite, :parked, :idling),
-      StateMachine::Transition.new(@vehicle, Vehicle.state_machine, :shift_up, :idling, :first_gear)
+      EnumStateMachine::Transition.new(@vehicle, Vehicle.state_machine, :ignite, :parked, :idling),
+      EnumStateMachine::Transition.new(@vehicle, Vehicle.state_machine, :shift_up, :idling, :first_gear)
     ]], @vehicle.state_paths(:to => :first_gear)
   end
   
@@ -481,7 +481,7 @@ class VehicleParkedTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_repair_not_allowed!
-    exception = assert_raise(StateMachine::InvalidTransition) {@vehicle.repair!}
+    exception = assert_raise(EnumStateMachine::InvalidTransition) {@vehicle.repair!}
     assert_equal @vehicle, exception.object
     assert_equal Vehicle.state_machine(:state), exception.machine
     assert_equal :repair, exception.event
@@ -793,7 +793,7 @@ class VehicleWithParallelEventsTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_any_event_cannot_transition_on_bang
-    exception = assert_raise(StateMachine::InvalidParallelTransition) { @vehicle.fire_events!(:ignite, :cancel_insurance) }
+    exception = assert_raise(EnumStateMachine::InvalidParallelTransition) { @vehicle.fire_events!(:ignite, :cancel_insurance) }
     assert_equal @vehicle, exception.object
     assert_equal [:ignite, :cancel_insurance], exception.events
   end

@@ -3,10 +3,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class PathByDefaultTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @object = @klass.new
     
-    @path = StateMachine::Path.new(@object, @machine)
+    @path = EnumStateMachine::Path.new(@object, @machine)
   end
   
   def test_should_have_an_object
@@ -55,12 +55,12 @@ end
 class PathTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @object = @klass.new
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {StateMachine::Path.new(@object, @machine, :invalid => true)}
+    exception = assert_raise(ArgumentError) {EnumStateMachine::Path.new(@object, @machine, :invalid => true)}
     assert_equal 'Invalid key(s): invalid', exception.message
   end
 end
@@ -68,15 +68,15 @@ end
 class PathWithoutTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     
     @object = @klass.new
     
-    @path = StateMachine::Path.new(@object, @machine)
+    @path = EnumStateMachine::Path.new(@object, @machine)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
   end
   
@@ -90,17 +90,17 @@ end
 class PathWithTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling, :first_gear
     @machine.event :ignite, :shift_up
     
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine)
+    @path = EnumStateMachine::Path.new(@object, @machine)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @shift_up_transition = StateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @shift_up_transition = EnumStateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)
     ])
   end
   
@@ -142,18 +142,18 @@ end
 class PathWithDuplicatesTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :park, :ignite
     
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine)
+    @path = EnumStateMachine::Path.new(@object, @machine)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @park_transition = StateMachine::Transition.new(@object, @machine, :park, :idling, :parked),
-      @ignite_again_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @park_transition = EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked),
+      @ignite_again_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
   end
   
@@ -173,7 +173,7 @@ end
 class PathWithAvailableTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling, :first_gear
     @machine.event :ignite
     @machine.event :shift_up do
@@ -186,9 +186,9 @@ class PathWithAvailableTransitionsTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine)
+    @path = EnumStateMachine::Path.new(@object, @machine)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
   end
   
@@ -201,14 +201,14 @@ class PathWithAvailableTransitionsTest < Test::Unit::TestCase
     @path.walk {|path| paths << path}
     
     assert_equal [
-      [@ignite_transition, StateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)],
-      [@ignite_transition, StateMachine::Transition.new(@object, @machine, :park, :idling, :parked)]
+      [@ignite_transition, EnumStateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)],
+      [@ignite_transition, EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked)]
     ], paths
   end
   
   def test_should_yield_path_instances_when_walking
     @path.walk do |path|
-      assert_instance_of StateMachine::Path, path
+      assert_instance_of EnumStateMachine::Path, path
     end
   end
   
@@ -226,7 +226,7 @@ end
 class PathWithGuardedTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite
     @machine.event :shift_up do
@@ -238,9 +238,9 @@ class PathWithGuardedTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_not_walk_transitions_if_guard_enabled
-    path = StateMachine::Path.new(@object, @machine)
+    path = EnumStateMachine::Path.new(@object, @machine)
     path.concat([
-      StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     
     paths = []
@@ -250,16 +250,16 @@ class PathWithGuardedTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_not_walk_transitions_if_guard_disabled
-    path = StateMachine::Path.new(@object, @machine, :guard => false)
+    path = EnumStateMachine::Path.new(@object, @machine, :guard => false)
     path.concat([
-      ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
     
     paths = []
     path.walk {|next_path| paths << next_path}
     
     assert_equal [
-      [ignite_transition, StateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)]
+      [ignite_transition, EnumStateMachine::Transition.new(@object, @machine, :shift_up, :idling, :first_gear)]
     ], paths
   end
 end
@@ -267,7 +267,7 @@ end
 class PathWithEncounteredTransitionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling, :first_gear
     @machine.event :ignite do
       transition :parked => :idling
@@ -279,10 +279,10 @@ class PathWithEncounteredTransitionsTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine)
+    @path = EnumStateMachine::Path.new(@object, @machine)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @park_transition = StateMachine::Transition.new(@object, @machine, :park, :idling, :parked)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @park_transition = EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked)
     ])
   end
   
@@ -300,7 +300,7 @@ end
 class PathWithUnreachedTargetTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite do
       transition :parked => :idling
@@ -309,9 +309,9 @@ class PathWithUnreachedTargetTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine, :target => :parked)
+    @path = EnumStateMachine::Path.new(@object, @machine, :target => :parked)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
     ])
   end
   
@@ -329,7 +329,7 @@ end
 class PathWithReachedTargetTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite do
       transition :parked => :idling
@@ -341,10 +341,10 @@ class PathWithReachedTargetTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine, :target => :parked)
+    @path = EnumStateMachine::Path.new(@object, @machine, :target => :parked)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @park_transition = StateMachine::Transition.new(@object, @machine, :park, :idling, :parked)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @park_transition = EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked)
     ])
   end
   
@@ -362,7 +362,7 @@ end
 class PathWithAvailableTransitionsAfterReachingTargetTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite do
       transition :parked => :idling
@@ -377,10 +377,10 @@ class PathWithAvailableTransitionsAfterReachingTargetTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine, :target => :parked)
+    @path = EnumStateMachine::Path.new(@object, @machine, :target => :parked)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @park_transition = StateMachine::Transition.new(@object, @machine, :park, :idling, :parked)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @park_transition = EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked)
     ])
   end
   
@@ -392,7 +392,7 @@ class PathWithAvailableTransitionsAfterReachingTargetTest < Test::Unit::TestCase
     paths = []
     @path.walk {|path| paths << path}
     assert_equal [
-      [@ignite_transition, @park_transition, StateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)]
+      [@ignite_transition, @park_transition, EnumStateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)]
     ], paths
   end
 end
@@ -400,7 +400,7 @@ end
 class PathWithDeepTargetTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite do
       transition :parked => :idling
@@ -415,11 +415,11 @@ class PathWithDeepTargetTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine, :target => :parked)
+    @path = EnumStateMachine::Path.new(@object, @machine, :target => :parked)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @park_transition = StateMachine::Transition.new(@object, @machine, :park, :idling, :parked),
-      @shift_up_transition = StateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @park_transition = EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked),
+      @shift_up_transition = EnumStateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear)
     ])
   end
   
@@ -431,7 +431,7 @@ class PathWithDeepTargetTest < Test::Unit::TestCase
     paths = []
     @path.walk {|path| paths << path}
     assert_equal [
-      [@ignite_transition, @park_transition, @shift_up_transition, StateMachine::Transition.new(@object, @machine, :park, :first_gear, :parked)]
+      [@ignite_transition, @park_transition, @shift_up_transition, EnumStateMachine::Transition.new(@object, @machine, :park, :first_gear, :parked)]
     ], paths
   end
 end
@@ -439,7 +439,7 @@ end
 class PathWithDeepTargetReachedTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
+    @machine = EnumStateMachine::Machine.new(@klass)
     @machine.state :parked, :idling
     @machine.event :ignite do
       transition :parked => :idling
@@ -454,12 +454,12 @@ class PathWithDeepTargetReachedTest < Test::Unit::TestCase
     @object = @klass.new
     @object.state = 'parked'
     
-    @path = StateMachine::Path.new(@object, @machine, :target => :parked)
+    @path = EnumStateMachine::Path.new(@object, @machine, :target => :parked)
     @path.concat([
-      @ignite_transition = StateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
-      @park_transition = StateMachine::Transition.new(@object, @machine, :park, :idling, :parked),
-      @shift_up_transition = StateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear),
-      @park_transition_2 = StateMachine::Transition.new(@object, @machine, :park, :first_gear, :parked)
+      @ignite_transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
+      @park_transition = EnumStateMachine::Transition.new(@object, @machine, :park, :idling, :parked),
+      @shift_up_transition = EnumStateMachine::Transition.new(@object, @machine, :shift_up, :parked, :first_gear),
+      @park_transition_2 = EnumStateMachine::Transition.new(@object, @machine, :park, :first_gear, :parked)
     ])
   end
   

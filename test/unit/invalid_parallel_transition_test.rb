@@ -5,7 +5,7 @@ class InvalidParallelTransitionTest < Test::Unit::TestCase
     @object = Object.new
     @events = [:ignite, :disable_alarm]
     
-    @invalid_transition = StateMachine::InvalidParallelTransition.new(@object, @events)
+    @invalid_transition = EnumStateMachine::InvalidParallelTransition.new(@object, @events)
   end
   
   def test_should_have_an_object

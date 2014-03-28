@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class InvalidEventTest < Test::Unit::TestCase
   def setup
     @object = Object.new
-    @invalid_event = StateMachine::InvalidEvent.new(@object, :invalid)
+    @invalid_event = EnumStateMachine::InvalidEvent.new(@object, :invalid)
   end
   
   def test_should_have_an_object

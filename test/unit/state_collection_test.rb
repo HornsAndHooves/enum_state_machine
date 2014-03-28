@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class StateCollectionByDefaultTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @states = EnumStateMachine::StateCollection.new(@machine)
   end
   
   def test_should_not_have_any_nodes
@@ -22,12 +22,12 @@ end
 class StateCollectionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @nil = StateMachine::State.new(@machine, nil)
-    @states << @parked = StateMachine::State.new(@machine, :parked)
-    @states << @idling = StateMachine::State.new(@machine, :idling)
+    @states << @nil = EnumStateMachine::State.new(@machine, nil)
+    @states << @parked = EnumStateMachine::State.new(@machine, :parked)
+    @states << @idling = EnumStateMachine::State.new(@machine, :idling)
     @machine.states.concat(@states)
     
     @object = @klass.new
@@ -95,11 +95,11 @@ end
 class StateCollectionStringTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @nil = StateMachine::State.new(@machine, nil)
-    @states << @parked = StateMachine::State.new(@machine, 'parked')
+    @states << @nil = EnumStateMachine::State.new(@machine, nil)
+    @states << @parked = EnumStateMachine::State.new(@machine, 'parked')
     @machine.states.concat(@states)
     
     @object = @klass.new
@@ -129,10 +129,10 @@ end
 class StateCollectionWithNamespaceTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :namespace => 'vehicle')
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'vehicle')
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @state = StateMachine::State.new(@machine, :parked)
+    @states << @state = EnumStateMachine::State.new(@machine, :parked)
     @machine.states.concat(@states)
   end
   
@@ -148,10 +148,10 @@ end
 class StateCollectionWithCustomStateValuesTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @state = StateMachine::State.new(@machine, :parked, :value => 1)
+    @states << @state = EnumStateMachine::State.new(@machine, :parked, :value => 1)
     @machine.states.concat(@states)
     
     @object = @klass.new
@@ -175,10 +175,10 @@ end
 class StateCollectionWithStateMatchersTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(@klass)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @state = StateMachine::State.new(@machine, :parked, :if => lambda {|value| !value.nil?})
+    @states << @state = EnumStateMachine::State.new(@machine, :parked, :if => lambda {|value| !value.nil?})
     @machine.states.concat(@states)
     
     @object = @klass.new
@@ -201,11 +201,11 @@ end
 
 class StateCollectionWithInitialStateTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @parked = StateMachine::State.new(@machine, :parked)
-    @states << @idling = StateMachine::State.new(@machine, :idling)
+    @states << @parked = EnumStateMachine::State.new(@machine, :parked)
+    @states << @idling = EnumStateMachine::State.new(@machine, :idling)
     @machine.states.concat(@states)
     
     @parked.initial = true
@@ -239,11 +239,11 @@ end
 
 class StateCollectionWithStateBehaviorsTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @parked = StateMachine::State.new(@machine, :parked)
-    @states << @idling = StateMachine::State.new(@machine, :idling)
+    @states << @parked = EnumStateMachine::State.new(@machine, :parked)
+    @states << @idling = EnumStateMachine::State.new(@machine, :idling)
     @machine.states.concat(@states)
     
     @idling.context do
@@ -277,11 +277,11 @@ end
 
 class StateCollectionWithEventTransitionsTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @parked = StateMachine::State.new(@machine, :parked)
-    @states << @idling = StateMachine::State.new(@machine, :idling)
+    @states << @parked = EnumStateMachine::State.new(@machine, :parked)
+    @states << @idling = EnumStateMachine::State.new(@machine, :idling)
     @machine.states.concat(@states)
     
     @machine.event :ignite do
@@ -315,11 +315,11 @@ end
 
 class StateCollectionWithTransitionCallbacksTest < Test::Unit::TestCase
   def setup
-    @machine = StateMachine::Machine.new(Class.new)
-    @states = StateMachine::StateCollection.new(@machine)
+    @machine = EnumStateMachine::Machine.new(Class.new)
+    @states = EnumStateMachine::StateCollection.new(@machine)
     
-    @states << @parked = StateMachine::State.new(@machine, :parked)
-    @states << @idling = StateMachine::State.new(@machine, :idling)
+    @states << @parked = EnumStateMachine::State.new(@machine, :parked)
+    @states << @idling = EnumStateMachine::State.new(@machine, :idling)
     @machine.states.concat(@states)
     
     @machine.before_transition :to => :idling, :do => lambda {}

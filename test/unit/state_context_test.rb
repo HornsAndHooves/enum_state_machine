@@ -12,10 +12,10 @@ end
 class StateContextTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @state = @machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(@state)
+    @state_context = EnumStateMachine::StateContext.new(@state)
   end
   
   def test_should_have_a_machine
@@ -30,10 +30,10 @@ end
 class StateContextTransitionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @state = @machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(@state)
+    @state_context = EnumStateMachine::StateContext.new(@state)
   end
   
   def test_should_not_allow_except_to
@@ -81,25 +81,25 @@ class StateContextTransitionTest < Test::Unit::TestCase
   
   def test_should_automatically_set_to_option_with_from_state
     branch = @state_context.transition(:from => :idling, :on => :park)
-    assert_instance_of StateMachine::Branch, branch
+    assert_instance_of EnumStateMachine::Branch, branch
     
     state_requirements = branch.state_requirements
     assert_equal 1, state_requirements.length
     
     from_requirement = state_requirements[0][:to]
-    assert_instance_of StateMachine::WhitelistMatcher, from_requirement
+    assert_instance_of EnumStateMachine::WhitelistMatcher, from_requirement
     assert_equal [:parked], from_requirement.values
   end
   
   def test_should_automatically_set_from_option_with_to_state
     branch = @state_context.transition(:to => :idling, :on => :ignite)
-    assert_instance_of StateMachine::Branch, branch
+    assert_instance_of EnumStateMachine::Branch, branch
     
     state_requirements = branch.state_requirements
     assert_equal 1, state_requirements.length
     
     from_requirement = state_requirements[0][:from]
-    assert_instance_of StateMachine::WhitelistMatcher, from_requirement
+    assert_instance_of EnumStateMachine::WhitelistMatcher, from_requirement
     assert_equal [:parked], from_requirement.values
   end
   
@@ -133,10 +133,10 @@ end
 class StateContextWithMatchingTransitionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new
-    @machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     @state = @machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(@state)
+    @state_context = EnumStateMachine::StateContext.new(@state)
     @state_context.transition(:to => :idling, :on => :ignite)
     
     @event = @machine.event(:ignite)
@@ -159,10 +159,10 @@ end
 class StateContextProxyTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
   end
   
   def test_should_call_class_with_same_arguments
@@ -184,10 +184,10 @@ end
 class StateContextProxyWithoutConditionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
     @object = @klass.new
     
     @options = @state_context.validate[0]
@@ -214,10 +214,10 @@ end
 class StateContextProxyWithIfConditionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
     @object = @klass.new
     
     @condition_result = nil
@@ -277,10 +277,10 @@ end
 class StateContextProxyWithMultipleIfConditionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
     @object = @klass.new
     
     @first_condition_result = nil
@@ -308,10 +308,10 @@ end
 class StateContextProxyWithUnlessConditionTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
     @object = @klass.new
     
     @condition_result = nil
@@ -371,10 +371,10 @@ end
 class StateContextProxyWithMultipleUnlessConditionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
     @object = @klass.new
     
     @first_condition_result = nil
@@ -402,10 +402,10 @@ end
 class StateContextProxyWithIfAndUnlessConditionsTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(Validateable)
-    machine = StateMachine::Machine.new(@klass, :initial => :parked)
+    machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
     state = machine.state :parked
     
-    @state_context = StateMachine::StateContext.new(state)
+    @state_context = EnumStateMachine::StateContext.new(state)
     @object = @klass.new
     
     @if_condition_result = nil
