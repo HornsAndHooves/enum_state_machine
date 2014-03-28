@@ -7,15 +7,15 @@ module EnumStateMachine
     end
 
     module ClassMethods
-      def has_state_enum(enum_name, method_name)
-        has_enumerated enum_name
+      def has_state_enum(state_attr, enum_attr, enum_opts = {})
+        has_enumerated enum_attr, enum_opts
 
-        define_method "#{method_name}" do
-          public_send("#{enum_name}").to_s
+        define_method "#{state_attr}" do
+          public_send("#{enum_attr}").to_s
         end
 
-        define_method "#{method_name}=" do |value|
-          public_send("#{enum_name}=", value)
+        define_method "#{state_attr}=" do |value|
+          public_send("#{enum_attr}=", value)
         end
       end
     end
