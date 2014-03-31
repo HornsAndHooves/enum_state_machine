@@ -3,7 +3,7 @@ require 'power_enum'
 module EnumStateMachine
   module StateEnum
     def self.included(base)
-      base.extend ClassMethods
+      base.extend ClassMethods if defined?(PowerEnum)
     end
 
     module ClassMethods
