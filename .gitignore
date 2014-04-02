@@ -1,0 +1,9 @@
+*.gem
+.bundle/
+.idea/
+.rbx/
+.yardoc/
+coverage/
+/doc/
+test/*.log
+/Gemfile.lock

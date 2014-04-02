@@ -1,0 +1,27 @@
+PATH
+  remote: ../
+  specs:
+    enum_state_machine (1.2.0)
+
+GEM
+  remote: https://www.rubygems.org/
+  specs:
+    appraisal (0.5.1)
+      bundler
+      rake
+    multi_json (1.0.4)
+    rake (0.9.2.2)
+    simplecov (0.5.4)
+      multi_json (~> 1.0.3)
+      simplecov-html (~> 0.5.3)
+    simplecov-html (0.5.3)
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  appraisal (~> 0.5.0)
+  enum_state_machine!
+  rake
+  simplecov
