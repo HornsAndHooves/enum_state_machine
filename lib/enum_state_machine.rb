@@ -6,3 +6,4 @@
 # information.
 require 'enum_state_machine/core'
 require 'enum_state_machine/core_ext'
+require 'enum_state_machine/state_enum'
