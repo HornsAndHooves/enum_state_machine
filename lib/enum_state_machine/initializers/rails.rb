@@ -9,7 +9,7 @@ if defined?(Rails)
     # Rails 3.x
     class EnumStateMachine::RailsEngine < Rails::Engine
       rake_tasks do
-        load 'tasks/state_machine.rb'
+        load 'tasks/enum_state_machine.rb'
       end
     end
     
