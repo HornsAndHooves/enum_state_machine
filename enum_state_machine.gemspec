@@ -4,9 +4,9 @@ require 'enum_state_machine/version'
 Gem::Specification.new do |s|
   s.name              = "enum_state_machine"
   s.version           = EnumStateMachine::VERSION
-  s.authors           = [""]
-  s.email             = ""
-  s.homepage          = ""
+  s.authors           = ["The HornsAndHooves Team"]
+  s.email             = ["arthur.shagall@gmail.com"]
+  s.homepage          = "https://github.com/HornsAndHooves/enum_state_machine"
   s.description       = "Adds support for creating enum  state machines for attributes on any Ruby class"
   s.summary           = "Enum State machines for attributes"
   s.require_paths     = ["lib"]
@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.test_files        = s.files.grep(/^test\//)
   s.rdoc_options      = %w(--line-numbers --inline-source --title enum_state_machine --main README.md)
   s.extra_rdoc_files  = %w(README.md CHANGELOG.md LICENSE)
+  s.license           = 'MIT'
 
   s.add_dependency("power_enum", "~> 2.4")
   
