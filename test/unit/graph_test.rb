@@ -3,14 +3,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 begin
   # Load library
   require 'graphviz'
-  
+
+  def font
+    (RUBY_PLATFORM =~ /darwin/) ? 'ArialMT' : 'Arial'
+  end
+
   class GraphDefaultTest < Test::Unit::TestCase
     def setup
       @graph = EnumStateMachine::Graph.new('test')
     end
-    
+
     def test_should_have_a_default_font
-      assert_equal 'Arial', @graph.font
+      assert_equal font, @graph.font
     end
     
     def test_should_use_current_directory_for_filepath
@@ -45,7 +49,7 @@ begin
     end
     
     def test_should_set_default_font
-      assert_equal 'Arial', @node['fontname'].to_s.gsub('"', '')
+      assert_equal font, @node['fontname'].to_s.gsub('"', '')
     end
   end
   
@@ -71,7 +75,7 @@ begin
     end
     
     def test_should_set_default_font
-      assert_equal 'Arial', @edge['fontname'].to_s.gsub('"', '')
+      assert_equal font, @edge['fontname'].to_s.gsub('"', '')
     end
   end
   
