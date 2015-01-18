@@ -17,9 +17,11 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files  = %w(README.md CHANGELOG.md LICENSE)
   s.license           = 'MIT'
 
-  s.add_dependency("power_enum", "~> 2.4")
+  s.add_dependency "power_enum", "~> 2.4"
+  s.add_dependency "rails", "~> 4.0.13"
   
-  s.add_development_dependency("rake")
-  s.add_development_dependency("simplecov")
-  s.add_development_dependency("appraisal", "~> 0.5.0")
+  s.add_development_dependency "rake"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "appraisal", "~> 0.5.0"
+  s.add_development_dependency "yard"
 end
