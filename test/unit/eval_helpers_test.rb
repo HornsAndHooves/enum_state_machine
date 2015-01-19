@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class EvalHelpersBaseTest < Test::Unit::TestCase
+class EvalHelpersBaseTest < MiniTest::Test
   include EnumStateMachine::EvalHelpers
   
   def default_test
@@ -13,7 +13,7 @@ class EvalHelpersTest < EvalHelpersBaseTest
   end
   
   def test_should_raise_exception_if_method_is_not_symbol_string_or_proc
-    exception = assert_raise(ArgumentError) { evaluate_method(@object, 1) }
+    exception = assert_raises(ArgumentError) { evaluate_method(@object, 1) }
     assert_match(/Methods must/, exception.message)
   end
 end

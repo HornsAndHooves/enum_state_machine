@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class BranchTest < Test::Unit::TestCase
+class BranchTest < MiniTest::Test
   def setup
     @branch = EnumStateMachine::Branch.new(:from => :parked, :to => :idling)
   end
@@ -22,12 +22,12 @@ class BranchTest < Test::Unit::TestCase
   end
   
   def test_should_raise_an_exception_if_invalid_match_option_specified
-    exception = assert_raise(ArgumentError) { @branch.match(Object.new, :invalid => true) }
+    exception = assert_raises(ArgumentError) { @branch.match(Object.new, :invalid => true) }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
 end
 
-class BranchWithNoRequirementsTest < Test::Unit::TestCase
+class BranchWithNoRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new
@@ -62,7 +62,7 @@ class BranchWithNoRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithFromRequirementTest < Test::Unit::TestCase
+class BranchWithFromRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:from => :parked)
@@ -106,7 +106,7 @@ class BranchWithFromRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleFromRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleFromRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:from => [:idling, :parked])
@@ -125,7 +125,7 @@ class BranchWithMultipleFromRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithFromMatcherRequirementTest < Test::Unit::TestCase
+class BranchWithFromMatcherRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:from => EnumStateMachine::BlacklistMatcher.new([:idling, :parked]))
@@ -144,7 +144,7 @@ class BranchWithFromMatcherRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithToRequirementTest < Test::Unit::TestCase
+class BranchWithToRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:to => :idling)
@@ -188,7 +188,7 @@ class BranchWithToRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleToRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleToRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:to => [:idling, :parked])
@@ -207,7 +207,7 @@ class BranchWithMultipleToRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithToMatcherRequirementTest < Test::Unit::TestCase
+class BranchWithToMatcherRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:to => EnumStateMachine::BlacklistMatcher.new([:idling, :parked]))
@@ -226,7 +226,7 @@ class BranchWithToMatcherRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithOnRequirementTest < Test::Unit::TestCase
+class BranchWithOnRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:on => :ignite)
@@ -270,7 +270,7 @@ class BranchWithOnRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleOnRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleOnRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:on => [:ignite, :park])
@@ -285,7 +285,7 @@ class BranchWithMultipleOnRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithOnMatcherRequirementTest < Test::Unit::TestCase
+class BranchWithOnMatcherRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:on => EnumStateMachine::BlacklistMatcher.new([:ignite, :park]))
@@ -300,7 +300,7 @@ class BranchWithOnMatcherRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithExceptFromRequirementTest < Test::Unit::TestCase
+class BranchWithExceptFromRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:except_from => :parked)
@@ -335,7 +335,7 @@ class BranchWithExceptFromRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleExceptFromRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleExceptFromRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:except_from => [:idling, :parked])
@@ -354,14 +354,14 @@ class BranchWithMultipleExceptFromRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithExceptFromMatcherRequirementTest < Test::Unit::TestCase
+class BranchWithExceptFromMatcherRequirementTest < MiniTest::Test
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:except_from => EnumStateMachine::AllMatcher.instance) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::Branch.new(:except_from => EnumStateMachine::AllMatcher.instance) }
     assert_equal ':except_from option cannot use matchers; use :from instead', exception.message
   end
 end
 
-class BranchWithExceptToRequirementTest < Test::Unit::TestCase
+class BranchWithExceptToRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:except_to => :idling)
@@ -396,7 +396,7 @@ class BranchWithExceptToRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleExceptToRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleExceptToRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:except_to => [:idling, :parked])
@@ -415,14 +415,14 @@ class BranchWithMultipleExceptToRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithExceptToMatcherRequirementTest < Test::Unit::TestCase
+class BranchWithExceptToMatcherRequirementTest < MiniTest::Test
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:except_to => EnumStateMachine::AllMatcher.instance) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::Branch.new(:except_to => EnumStateMachine::AllMatcher.instance) }
     assert_equal ':except_to option cannot use matchers; use :to instead', exception.message
   end
 end
 
-class BranchWithExceptOnRequirementTest < Test::Unit::TestCase
+class BranchWithExceptOnRequirementTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:except_on => :ignite)
@@ -457,14 +457,14 @@ class BranchWithExceptOnRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithExceptOnMatcherRequirementTest < Test::Unit::TestCase
+class BranchWithExceptOnMatcherRequirementTest < MiniTest::Test
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:except_on => EnumStateMachine::AllMatcher.instance) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::Branch.new(:except_on => EnumStateMachine::AllMatcher.instance) }
     assert_equal ':except_on option cannot use matchers; use :on instead', exception.message
   end
 end
 
-class BranchWithMultipleExceptOnRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleExceptOnRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:except_on => [:ignite, :park])
@@ -479,28 +479,28 @@ class BranchWithMultipleExceptOnRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithConflictingFromRequirementsTest < Test::Unit::TestCase
+class BranchWithConflictingFromRequirementsTest < MiniTest::Test
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:from => :parked, :except_from => :parked) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::Branch.new(:from => :parked, :except_from => :parked) }
     assert_equal 'Conflicting keys: from, except_from', exception.message
   end
 end
 
-class BranchWithConflictingToRequirementsTest < Test::Unit::TestCase
+class BranchWithConflictingToRequirementsTest < MiniTest::Test
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:to => :idling, :except_to => :idling) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::Branch.new(:to => :idling, :except_to => :idling) }
     assert_equal 'Conflicting keys: to, except_to', exception.message
   end
 end
 
-class BranchWithConflictingOnRequirementsTest < Test::Unit::TestCase
+class BranchWithConflictingOnRequirementsTest < MiniTest::Test
   def test_should_raise_an_exception
-    exception = assert_raise(ArgumentError) { EnumStateMachine::Branch.new(:on => :ignite, :except_on => :ignite) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::Branch.new(:on => :ignite, :except_on => :ignite) }
     assert_equal 'Conflicting keys: on, except_on', exception.message
   end
 end
 
-class BranchWithDifferentRequirementsTest < Test::Unit::TestCase
+class BranchWithDifferentRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:from => :parked, :to => :idling, :on => :ignite)
@@ -540,7 +540,7 @@ class BranchWithDifferentRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithNilRequirementsTest < Test::Unit::TestCase
+class BranchWithNilRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:from => nil, :to => nil)
@@ -567,7 +567,7 @@ class BranchWithNilRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithImplicitRequirementTest < Test::Unit::TestCase
+class BranchWithImplicitRequirementTest < MiniTest::Test
   def setup
     @branch = EnumStateMachine::Branch.new(:parked => :idling, :on => :ignite)
   end
@@ -586,7 +586,7 @@ class BranchWithImplicitRequirementTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleImplicitRequirementsTest < Test::Unit::TestCase
+class BranchWithMultipleImplicitRequirementsTest < MiniTest::Test
   def setup
     @object = Object.new
     @branch = EnumStateMachine::Branch.new(:parked => :idling, :idling => :first_gear, :on => :ignite)
@@ -638,7 +638,7 @@ class BranchWithMultipleImplicitRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithImplicitFromRequirementMatcherTest < Test::Unit::TestCase
+class BranchWithImplicitFromRequirementMatcherTest < MiniTest::Test
   def setup
     @matcher = EnumStateMachine::BlacklistMatcher.new(:parked)
     @branch = EnumStateMachine::Branch.new(@matcher => :idling)
@@ -653,7 +653,7 @@ class BranchWithImplicitFromRequirementMatcherTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithImplicitToRequirementMatcherTest < Test::Unit::TestCase
+class BranchWithImplicitToRequirementMatcherTest < MiniTest::Test
   def setup
     @matcher = EnumStateMachine::BlacklistMatcher.new(:idling)
     @branch = EnumStateMachine::Branch.new(:parked => @matcher)
@@ -668,7 +668,7 @@ class BranchWithImplicitToRequirementMatcherTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithImplicitAndExplicitRequirementsTest < Test::Unit::TestCase
+class BranchWithImplicitAndExplicitRequirementsTest < MiniTest::Test
   def setup
     @branch = EnumStateMachine::Branch.new(:parked => :idling, :from => :parked)
   end
@@ -690,14 +690,14 @@ class BranchWithImplicitAndExplicitRequirementsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithIfConditionalTest < Test::Unit::TestCase
+class BranchWithIfConditionalTest < MiniTest::Test
   def setup
     @object = Object.new
   end
   
   def test_should_have_an_if_condition
     branch = EnumStateMachine::Branch.new(:if => lambda {true})
-    assert_not_nil branch.if_condition
+    refute_nil branch.if_condition
   end
   
   def test_should_match_if_true
@@ -716,7 +716,7 @@ class BranchWithIfConditionalTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleIfConditionalsTest < Test::Unit::TestCase
+class BranchWithMultipleIfConditionalsTest < MiniTest::Test
   def setup
     @object = Object.new
   end
@@ -735,14 +735,14 @@ class BranchWithMultipleIfConditionalsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithUnlessConditionalTest < Test::Unit::TestCase
+class BranchWithUnlessConditionalTest < MiniTest::Test
   def setup
     @object = Object.new
   end
   
   def test_should_have_an_unless_condition
     branch = EnumStateMachine::Branch.new(:unless => lambda {true})
-    assert_not_nil branch.unless_condition
+    refute_nil branch.unless_condition
   end
   
   def test_should_match_if_false
@@ -761,7 +761,7 @@ class BranchWithUnlessConditionalTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithMultipleUnlessConditionalsTest < Test::Unit::TestCase
+class BranchWithMultipleUnlessConditionalsTest < MiniTest::Test
   def setup
     @object = Object.new
   end
@@ -780,7 +780,7 @@ class BranchWithMultipleUnlessConditionalsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithConflictingConditionalsTest < Test::Unit::TestCase
+class BranchWithConflictingConditionalsTest < MiniTest::Test
   def setup
     @object = Object.new
   end
@@ -806,7 +806,7 @@ class BranchWithConflictingConditionalsTest < Test::Unit::TestCase
   end
 end
 
-class BranchWithoutGuardsTest < Test::Unit::TestCase
+class BranchWithoutGuardsTest < MiniTest::Test
   def setup
     @object = Object.new
   end
@@ -836,7 +836,7 @@ begin
   # Load library
   require 'graphviz'
   
-  class BranchDrawingTest < Test::Unit::TestCase
+  class BranchDrawingTest < MiniTest::Test
     def setup
       @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling]
@@ -866,7 +866,7 @@ begin
     end
   end
   
-  class BranchDrawingWithFromRequirementTest < Test::Unit::TestCase
+  class BranchDrawingWithFromRequirementTest < MiniTest::Test
     def setup
       @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling, :first_gear]
@@ -887,7 +887,7 @@ begin
     end
   end
   
-  class BranchDrawingWithExceptFromRequirementTest < Test::Unit::TestCase
+  class BranchDrawingWithExceptFromRequirementTest < MiniTest::Test
     def setup
       @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling, :first_gear]
@@ -908,7 +908,7 @@ begin
     end
   end
   
-  class BranchDrawingWithoutFromRequirementTest < Test::Unit::TestCase
+  class BranchDrawingWithoutFromRequirementTest < MiniTest::Test
     def setup
       @machine = EnumStateMachine::Machine.new(Class.new)
       states = [:parked, :idling, :first_gear]
@@ -929,7 +929,7 @@ begin
     end
   end
   
-  class BranchDrawingWithoutToRequirementTest < Test::Unit::TestCase
+  class BranchDrawingWithoutToRequirementTest < MiniTest::Test
     def setup
       @machine = EnumStateMachine::Machine.new(Class.new)
       
@@ -947,7 +947,7 @@ begin
     end
   end
   
-  class BranchDrawingWithNilStateTest < Test::Unit::TestCase
+  class BranchDrawingWithNilStateTest < MiniTest::Test
     def setup
       @machine = EnumStateMachine::Machine.new(Class.new)
       

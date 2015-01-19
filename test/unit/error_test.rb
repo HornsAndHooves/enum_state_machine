@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class ErrorByDefaultTest < Test::Unit::TestCase
+class ErrorByDefaultTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -20,24 +20,24 @@ class ErrorByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class ErrorWithMessageTest < Test::Unit::TestCase
+class ErrorWithMessageTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) { EnumStateMachine::NodeCollection.new(@machine, :invalid => true) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::NodeCollection.new(@machine, :invalid => true) }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_raise_exception_on_lookup_if_invalid_index_specified
-    exception = assert_raise(ArgumentError) { @collection[:something, :invalid] }
+    exception = assert_raises(ArgumentError) { @collection[:something, :invalid] }
     assert_equal 'Invalid index: :invalid', exception.message
   end
   
   def test_should_raise_exception_on_fetch_if_invalid_index_specified
-    exception = assert_raise(ArgumentError) { @collection.fetch(:something, :invalid) }
+    exception = assert_raises(ArgumentError) { @collection.fetch(:something, :invalid) }
     assert_equal 'Invalid index: :invalid', exception.message
   end
 end

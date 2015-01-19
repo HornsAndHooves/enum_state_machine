@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class EventByDefaultTest < Test::Unit::TestCase
+class EventByDefaultTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -58,7 +58,7 @@ class EventByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class EventTest < Test::Unit::TestCase
+class EventTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
@@ -91,7 +91,7 @@ class EventTest < Test::Unit::TestCase
   end
 end
 
-class EventWithHumanNameTest < Test::Unit::TestCase
+class EventWithHumanNameTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -103,7 +103,7 @@ class EventWithHumanNameTest < Test::Unit::TestCase
   end
 end
 
-class EventWithDynamicHumanNameTest < Test::Unit::TestCase
+class EventWithDynamicHumanNameTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -123,11 +123,11 @@ class EventWithDynamicHumanNameTest < Test::Unit::TestCase
   end
   
   def test_should_not_cache_value
-    assert_not_same @event.human_name, @event.human_name
+    refute_same @event.human_name, @event.human_name
   end
 end
 
-class EventWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
+class EventWithConflictingHelpersBeforeDefinitionTest < MiniTest::Test
   def setup
     require 'stringio'
     @original_stderr, $stderr = $stderr, StringIO.new
@@ -184,7 +184,7 @@ class EventWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
   end
 end
 
-class EventWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
+class EventWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
   def setup
     require 'stringio'
     @original_stderr, $stderr = $stderr, StringIO.new
@@ -249,7 +249,7 @@ class EventWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
     assert_equal false, @object.can_ignite?
     assert_equal nil, @object.ignite_transition
     assert_equal false, @object.ignite
-    assert_raise(EnumStateMachine::InvalidTransition) { @object.ignite! }
+    assert_raises(EnumStateMachine::InvalidTransition) { @object.ignite! }
   end
   
   def test_should_not_output_warning
@@ -261,7 +261,7 @@ class EventWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
   end
 end
 
-class EventWithConflictingMachineTest < Test::Unit::TestCase
+class EventWithConflictingMachineTest < MiniTest::Test
   def setup
     require 'stringio'
     @original_stderr, $stderr = $stderr, StringIO.new
@@ -308,7 +308,7 @@ class EventWithConflictingMachineTest < Test::Unit::TestCase
   end
 end
 
-class EventWithNamespaceTest < Test::Unit::TestCase
+class EventWithNamespaceTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
@@ -341,7 +341,7 @@ class EventWithNamespaceTest < Test::Unit::TestCase
   end
 end
 
-class EventContextTest < Test::Unit::TestCase
+class EventContextTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -355,7 +355,7 @@ class EventContextTest < Test::Unit::TestCase
   end
 end
 
-class EventTransitionsTest < Test::Unit::TestCase
+class EventTransitionsTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
@@ -366,7 +366,7 @@ class EventTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_not_allow_on_option
-    exception = assert_raise(ArgumentError) {@event.transition(:on => :ignite)}
+    exception = assert_raises(ArgumentError) {@event.transition(:on => :ignite)}
     assert_equal 'Invalid key(s): on', exception.message
   end
   
@@ -377,7 +377,7 @@ class EventTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_not_allow_except_on_option
-    exception = assert_raise(ArgumentError) {@event.transition(:except_on => :ignite)}
+    exception = assert_raises(ArgumentError) {@event.transition(:except_on => :ignite)}
     assert_equal 'Invalid key(s): except_on', exception.message
   end
   
@@ -415,7 +415,7 @@ class EventTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventAfterBeingCopiedTest < Test::Unit::TestCase
+class EventAfterBeingCopiedTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
@@ -423,15 +423,15 @@ class EventAfterBeingCopiedTest < Test::Unit::TestCase
   end
   
   def test_should_not_have_the_same_collection_of_branches
-    assert_not_same @event.branches, @copied_event.branches
+    refute_same @event.branches, @copied_event.branches
   end
   
   def test_should_not_have_the_same_collection_of_known_states
-    assert_not_same @event.known_states, @copied_event.known_states
+    refute_same @event.known_states, @copied_event.known_states
   end
 end
 
-class EventWithoutTransitionsTest < Test::Unit::TestCase
+class EventWithoutTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -457,7 +457,7 @@ class EventWithoutTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventWithTransitionsTest < Test::Unit::TestCase
+class EventWithTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -487,7 +487,7 @@ class EventWithTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventWithoutMatchingTransitionsTest < Test::Unit::TestCase
+class EventWithoutMatchingTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -513,7 +513,7 @@ class EventWithoutMatchingTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_have_a_transition_with_custom_from_state
-    assert_not_nil @event.transition_for(@object, :from => :parked)
+    refute_nil @event.transition_for(@object, :from => :parked)
   end
   
   def test_should_not_fire
@@ -526,7 +526,7 @@ class EventWithoutMatchingTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
+class EventWithMatchingDisabledTransitionsTest < MiniTest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -567,7 +567,7 @@ class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
   end
   
   def test_should_have_a_transition_with_disabled_guards
-    assert_not_nil @event.transition_for(@object, :guard => false)
+    refute_nil @event.transition_for(@object, :guard => false)
   end
   
   def test_should_not_fire
@@ -624,7 +624,7 @@ class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
     
     object, transition = callback_args
     assert_equal @object, object
-    assert_not_nil transition
+    refute_nil transition
     assert_equal @object, transition.object
     assert_equal @machine, transition.machine
     assert_equal :ignite, transition.event
@@ -637,7 +637,7 @@ class EventWithMatchingDisabledTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventWithMatchingEnabledTransitionsTest < Test::Unit::TestCase
+class EventWithMatchingEnabledTransitionsTest < MiniTest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -671,7 +671,7 @@ class EventWithMatchingEnabledTransitionsTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'idling', transition.to
     assert_equal :ignite, transition.event
@@ -708,7 +708,7 @@ class EventWithMatchingEnabledTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventWithTransitionWithoutToStateTest < Test::Unit::TestCase
+class EventWithTransitionWithoutToStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -727,7 +727,7 @@ class EventWithTransitionWithoutToStateTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'parked', transition.to
     assert_equal :park, transition.event
@@ -743,7 +743,7 @@ class EventWithTransitionWithoutToStateTest < Test::Unit::TestCase
   end
 end
 
-class EventWithTransitionWithNilToStateTest < Test::Unit::TestCase
+class EventWithTransitionWithNilToStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -762,7 +762,7 @@ class EventWithTransitionWithNilToStateTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'idling', transition.from
     assert_equal nil, transition.to
     assert_equal :park, transition.event
@@ -778,7 +778,7 @@ class EventWithTransitionWithNilToStateTest < Test::Unit::TestCase
   end
 end
 
-class EventWithTransitionWithLoopbackStateTest < Test::Unit::TestCase
+class EventWithTransitionWithLoopbackStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -797,7 +797,7 @@ class EventWithTransitionWithLoopbackStateTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'parked', transition.to
     assert_equal :park, transition.event
@@ -813,7 +813,7 @@ class EventWithTransitionWithLoopbackStateTest < Test::Unit::TestCase
   end
 end
 
-class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
+class EventWithTransitionWithBlacklistedToStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -832,7 +832,7 @@ class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'first_gear', transition.to
     assert_equal :ignite, transition.event
@@ -843,7 +843,7 @@ class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
     @object.state = 'second_gear'
 
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'second_gear', transition.from
     assert_equal 'second_gear', transition.to
     assert_equal :ignite, transition.event
@@ -852,7 +852,7 @@ class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
   def test_should_allow_specific_transition_selection_using_to
     transition = @event.transition_for(@object, :from => :parked, :to => :second_gear)
     
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'second_gear', transition.to
     assert_equal :ignite, transition.event
@@ -873,7 +873,7 @@ class EventWithTransitionWithBlacklistedToStateTest < Test::Unit::TestCase
   end
 end
 
-class EventWithTransitionWithWhitelistedToStateTest < Test::Unit::TestCase
+class EventWithTransitionWithWhitelistedToStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -892,7 +892,7 @@ class EventWithTransitionWithWhitelistedToStateTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'first_gear', transition.to
     assert_equal :ignite, transition.event
@@ -901,7 +901,7 @@ class EventWithTransitionWithWhitelistedToStateTest < Test::Unit::TestCase
   def test_should_allow_specific_transition_selection_using_to
     transition = @event.transition_for(@object, :from => :parked, :to => :second_gear)
     
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'second_gear', transition.to
     assert_equal :ignite, transition.event
@@ -922,7 +922,7 @@ class EventWithTransitionWithWhitelistedToStateTest < Test::Unit::TestCase
   end
 end
 
-class EventWithMultipleTransitionsTest < Test::Unit::TestCase
+class EventWithMultipleTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -943,7 +943,7 @@ class EventWithMultipleTransitionsTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'idling', transition.to
     assert_equal :ignite, transition.event
@@ -952,7 +952,7 @@ class EventWithMultipleTransitionsTest < Test::Unit::TestCase
   def test_should_allow_specific_transition_selection_using_from
     transition = @event.transition_for(@object, :from => :idling)
     
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'idling', transition.from
     assert_equal 'idling', transition.to
     assert_equal :ignite, transition.event
@@ -961,14 +961,14 @@ class EventWithMultipleTransitionsTest < Test::Unit::TestCase
   def test_should_allow_specific_transition_selection_using_to
     transition = @event.transition_for(@object, :from => :parked, :to => :parked)
     
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'parked', transition.to
     assert_equal :ignite, transition.event
   end
   
   def test_should_not_allow_specific_transition_selection_using_on
-    exception = assert_raise(ArgumentError) { @event.transition_for(@object, :on => :park) }
+    exception = assert_raises(ArgumentError) { @event.transition_for(@object, :on => :park) }
     assert_equal 'Invalid key(s): on', exception.message
   end
   
@@ -982,7 +982,7 @@ class EventWithMultipleTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class EventWithMachineActionTest < Test::Unit::TestCase
+class EventWithMachineActionTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1013,7 +1013,7 @@ class EventWithMachineActionTest < Test::Unit::TestCase
   end
 end
 
-class EventWithInvalidCurrentStateTest < Test::Unit::TestCase
+class EventWithInvalidCurrentStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1027,22 +1027,22 @@ class EventWithInvalidCurrentStateTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_when_checking_availability
-    exception = assert_raise(ArgumentError) { @event.can_fire?(@object) }
+    exception = assert_raises(ArgumentError) { @event.can_fire?(@object) }
     assert_equal '"invalid" is not a known state value', exception.message
   end
   
   def test_should_raise_exception_when_finding_transition
-    exception = assert_raise(ArgumentError) { @event.transition_for(@object) }
+    exception = assert_raises(ArgumentError) { @event.transition_for(@object) }
     assert_equal '"invalid" is not a known state value', exception.message
   end
   
   def test_should_raise_exception_when_firing
-    exception = assert_raise(ArgumentError) { @event.fire(@object) }
+    exception = assert_raises(ArgumentError) { @event.fire(@object) }
     assert_equal '"invalid" is not a known state value', exception.message
   end
 end
 
-class EventOnFailureTest < Test::Unit::TestCase
+class EventOnFailureTest < MiniTest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -1081,7 +1081,7 @@ class EventOnFailureTest < Test::Unit::TestCase
     
     object, transition = callback_args
     assert_equal @object, object
-    assert_not_nil transition
+    refute_nil transition
     assert_equal @object, transition.object
     assert_equal @machine, transition.machine
     assert_equal :ignite, transition.event
@@ -1094,7 +1094,7 @@ class EventOnFailureTest < Test::Unit::TestCase
   end
 end
 
-class EventWithMarshallingTest < Test::Unit::TestCase
+class EventWithMarshallingTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def save
@@ -1143,7 +1143,7 @@ begin
   # Load library
   require 'graphviz'
   
-  class EventDrawingTest < Test::Unit::TestCase
+  class EventDrawingTest < MiniTest::Test
     def setup
       states = [:parked, :idling, :first_gear]
       
@@ -1170,7 +1170,7 @@ begin
     end
   end
   
-  class EventDrawingWithHumanNameTest < Test::Unit::TestCase
+  class EventDrawingWithHumanNameTest < MiniTest::Test
     def setup
       states = [:parked, :idling]
       

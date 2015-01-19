@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class AssertionsBaseTest < Test::Unit::TestCase
+class AssertionsBaseTest < MiniTest::Test
   include EnumStateMachine::Assertions
   
   def default_test
@@ -13,7 +13,7 @@ class AssertValidKeysTest < AssertionsBaseTest
   end
   
   def test_should_raise_exception_if_key_is_invalid
-    exception = assert_raise(ArgumentError) { assert_valid_keys({:name => 'foo', :value => 'bar', :invalid => true}, :name, :value, :force) }
+    exception = assert_raises(ArgumentError) { assert_valid_keys({:name => 'foo', :value => 'bar', :invalid => true}, :name, :value, :force) }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
 end
@@ -29,12 +29,12 @@ class AssertExclusiveKeysTest < AssertionsBaseTest
   end
   
   def test_should_raise_exception_if_two_keys_found
-    exception = assert_raise(ArgumentError) { assert_exclusive_keys({:only => :parked, :except => :parked}, :only, :except) }
+    exception = assert_raises(ArgumentError) { assert_exclusive_keys({:only => :parked, :except => :parked}, :only, :except) }
     assert_equal 'Conflicting keys: only, except', exception.message
   end
   
   def test_should_raise_exception_if_multiple_keys_found
-    exception = assert_raise(ArgumentError) { assert_exclusive_keys({:only => :parked, :except => :parked, :on => :park}, :only, :except, :with) }
+    exception = assert_raises(ArgumentError) { assert_exclusive_keys({:only => :parked, :except => :parked, :on => :park}, :only, :except, :with) }
     assert_equal 'Conflicting keys: only, except', exception.message
   end
 end

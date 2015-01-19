@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class TransitionTest < Test::Unit::TestCase
+class TransitionTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -95,7 +95,7 @@ class TransitionTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithInvalidNodesTest < Test::Unit::TestCase
+class TransitionWithInvalidNodesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -107,23 +107,23 @@ class TransitionWithInvalidNodesTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_without_event
-    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, nil, :parked, :idling) }
+    assert_raises(IndexError) { EnumStateMachine::Transition.new(@object, @machine, nil, :parked, :idling) }
   end
   
   def test_should_raise_exception_with_invalid_event
-    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :invalid, :parked, :idling) }
+    assert_raises(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :invalid, :parked, :idling) }
   end
   
   def test_should_raise_exception_with_invalid_from_state
-    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :ignite, :invalid, :idling) }
+    assert_raises(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :ignite, :invalid, :idling) }
   end
   
   def test_should_raise_exception_with_invalid_to_state
-    assert_raise(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :invalid) }
+    assert_raises(IndexError) { EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :invalid) }
   end
 end
 
-class TransitionWithDynamicToValueTest < Test::Unit::TestCase
+class TransitionWithDynamicToValueTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -141,7 +141,7 @@ class TransitionWithDynamicToValueTest < Test::Unit::TestCase
   end
 end
 
-class TransitionLoopbackTest < Test::Unit::TestCase
+class TransitionLoopbackTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -158,7 +158,7 @@ class TransitionLoopbackTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithDifferentStatesTest < Test::Unit::TestCase
+class TransitionWithDifferentStatesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -175,7 +175,7 @@ class TransitionWithDifferentStatesTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithNamespaceTest < Test::Unit::TestCase
+class TransitionWithNamespaceTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
@@ -221,7 +221,7 @@ class TransitionWithNamespaceTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithCustomMachineAttributeTest < Test::Unit::TestCase
+class TransitionWithCustomMachineAttributeTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :state, :attribute => :state_id)
@@ -248,7 +248,7 @@ class TransitionWithCustomMachineAttributeTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithoutReadingStateTest < Test::Unit::TestCase
+class TransitionWithoutReadingStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -269,7 +269,7 @@ class TransitionWithoutReadingStateTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithActionTest < Test::Unit::TestCase
+class TransitionWithActionTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def save
@@ -295,7 +295,7 @@ class TransitionWithActionTest < Test::Unit::TestCase
   end
 end
 
-class TransitionAfterBeingPersistedTest < Test::Unit::TestCase
+class TransitionAfterBeingPersistedTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
@@ -340,7 +340,7 @@ class TransitionAfterBeingPersistedTest < Test::Unit::TestCase
   end
 end
 
-class TransitionAfterBeingRolledBackTest < Test::Unit::TestCase
+class TransitionAfterBeingRolledBackTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
@@ -374,7 +374,7 @@ class TransitionAfterBeingRolledBackTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithoutCallbacksTest < Test::Unit::TestCase
+class TransitionWithoutCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -406,7 +406,7 @@ class TransitionWithoutCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithBeforeCallbacksTest < Test::Unit::TestCase
+class TransitionWithBeforeCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -457,7 +457,7 @@ class TransitionWithBeforeCallbacksTest < Test::Unit::TestCase
   
   def test_should_not_catch_exceptions
     @machine.before_transition {raise ArgumentError}
-    assert_raise(ArgumentError) { @transition.run_callbacks }
+    assert_raises(ArgumentError) { @transition.run_callbacks }
   end
   
   def test_should_not_be_able_to_run_twice
@@ -510,7 +510,7 @@ class TransitionWithBeforeCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithMultipleBeforeCallbacksTest < Test::Unit::TestCase
+class TransitionWithMultipleBeforeCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -549,7 +549,7 @@ class TransitionWithMultipleBeforeCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithAfterCallbacksTest < Test::Unit::TestCase
+class TransitionWithAfterCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -613,7 +613,7 @@ class TransitionWithAfterCallbacksTest < Test::Unit::TestCase
   
   def test_should_not_catch_exceptions
     @machine.after_transition {raise ArgumentError}
-    assert_raise(ArgumentError) { @transition.run_callbacks }
+    assert_raises(ArgumentError) { @transition.run_callbacks }
   end
   
   def test_should_not_be_able_to_run_twice
@@ -642,7 +642,7 @@ class TransitionWithAfterCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithMultipleAfterCallbacksTest < Test::Unit::TestCase
+class TransitionWithMultipleAfterCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -681,7 +681,7 @@ class TransitionWithMultipleAfterCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithAroundCallbacksTest < Test::Unit::TestCase
+class TransitionWithAroundCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -757,12 +757,12 @@ class TransitionWithAroundCallbacksTest < Test::Unit::TestCase
   
   def test_should_not_catch_before_yield
     @machine.around_transition {raise ArgumentError}
-    assert_raise(ArgumentError) { @transition.run_callbacks }
+    assert_raises(ArgumentError) { @transition.run_callbacks }
   end
   
   def test_should_not_catch_after_yield
     @machine.around_transition {|block| block.call; raise ArgumentError}
-    assert_raise(ArgumentError) { @transition.run_callbacks }
+    assert_raises(ArgumentError) { @transition.run_callbacks }
   end
   
   def test_should_fail_if_not_yielded
@@ -824,7 +824,7 @@ class TransitionWithAroundCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithMultipleAroundCallbacksTest < Test::Unit::TestCase
+class TransitionWithMultipleAroundCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -937,7 +937,7 @@ class TransitionWithMultipleAroundCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithFailureCallbacksTest < Test::Unit::TestCase
+class TransitionWithFailureCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -992,7 +992,7 @@ class TransitionWithFailureCallbacksTest < Test::Unit::TestCase
   
   def test_should_not_catch_exceptions
     @machine.after_failure {raise ArgumentError}
-    assert_raise(ArgumentError) { @transition.run_callbacks {{:success => false}} }
+    assert_raises(ArgumentError) { @transition.run_callbacks {{:success => false}} }
   end
   
   def test_should_not_be_able_to_run_twice
@@ -1021,7 +1021,7 @@ class TransitionWithFailureCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithMultipleFailureCallbacksTest < Test::Unit::TestCase
+class TransitionWithMultipleFailureCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1060,7 +1060,7 @@ class TransitionWithMultipleFailureCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithMixedCallbacksTest < Test::Unit::TestCase
+class TransitionWithMixedCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1164,7 +1164,7 @@ class TransitionWithMixedCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithBeforeCallbacksSkippedTest < Test::Unit::TestCase
+class TransitionWithBeforeCallbacksSkippedTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1193,7 +1193,7 @@ class TransitionWithBeforeCallbacksSkippedTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithAfterCallbacksSkippedTest < Test::Unit::TestCase
+class TransitionWithAfterCallbacksSkippedTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1305,7 +1305,7 @@ class TransitionWithAfterCallbacksSkippedTest < Test::Unit::TestCase
       @machine.around_transition {|block| block.call; raise ArgumentError}
       
       assert_nothing_raised { @transition.run_callbacks(:after => false) }
-      assert_raise(ArgumentError) { @transition.run_callbacks }
+      assert_raises(ArgumentError) { @transition.run_callbacks }
     end
   else
     def test_should_raise_exception_on_second_call
@@ -1314,12 +1314,12 @@ class TransitionWithAfterCallbacksSkippedTest < Test::Unit::TestCase
       @machine.around_transition {|block| @callbacks << :before_around_2; block.call; @callbacks << :after_around_2}
       @machine.after_transition {@callbacks << :after}
       
-      assert_raise(ArgumentError) { @transition.run_callbacks(:after => false) }
+      assert_raises(ArgumentError) { @transition.run_callbacks(:after => false) }
     end
   end
 end
 
-class TransitionAfterBeingPerformedTest < Test::Unit::TestCase
+class TransitionAfterBeingPerformedTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved, :save_state
@@ -1366,7 +1366,7 @@ class TransitionAfterBeingPerformedTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithPerformArgumentsTest < Test::Unit::TestCase
+class TransitionWithPerformArgumentsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1400,7 +1400,7 @@ class TransitionWithPerformArgumentsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithoutRunningActionTest < Test::Unit::TestCase
+class TransitionWithoutRunningActionTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1446,7 +1446,7 @@ class TransitionWithoutRunningActionTest < Test::Unit::TestCase
   end
 end
 
-class TransitionWithTransactionsTest < Test::Unit::TestCase
+class TransitionWithTransactionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       class << self
@@ -1487,7 +1487,7 @@ class TransitionWithTransactionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionTransientTest < Test::Unit::TestCase
+class TransitionTransientTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1506,7 +1506,7 @@ class TransitionTransientTest < Test::Unit::TestCase
   end
 end
 
-class TransitionEqualityTest < Test::Unit::TestCase
+class TransitionEqualityTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1530,29 +1530,29 @@ class TransitionEqualityTest < Test::Unit::TestCase
     machine.event :ignite
     transition = EnumStateMachine::Transition.new(@object, machine, :ignite, :parked, :idling)
     
-    assert_not_equal transition, @transition
+    refute_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_objects
     transition = EnumStateMachine::Transition.new(@klass.new, @machine, :ignite, :parked, :idling)
-    assert_not_equal transition, @transition
+    refute_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_event_names
     @machine.event :park
     transition = EnumStateMachine::Transition.new(@object, @machine, :park, :parked, :idling)
-    assert_not_equal transition, @transition
+    refute_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_from_state_names
     @machine.state :first_gear
     transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :first_gear, :idling)
-    assert_not_equal transition, @transition
+    refute_equal transition, @transition
   end
   
   def test_should_not_be_equal_with_different_to_state_names
     @machine.state :first_gear
     transition = EnumStateMachine::Transition.new(@object, @machine, :ignite, :idling, :first_gear)
-    assert_not_equal transition, @transition
+    refute_equal transition, @transition
   end
 end

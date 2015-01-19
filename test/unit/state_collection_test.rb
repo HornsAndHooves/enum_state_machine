@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class StateCollectionByDefaultTest < Test::Unit::TestCase
+class StateCollectionByDefaultTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -19,7 +19,7 @@ class StateCollectionByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionTest < Test::Unit::TestCase
+class StateCollectionTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -67,7 +67,7 @@ class StateCollectionTest < Test::Unit::TestCase
   end
   
   def test_raise_exception_if_matching_invalid_state
-    assert_raise(IndexError) { @states.matches?(@object, :invalid) }
+    assert_raises(IndexError) { @states.matches?(@object, :invalid) }
   end
   
   def test_should_find_state_for_object_if_value_is_known
@@ -87,12 +87,12 @@ class StateCollectionTest < Test::Unit::TestCase
   
   def test_should_raise_exception_if_finding_bang_state_for_object_with_unknown_value
     @object.state = 'invalid'
-    exception = assert_raise(ArgumentError) { @states.match!(@object) }
+    exception = assert_raises(ArgumentError) { @states.match!(@object) }
     assert_equal '"invalid" is not a known state value', exception.message
   end
 end
 
-class StateCollectionStringTest < Test::Unit::TestCase
+class StateCollectionStringTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -126,7 +126,7 @@ class StateCollectionStringTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithNamespaceTest < Test::Unit::TestCase
+class StateCollectionWithNamespaceTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'vehicle')
@@ -145,7 +145,7 @@ class StateCollectionWithNamespaceTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithCustomStateValuesTest < Test::Unit::TestCase
+class StateCollectionWithCustomStateValuesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -172,7 +172,7 @@ class StateCollectionWithCustomStateValuesTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithStateMatchersTest < Test::Unit::TestCase
+class StateCollectionWithStateMatchersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -199,7 +199,7 @@ class StateCollectionWithStateMatchersTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithInitialStateTest < Test::Unit::TestCase
+class StateCollectionWithInitialStateTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -237,7 +237,7 @@ class StateCollectionWithInitialStateTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithStateBehaviorsTest < Test::Unit::TestCase
+class StateCollectionWithStateBehaviorsTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -275,7 +275,7 @@ class StateCollectionWithStateBehaviorsTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithEventTransitionsTest < Test::Unit::TestCase
+class StateCollectionWithEventTransitionsTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -313,7 +313,7 @@ class StateCollectionWithEventTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class StateCollectionWithTransitionCallbacksTest < Test::Unit::TestCase
+class StateCollectionWithTransitionCallbacksTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)

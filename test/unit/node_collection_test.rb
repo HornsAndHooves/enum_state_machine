@@ -6,7 +6,7 @@ class Node < Struct.new(:name, :value, :machine)
   end
 end
 
-class NodeCollectionByDefaultTest < Test::Unit::TestCase
+class NodeCollectionByDefaultTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -26,29 +26,29 @@ class NodeCollectionByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionTest < Test::Unit::TestCase
+class NodeCollectionTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) { EnumStateMachine::NodeCollection.new(@machine, :invalid => true) }
+    exception = assert_raises(ArgumentError) { EnumStateMachine::NodeCollection.new(@machine, :invalid => true) }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_raise_exception_on_lookup_if_invalid_index_specified
-    exception = assert_raise(ArgumentError) { @collection[:something, :invalid] }
+    exception = assert_raises(ArgumentError) { @collection[:something, :invalid] }
     assert_equal 'Invalid index: :invalid', exception.message
   end
   
   def test_should_raise_exception_on_fetch_if_invalid_index_specified
-    exception = assert_raise(ArgumentError) { @collection.fetch(:something, :invalid) }
+    exception = assert_raises(ArgumentError) { @collection.fetch(:something, :invalid) }
     assert_equal 'Invalid index: :invalid', exception.message
   end
 end
 
-class NodeCollectionAfterBeingCopiedTest < Test::Unit::TestCase
+class NodeCollectionAfterBeingCopiedTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)
@@ -74,7 +74,7 @@ class NodeCollectionAfterBeingCopiedTest < Test::Unit::TestCase
   end
   
   def test_should_copy_each_node
-    assert_not_same @parked, @copied_collection[:parked]
+    refute_same @parked, @copied_collection[:parked]
   end
   
   def test_should_not_run_contexts
@@ -92,7 +92,7 @@ class NodeCollectionAfterBeingCopiedTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithoutIndicesTest < Test::Unit::TestCase
+class NodeCollectionWithoutIndicesTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => {})
@@ -104,24 +104,24 @@ class NodeCollectionWithoutIndicesTest < Test::Unit::TestCase
   end
   
   def test_should_not_allow_keys_retrieval
-    exception = assert_raise(ArgumentError) { @collection.keys }
+    exception = assert_raises(ArgumentError) { @collection.keys }
     assert_equal 'No indices configured', exception.message
   end
   
   def test_should_not_allow_lookup
     @collection << Object.new
-    exception = assert_raise(ArgumentError) { @collection[0] }
+    exception = assert_raises(ArgumentError) { @collection[0] }
     assert_equal 'No indices configured', exception.message
   end
   
   def test_should_not_allow_fetching
     @collection << Object.new
-    exception = assert_raise(ArgumentError) { @collection.fetch(0) }
+    exception = assert_raises(ArgumentError) { @collection.fetch(0) }
     assert_equal 'No indices configured', exception.message
   end
 end
 
-class NodeCollectionWithIndicesTest < Test::Unit::TestCase
+class NodeCollectionWithIndicesTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -150,18 +150,18 @@ class NodeCollectionWithIndicesTest < Test::Unit::TestCase
   
   def test_should_use_first_index_by_default_on_fetch
     assert_equal @object, @collection.fetch(:parked)
-    exception = assert_raise(IndexError) { @collection.fetch(1) }
+    exception = assert_raises(IndexError) { @collection.fetch(1) }
     assert_equal '1 is an invalid name', exception.message
   end
   
   def test_should_allow_customizing_index_on_fetch
     assert_equal @object, @collection.fetch(1, :value)
-    exception = assert_raise(IndexError) { @collection.fetch(:parked, :value) }
+    exception = assert_raises(IndexError) { @collection.fetch(:parked, :value) }
     assert_equal ':parked is an invalid value', exception.message
   end
 end
 
-class NodeCollectionWithNodesTest < Test::Unit::TestCase
+class NodeCollectionWithNodesTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -205,7 +205,7 @@ class NodeCollectionWithNodesTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionAfterUpdateTest < Test::Unit::TestCase
+class NodeCollectionAfterUpdateTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -239,7 +239,7 @@ class NodeCollectionAfterUpdateTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithStringIndexTest < Test::Unit::TestCase
+class NodeCollectionWithStringIndexTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -257,7 +257,7 @@ class NodeCollectionWithStringIndexTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithSymbolIndexTest < Test::Unit::TestCase
+class NodeCollectionWithSymbolIndexTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -275,7 +275,7 @@ class NodeCollectionWithSymbolIndexTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithNumericIndexTest < Test::Unit::TestCase
+class NodeCollectionWithNumericIndexTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -297,7 +297,7 @@ class NodeCollectionWithNumericIndexTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithPredefinedContextsTest < Test::Unit::TestCase
+class NodeCollectionWithPredefinedContextsTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)
@@ -318,7 +318,7 @@ class NodeCollectionWithPredefinedContextsTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithPostdefinedContextsTest < Test::Unit::TestCase
+class NodeCollectionWithPostdefinedContextsTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)
@@ -338,7 +338,7 @@ class NodeCollectionWithPostdefinedContextsTest < Test::Unit::TestCase
   end
 end
 
-class NodeCollectionWithMatcherContextsTest < Test::Unit::TestCase
+class NodeCollectionWithMatcherContextsTest < MiniTest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)

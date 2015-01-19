@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class MachineByDefaultTest < Test::Unit::TestCase
+class MachineByDefaultTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -24,7 +24,7 @@ class MachineByDefaultTest < Test::Unit::TestCase
   end
   
   def test_should_have_an_initial_state
-    assert_not_nil @machine.initial_state(@object)
+    refute_nil @machine.initial_state(@object)
   end
   
   def test_should_have_a_nil_initial_state
@@ -171,7 +171,7 @@ class MachineByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomNameTest < Test::Unit::TestCase
+class MachineWithCustomNameTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :status)
@@ -227,7 +227,7 @@ class MachineWithCustomNameTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithoutInitializationTest < Test::Unit::TestCase
+class MachineWithoutInitializationTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def initialize(attributes = {})
@@ -257,7 +257,7 @@ class MachineWithoutInitializationTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStaticInitialStateTest < Test::Unit::TestCase
+class MachineWithStaticInitialStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -316,7 +316,7 @@ class MachineWithStaticInitialStateTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithDynamicInitialStateTest < Test::Unit::TestCase
+class MachineWithDynamicInitialStateTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :initial_state
@@ -380,7 +380,7 @@ class MachineWithDynamicInitialStateTest < Test::Unit::TestCase
   end
 end
 
-class MachineStateInitializationTest < Test::Unit::TestCase
+class MachineStateInitializationTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :initialize => false)
@@ -434,7 +434,7 @@ class MachineStateInitializationTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomActionTest < Test::Unit::TestCase
+class MachineWithCustomActionTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new, :action => :save)
   end
@@ -444,7 +444,7 @@ class MachineWithCustomActionTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithNilActionTest < Test::Unit::TestCase
+class MachineWithNilActionTest < MiniTest::Test
   def setup
     integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -464,7 +464,7 @@ class MachineWithNilActionTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithoutIntegrationTest < Test::Unit::TestCase
+class MachineWithoutIntegrationTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -493,7 +493,7 @@ class MachineWithoutIntegrationTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomIntegrationTest < Test::Unit::TestCase
+class MachineWithCustomIntegrationTest < MiniTest::Test
   def setup
     integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -561,7 +561,7 @@ class MachineWithCustomIntegrationTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithIntegrationTest < Test::Unit::TestCase
+class MachineWithIntegrationTest < MiniTest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -628,7 +628,7 @@ class MachineWithIntegrationTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithActionUndefinedTest < Test::Unit::TestCase
+class MachineWithActionUndefinedTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
@@ -660,7 +660,7 @@ class MachineWithActionUndefinedTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithActionDefinedInClassTest < Test::Unit::TestCase
+class MachineWithActionDefinedInClassTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def save
@@ -696,7 +696,7 @@ class MachineWithActionDefinedInClassTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithActionDefinedInIncludedModuleTest < Test::Unit::TestCase
+class MachineWithActionDefinedInIncludedModuleTest < MiniTest::Test
   def setup
     @mod = mod = Module.new do
       def save
@@ -740,7 +740,7 @@ class MachineWithActionDefinedInIncludedModuleTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithActionDefinedInSuperclassTest < Test::Unit::TestCase
+class MachineWithActionDefinedInSuperclassTest < MiniTest::Test
   def setup
     @superclass = Class.new do
       def save
@@ -781,7 +781,7 @@ class MachineWithActionDefinedInSuperclassTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithPrivateActionTest < Test::Unit::TestCase
+class MachineWithPrivateActionTest < MiniTest::Test
   def setup
     @superclass = Class.new do
       private
@@ -823,7 +823,7 @@ class MachineWithPrivateActionTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithActionAlreadyOverriddenTest < Test::Unit::TestCase
+class MachineWithActionAlreadyOverriddenTest < MiniTest::Test
   def setup
     @superclass = Class.new do
       def save
@@ -845,7 +845,7 @@ class MachineWithActionAlreadyOverriddenTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomPluralTest < Test::Unit::TestCase
+class MachineWithCustomPluralTest < MiniTest::Test
   def setup
     @integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -893,7 +893,7 @@ class MachineWithCustomPluralTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomInvalidationTest < Test::Unit::TestCase
+class MachineWithCustomInvalidationTest < MiniTest::Test
   def setup
     @integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -929,9 +929,9 @@ class MachineWithCustomInvalidationTest < Test::Unit::TestCase
   end
 end
 
-class MachineTest < Test::Unit::TestCase
+class MachineTest < MiniTest::Test
   def test_should_raise_exception_if_invalid_option_specified
-    assert_raise(ArgumentError) {EnumStateMachine::Machine.new(Class.new, :invalid => true)}
+    assert_raises(ArgumentError) {EnumStateMachine::Machine.new(Class.new, :invalid => true)}
   end
   
   def test_should_not_raise_exception_if_custom_messages_specified
@@ -958,7 +958,7 @@ class MachineTest < Test::Unit::TestCase
   end
 end
 
-class MachineAfterBeingCopiedTest < Test::Unit::TestCase
+class MachineAfterBeingCopiedTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new, :state, :initial => :parked)
     @machine.event(:ignite) {}
@@ -971,11 +971,11 @@ class MachineAfterBeingCopiedTest < Test::Unit::TestCase
   end
   
   def test_should_not_have_the_same_collection_of_states
-    assert_not_same @copied_machine.states, @machine.states
+    refute_same @copied_machine.states, @machine.states
   end
   
   def test_should_copy_each_state
-    assert_not_same @copied_machine.states[:parked], @machine.states[:parked]
+    refute_same @copied_machine.states[:parked], @machine.states[:parked]
   end
   
   def test_should_update_machine_for_each_state
@@ -987,11 +987,11 @@ class MachineAfterBeingCopiedTest < Test::Unit::TestCase
   end
   
   def test_should_not_have_the_same_collection_of_events
-    assert_not_same @copied_machine.events, @machine.events
+    refute_same @copied_machine.events, @machine.events
   end
   
   def test_should_copy_each_event
-    assert_not_same @copied_machine.events[:ignite], @machine.events[:ignite]
+    refute_same @copied_machine.events[:ignite], @machine.events[:ignite]
   end
   
   def test_should_update_machine_for_each_event
@@ -1003,23 +1003,23 @@ class MachineAfterBeingCopiedTest < Test::Unit::TestCase
   end
   
   def test_should_not_have_the_same_callbacks
-    assert_not_same @copied_machine.callbacks, @machine.callbacks
+    refute_same @copied_machine.callbacks, @machine.callbacks
   end
   
   def test_should_not_have_the_same_before_callbacks
-    assert_not_same @copied_machine.callbacks[:before], @machine.callbacks[:before]
+    refute_same @copied_machine.callbacks[:before], @machine.callbacks[:before]
   end
   
   def test_should_not_have_the_same_after_callbacks
-    assert_not_same @copied_machine.callbacks[:after], @machine.callbacks[:after]
+    refute_same @copied_machine.callbacks[:after], @machine.callbacks[:after]
   end
   
   def test_should_not_have_the_same_failure_callbacks
-    assert_not_same @copied_machine.callbacks[:failure], @machine.callbacks[:failure]
+    refute_same @copied_machine.callbacks[:failure], @machine.callbacks[:failure]
   end
 end
 
-class MachineAfterChangingOwnerClassTest < Test::Unit::TestCase
+class MachineAfterChangingOwnerClassTest < MiniTest::Test
   def setup
     @original_class = Class.new
     @machine = EnumStateMachine::Machine.new(@original_class)
@@ -1048,7 +1048,7 @@ class MachineAfterChangingOwnerClassTest < Test::Unit::TestCase
   end
 end
 
-class MachineAfterChangingInitialState < Test::Unit::TestCase
+class MachineAfterChangingInitialState < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -1074,7 +1074,7 @@ class MachineAfterChangingInitialState < Test::Unit::TestCase
   end
 end
 
-class MachineWithHelpersTest < Test::Unit::TestCase
+class MachineWithHelpersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1082,11 +1082,11 @@ class MachineWithHelpersTest < Test::Unit::TestCase
   end
   
   def test_should_throw_exception_with_invalid_scope
-    assert_raise(RUBY_VERSION < '1.9' ? IndexError : KeyError) { @machine.define_helper(:invalid, :park) {} }
+    assert_raises(RUBY_VERSION < '1.9' ? IndexError : KeyError) { @machine.define_helper(:invalid, :park) {} }
   end
 end
 
-class MachineWithInstanceHelpersTest < Test::Unit::TestCase
+class MachineWithInstanceHelpersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1269,7 +1269,7 @@ class MachineWithInstanceHelpersTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithClassHelpersTest < Test::Unit::TestCase
+class MachineWithClassHelpersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1451,7 +1451,7 @@ class MachineWithClassHelpersTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
+class MachineWithConflictingHelpersBeforeDefinitionTest < MiniTest::Test
   def setup
     require 'stringio'
     @original_stderr, $stderr = $stderr, StringIO.new
@@ -1625,7 +1625,7 @@ class MachineWithConflictingHelpersBeforeDefinitionTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
+class MachineWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
   def setup
     require 'stringio'
     @original_stderr, $stderr = $stderr, StringIO.new
@@ -1868,7 +1868,7 @@ class MachineWithConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < Test::Unit::TestCase
+class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < MiniTest::Test
   def setup
     require 'stringio'
     @original_stderr, $stderr = $stderr, StringIO.new
@@ -1902,7 +1902,7 @@ class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < Test::Unit::T
   end
 end
 
-class MachineWithoutInitializeTest < Test::Unit::TestCase
+class MachineWithoutInitializeTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -1914,7 +1914,7 @@ class MachineWithoutInitializeTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithInitializeWithoutSuperTest < Test::Unit::TestCase
+class MachineWithInitializeWithoutSuperTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def initialize
@@ -1929,7 +1929,7 @@ class MachineWithInitializeWithoutSuperTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithInitializeAndSuperTest < Test::Unit::TestCase
+class MachineWithInitializeAndSuperTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def initialize
@@ -1945,7 +1945,7 @@ class MachineWithInitializeAndSuperTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithInitializeArgumentsAndBlockTest < Test::Unit::TestCase
+class MachineWithInitializeArgumentsAndBlockTest < MiniTest::Test
   def setup
     @superclass = Class.new do
       attr_reader :args
@@ -1974,7 +1974,7 @@ class MachineWithInitializeArgumentsAndBlockTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomInitializeTest < Test::Unit::TestCase
+class MachineWithCustomInitializeTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def initialize(state = nil, options = {})
@@ -1997,7 +1997,7 @@ class MachineWithCustomInitializeTest < Test::Unit::TestCase
   end
 end
 
-class MachinePersistenceTest < Test::Unit::TestCase
+class MachinePersistenceTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :state_event
@@ -2023,7 +2023,7 @@ class MachinePersistenceTest < Test::Unit::TestCase
     end
     
     @object.state_value = 1
-    assert_raise(NoMethodError) { @machine.read(@object, :value) }
+    assert_raises(NoMethodError) { @machine.read(@object, :value) }
     assert_equal 1, @machine.read(@object, :value, true)
   end
   
@@ -2042,14 +2042,14 @@ class MachinePersistenceTest < Test::Unit::TestCase
       attr_reader :state_value
     end
     
-    assert_raise(NoMethodError) { @machine.write(@object, :value, 1) }
+    assert_raises(NoMethodError) { @machine.write(@object, :value, 1) }
     assert_equal 1, @machine.write(@object, :value, 1, true)
     assert_equal 1, @object.state_value
   end
 end
 
 
-class MachineWithStatesTest < Test::Unit::TestCase
+class MachineWithStatesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2075,7 +2075,7 @@ class MachineWithStatesTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_on_invalid_human_state_name_lookup
-    exception = assert_raise(IndexError) {@klass.human_state_name(:invalid)}
+    exception = assert_raises(IndexError) {@klass.human_state_name(:invalid)}
     assert_equal ':invalid is an invalid name', exception.message
   end
   
@@ -2088,12 +2088,12 @@ class MachineWithStatesTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {@machine.state(:first_gear, :invalid => true)}
+    exception = assert_raises(ArgumentError) {@machine.state(:first_gear, :invalid => true)}
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_raise_exception_if_conflicting_type_used_for_name
-    exception = assert_raise(ArgumentError) { @machine.state 'first_gear' }
+    exception = assert_raises(ArgumentError) { @machine.state 'first_gear' }
     assert_equal '"first_gear" state defined as String, :parked defined as Symbol; all states must be consistent', exception.message
   end
   
@@ -2102,7 +2102,7 @@ class MachineWithStatesTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStatesWithCustomValuesTest < Test::Unit::TestCase
+class MachineWithStatesWithCustomValuesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2121,7 +2121,7 @@ class MachineWithStatesWithCustomValuesTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStatesWithCustomHumanNamesTest < Test::Unit::TestCase
+class MachineWithStatesWithCustomHumanNamesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2137,7 +2137,7 @@ class MachineWithStatesWithCustomHumanNamesTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStatesWithRuntimeDependenciesTest < Test::Unit::TestCase
+class MachineWithStatesWithRuntimeDependenciesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2154,7 +2154,7 @@ class MachineWithStatesWithRuntimeDependenciesTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStateWithMatchersTest < Test::Unit::TestCase
+class MachineWithStateWithMatchersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2165,13 +2165,13 @@ class MachineWithStateWithMatchersTest < Test::Unit::TestCase
   end
   
   def test_should_use_custom_matcher
-    assert_not_nil @state.matcher
+    refute_nil @state.matcher
     assert @state.matches?(1)
     assert !@state.matches?(nil)
   end
 end
 
-class MachineWithCachedStateTest < Test::Unit::TestCase
+class MachineWithCachedStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2189,7 +2189,7 @@ class MachineWithCachedStateTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStatesWithBehaviorsTest < Test::Unit::TestCase
+class MachineWithStatesWithBehaviorsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2202,16 +2202,16 @@ class MachineWithStatesWithBehaviorsTest < Test::Unit::TestCase
   end
   
   def test_should_define_behaviors_for_each_state
-    assert_not_nil @parked.context_methods[:speed]
-    assert_not_nil @idling.context_methods[:speed]
+    refute_nil @parked.context_methods[:speed]
+    refute_nil @idling.context_methods[:speed]
   end
   
   def test_should_define_different_behaviors_for_each_state
-    assert_not_equal @parked.context_methods[:speed], @idling.context_methods[:speed]
+    refute_equal @parked.context_methods[:speed], @idling.context_methods[:speed]
   end
 end
 
-class MachineWithExistingStateTest < Test::Unit::TestCase
+class MachineWithExistingStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2236,7 +2236,7 @@ class MachineWithExistingStateTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithStateMatchersTest < Test::Unit::TestCase
+class MachineWithStateMatchersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2251,7 +2251,7 @@ class MachineWithStateMatchersTest < Test::Unit::TestCase
   end
   
   def test_should_not_allow_configurations
-    exception = assert_raise(ArgumentError) { @machine.state(EnumStateMachine::BlacklistMatcher.new([:parked]), :human_name => 'Parked') }
+    exception = assert_raises(ArgumentError) { @machine.state(EnumStateMachine::BlacklistMatcher.new([:parked]), :human_name => 'Parked') }
     assert_equal 'Cannot configure states when using matchers (using {:human_name=>"Parked"})', exception.message
   end
   
@@ -2275,7 +2275,7 @@ class MachineWithStateMatchersTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithOtherStates < Test::Unit::TestCase
+class MachineWithOtherStates < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2295,7 +2295,7 @@ class MachineWithOtherStates < Test::Unit::TestCase
   end
 end
 
-class MachineWithEventsTest < Test::Unit::TestCase
+class MachineWithEventsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2335,18 +2335,18 @@ class MachineWithEventsTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_on_invalid_human_state_event_name_lookup
-    exception = assert_raise(IndexError) {@klass.human_state_event_name(:invalid)}
+    exception = assert_raises(IndexError) {@klass.human_state_event_name(:invalid)}
     assert_equal ':invalid is an invalid name', exception.message
   end
   
   def test_should_raise_exception_if_conflicting_type_used_for_name
     @machine.event :park
-    exception = assert_raise(ArgumentError) {  @machine.event 'ignite' }
+    exception = assert_raises(ArgumentError) {  @machine.event 'ignite' }
     assert_equal '"ignite" event defined as String, :park defined as Symbol; all events must be consistent', exception.message
   end
 end
 
-class MachineWithExistingEventTest < Test::Unit::TestCase
+class MachineWithExistingEventTest < MiniTest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @event = @machine.event(:ignite)
@@ -2362,7 +2362,7 @@ class MachineWithExistingEventTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithEventsWithCustomHumanNamesTest < Test::Unit::TestCase
+class MachineWithEventsWithCustomHumanNamesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2378,7 +2378,7 @@ class MachineWithEventsWithCustomHumanNamesTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithEventMatchersTest < Test::Unit::TestCase
+class MachineWithEventMatchersTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2393,7 +2393,7 @@ class MachineWithEventMatchersTest < Test::Unit::TestCase
   end
   
   def test_should_not_allow_configurations
-    exception = assert_raise(ArgumentError) { @machine.event(EnumStateMachine::BlacklistMatcher.new([:park]), :human_name => 'Park') }
+    exception = assert_raises(ArgumentError) { @machine.event(EnumStateMachine::BlacklistMatcher.new([:park]), :human_name => 'Park') }
     assert_equal 'Cannot configure events when using matchers (using {:human_name=>"Park"})', exception.message
   end
   
@@ -2417,7 +2417,7 @@ class MachineWithEventMatchersTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithEventsWithTransitionsTest < Test::Unit::TestCase
+class MachineWithEventsWithTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2452,7 +2452,7 @@ class MachineWithEventsWithTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithMultipleEventsTest < Test::Unit::TestCase
+class MachineWithMultipleEventsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2482,19 +2482,19 @@ class MachineWithMultipleEventsTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithTransitionsTest < Test::Unit::TestCase
+class MachineWithTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
   end
   
   def test_should_require_on_event
-    exception = assert_raise(ArgumentError) { @machine.transition(:parked => :idling) }
+    exception = assert_raises(ArgumentError) { @machine.transition(:parked => :idling) }
     assert_equal 'Must specify :on event', exception.message
   end
   
   def test_should_not_allow_except_on_option
-    exception = assert_raise(ArgumentError) {@machine.transition(:except_on => :ignite, :on => :ignite)}
+    exception = assert_raises(ArgumentError) {@machine.transition(:except_on => :ignite, :on => :ignite)}
     assert_equal 'Invalid key(s): except_on', exception.message
   end
   
@@ -2568,7 +2568,7 @@ class MachineWithTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithTransitionCallbacksTest < Test::Unit::TestCase
+class MachineWithTransitionCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :callbacks
@@ -2588,7 +2588,7 @@ class MachineWithTransitionCallbacksTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_method_not_specified
-    exception = assert_raise(ArgumentError) {@machine.before_transition :to => :idling}
+    exception = assert_raises(ArgumentError) {@machine.before_transition :to => :idling}
     assert_equal 'Method(s) for callback must be specified', exception.message
   end
   
@@ -2711,7 +2711,7 @@ class MachineWithTransitionCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithFailureCallbacksTest < Test::Unit::TestCase
+class MachineWithFailureCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :callbacks
@@ -2725,12 +2725,12 @@ class MachineWithFailureCallbacksTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_implicit_option_specified
-    exception = assert_raise(ArgumentError) {@machine.after_failure :invalid => :valid, :do => lambda {}}
+    exception = assert_raises(ArgumentError) {@machine.after_failure :invalid => :valid, :do => lambda {}}
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_raise_exception_if_method_not_specified
-    exception = assert_raise(ArgumentError) {@machine.after_failure :on => :ignite}
+    exception = assert_raises(ArgumentError) {@machine.after_failure :on => :ignite}
     assert_equal 'Method(s) for callback must be specified', exception.message
   end
   
@@ -2757,7 +2757,7 @@ class MachineWithFailureCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithPathsTest < Test::Unit::TestCase
+class MachineWithPathsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2781,7 +2781,7 @@ class MachineWithPathsTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithOwnerSubclassTest < Test::Unit::TestCase
+class MachineWithOwnerSubclassTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2789,7 +2789,7 @@ class MachineWithOwnerSubclassTest < Test::Unit::TestCase
   end
   
   def test_should_have_a_different_collection_of_state_machines
-    assert_not_same @klass.state_machines, @subclass.state_machines
+    refute_same @klass.state_machines, @subclass.state_machines
   end
   
   def test_should_have_the_same_attribute_associated_state_machines
@@ -2797,7 +2797,7 @@ class MachineWithOwnerSubclassTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithExistingMachinesOnOwnerClassTest < Test::Unit::TestCase
+class MachineWithExistingMachinesOnOwnerClassTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2816,7 +2816,7 @@ class MachineWithExistingMachinesOnOwnerClassTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithExistingMachinesWithSameAttributesOnOwnerClassTest < Test::Unit::TestCase
+class MachineWithExistingMachinesWithSameAttributesOnOwnerClassTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2885,7 +2885,7 @@ class MachineWithExistingMachinesWithSameAttributesOnOwnerClassTest < Test::Unit
   end
 end
 
-class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < Test::Unit::TestCase
+class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2903,7 +2903,7 @@ class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < Test::U
   def test_should_copy_sibling_machines_to_subclass_after_new_state
     subclass_machine = @subclass.state_machine(:state) {}
     subclass_machine.state :first_gear
-    assert_not_equal @klass.state_machine(:public_state), @subclass.state_machine(:public_state)
+    refute_equal @klass.state_machine(:public_state), @subclass.state_machine(:public_state)
   end
   
   def test_should_copy_new_states_to_sibling_machines
@@ -2915,7 +2915,7 @@ class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < Test::U
   end
 end
 
-class MachineWithNamespaceTest < Test::Unit::TestCase
+class MachineWithNamespaceTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm', :initial => :active) do
@@ -2961,7 +2961,7 @@ class MachineWithNamespaceTest < Test::Unit::TestCase
   end
 end
 
-class MachineWithCustomAttributeTest < Test::Unit::TestCase
+class MachineWithCustomAttributeTest < MiniTest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -3056,7 +3056,7 @@ class MachineWithCustomAttributeTest < Test::Unit::TestCase
   end
 end
 
-class MachineFinderWithoutExistingMachineTest < Test::Unit::TestCase
+class MachineFinderWithoutExistingMachineTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.find_or_create(@klass)
@@ -3072,7 +3072,7 @@ class MachineFinderWithoutExistingMachineTest < Test::Unit::TestCase
   end
   
   def test_should_create_a_new_machine
-    assert_not_nil @machine
+    refute_nil @machine
   end
   
   def test_should_use_default_state
@@ -3080,7 +3080,7 @@ class MachineFinderWithoutExistingMachineTest < Test::Unit::TestCase
   end
 end
 
-class MachineFinderWithExistingOnSameClassTest < Test::Unit::TestCase
+class MachineFinderWithExistingOnSameClassTest < MiniTest::Test
   def setup
     @klass = Class.new
     @existing_machine = EnumStateMachine::Machine.new(@klass)
@@ -3101,7 +3101,7 @@ class MachineFinderWithExistingOnSameClassTest < Test::Unit::TestCase
   end
 end
 
-class MachineFinderWithExistingMachineOnSuperclassTest < Test::Unit::TestCase
+class MachineFinderWithExistingMachineOnSuperclassTest < MiniTest::Test
   def setup
     integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -3141,13 +3141,13 @@ class MachineFinderWithExistingMachineOnSuperclassTest < Test::Unit::TestCase
   def test_should_create_a_new_machine_if_given_options
     machine = EnumStateMachine::Machine.find_or_create(@klass, :status, :initial => :parked)
     
-    assert_not_nil machine
-    assert_not_same machine, @base_machine
+    refute_nil machine
+    refute_same machine, @base_machine
   end
   
   def test_should_create_a_new_machine_if_given_block
-    assert_not_nil @machine
-    assert_not_same @machine, @base_machine
+    refute_nil @machine
+    refute_same @machine, @base_machine
   end
   
   def test_should_copy_the_base_attribute
@@ -3180,7 +3180,7 @@ class MachineFinderWithExistingMachineOnSuperclassTest < Test::Unit::TestCase
   end
 end
 
-class MachineFinderCustomOptionsTest < Test::Unit::TestCase
+class MachineFinderCustomOptionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.find_or_create(@klass, :status, :initial => :parked)
@@ -3200,7 +3200,7 @@ begin
   # Load library
   require 'graphviz'
   
-  class MachineDrawingTest < Test::Unit::TestCase
+  class MachineDrawingTest < MiniTest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3212,7 +3212,7 @@ begin
     end
     
     def test_should_raise_exception_if_invalid_option_specified
-      assert_raise(ArgumentError) {@machine.draw(:invalid => true)}
+      assert_raises(ArgumentError) {@machine.draw(:invalid => true)}
     end
     
     def test_should_save_file_with_class_name_by_default
@@ -3269,7 +3269,7 @@ begin
     end
   end
   
-  class MachineDrawingWithIntegerStatesTest < Test::Unit::TestCase
+  class MachineDrawingWithIntegerStatesTest < MiniTest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3300,7 +3300,7 @@ begin
     end
   end
   
-  class MachineDrawingWithNilStatesTest < Test::Unit::TestCase
+  class MachineDrawingWithNilStatesTest < MiniTest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3330,7 +3330,7 @@ begin
     end
   end
   
-  class MachineDrawingWithDynamicStatesTest < Test::Unit::TestCase
+  class MachineDrawingWithDynamicStatesTest < MiniTest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3360,7 +3360,10 @@ begin
     end
   end
   
-  class MachineClassDrawingTest < Test::Unit::TestCase
+  class MachineClassDrawingTest < MiniTest::Test
+    # Needed explicitly because of Simplecov weirdness
+    require File.expand_path("#{File.dirname(__FILE__)}/../files/switch")
+
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3372,7 +3375,7 @@ begin
     end
     
     def test_should_raise_exception_if_no_class_names_specified
-      exception = assert_raise(ArgumentError) {EnumStateMachine::Machine.draw(nil)}
+      exception = assert_raises(ArgumentError) {EnumStateMachine::Machine.draw(nil)}
       assert_equal 'At least one class must be specified', exception.message
     end
     
@@ -3383,11 +3386,11 @@ begin
     
     def test_should_allow_path_and_format_to_be_customized
       EnumStateMachine::Machine.draw('Switch', :file => File.expand_path("#{File.dirname(__FILE__)}/../files/switch.rb"), :path => "#{File.dirname(__FILE__)}/", :format => 'jpg')
-      assert File.exist?("#{File.dirname(__FILE__)}/#{Switch.name}_state.jpg")
+      assert File.exist?("#{File.dirname(__FILE__)}/#{::Switch.name}_state.jpg")
     end
     
     def teardown
-      FileUtils.rm Dir["{.,#{File.dirname(__FILE__)}}/#{Switch.name}_state.{jpg,png}"]
+      FileUtils.rm Dir["{.,#{File.dirname(__FILE__)}}/#{::Switch.name}_state.{jpg,png}"]
     end
   end
 rescue LoadError
