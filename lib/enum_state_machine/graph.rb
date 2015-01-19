@@ -35,7 +35,8 @@ module EnumStateMachine
     # * <tt>:orientation</tt> - The direction of the graph ("portrait" or
     #   "landscape").  Default is "portrait".
     def initialize(name, options = {})
-      options = {:path => '.', :format => 'png', :font => 'Arial', :orientation => 'portrait'}.merge(options)
+      font = (RUBY_PLATFORM =~ /darwin/) ? 'ArialMT' : 'Arial'
+      options = {:path => '.', :format => 'png', :font => font, :orientation => 'portrait'}.merge(options)
       assert_valid_keys(options, :path, :format, :font, :orientation)
       
       @font = options[:font]
