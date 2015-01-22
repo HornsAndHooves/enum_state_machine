@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class PathCollectionByDefaultTest < Test::Unit::TestCase
+class PathCollectionByDefaultTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -45,7 +45,7 @@ class PathCollectionByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class PathCollectionTest < Test::Unit::TestCase
+class PathCollectionTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -53,22 +53,28 @@ class PathCollectionTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {EnumStateMachine::PathCollection.new(@object, @machine, :invalid => true)}
+    exception = assert_raises(ArgumentError) {
+      EnumStateMachine::PathCollection.new(@object, @machine, :invalid => true)
+    }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
   def test_should_raise_exception_if_invalid_from_state_specified
-    exception = assert_raise(IndexError) {EnumStateMachine::PathCollection.new(@object, @machine, :from => :invalid)}
+    exception = assert_raises(IndexError) {
+      EnumStateMachine::PathCollection.new(@object, @machine, :from => :invalid)
+    }
     assert_equal ':invalid is an invalid name', exception.message
   end
   
   def test_should_raise_exception_if_invalid_to_state_specified
-    exception = assert_raise(IndexError) {EnumStateMachine::PathCollection.new(@object, @machine, :to => :invalid)}
+    exception = assert_raises(IndexError) {
+      EnumStateMachine::PathCollection.new(@object, @machine, :to => :invalid)
+    }
     assert_equal ':invalid is an invalid name', exception.message
   end
 end
 
-class PathCollectionWithPathsTest < Test::Unit::TestCase
+class PathCollectionWithPathsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -114,7 +120,7 @@ class PathCollectionWithPathsTest < Test::Unit::TestCase
   end
 end
 
-class PathWithGuardedPathsTest < Test::Unit::TestCase
+class PathWithGuardedPathsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -139,7 +145,7 @@ class PathWithGuardedPathsTest < Test::Unit::TestCase
   end
 end
 
-class PathCollectionWithDuplicateNodesTest < Test::Unit::TestCase
+class PathCollectionWithDuplicateNodesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -169,7 +175,7 @@ class PathCollectionWithDuplicateNodesTest < Test::Unit::TestCase
   end
 end
 
-class PathCollectionWithFromStateTest < Test::Unit::TestCase
+class PathCollectionWithFromStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -195,7 +201,7 @@ class PathCollectionWithFromStateTest < Test::Unit::TestCase
   end
 end
 
-class PathCollectionWithToStateTest < Test::Unit::TestCase
+class PathCollectionWithToStateTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -223,7 +229,7 @@ class PathCollectionWithToStateTest < Test::Unit::TestCase
   end
 end
 
-class PathCollectionWithDeepPathsTest < Test::Unit::TestCase
+class PathCollectionWithDeepPathsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class MachineCollectionByDefaultTest < Test::Unit::TestCase
+class MachineCollectionByDefaultTest < MiniTest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
   end
@@ -10,7 +10,7 @@ class MachineCollectionByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionStateInitializationTest < Test::Unit::TestCase
+class MachineCollectionStateInitializationTest < MiniTest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
     
@@ -32,7 +32,7 @@ class MachineCollectionStateInitializationTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    assert_raise(ArgumentError) {@machines.initialize_states(@object, :invalid => true)}
+    assert_raises(ArgumentError) {@machines.initialize_states(@object, :invalid => true)}
   end
   
   def test_should_only_initialize_static_states_prior_to_block
@@ -110,7 +110,7 @@ class MachineCollectionStateInitializationTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionFireTest < Test::Unit::TestCase
+class MachineCollectionFireTest < MiniTest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
     
@@ -144,10 +144,14 @@ class MachineCollectionFireTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_invalid_event_specified
-    exception = assert_raise(EnumStateMachine::InvalidEvent) { @machines.fire_events(@object, :invalid) }
+    exception = assert_raises(EnumStateMachine::InvalidEvent) {
+      @machines.fire_events(@object, :invalid)
+    }
     assert_equal :invalid, exception.event
     
-    exception = assert_raise(EnumStateMachine::InvalidEvent) { @machines.fire_events(@object, :ignite, :invalid) }
+    exception = assert_raises(EnumStateMachine::InvalidEvent) {
+      @machines.fire_events(@object, :ignite, :invalid)
+    }
     assert_equal :invalid, exception.event
   end
   
@@ -189,7 +193,7 @@ class MachineCollectionFireTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionFireWithTransactionsTest < Test::Unit::TestCase
+class MachineCollectionFireWithTransactionsTest < MiniTest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
     
@@ -263,7 +267,7 @@ class MachineCollectionFireWithTransactionsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionFireWithValidationsTest < Test::Unit::TestCase
+class MachineCollectionFireWithValidationsTest < MiniTest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -331,7 +335,7 @@ class MachineCollectionFireWithValidationsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithoutEventsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithoutEventsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -355,7 +359,7 @@ class MachineCollectionTransitionsWithoutEventsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithBlankEventsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithBlankEventsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -379,7 +383,7 @@ class MachineCollectionTransitionsWithBlankEventsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithInvalidEventsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithInvalidEventsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -403,7 +407,7 @@ class MachineCollectionTransitionsWithInvalidEventsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithoutTransitionTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithoutTransitionTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -428,7 +432,7 @@ class MachineCollectionTransitionsWithoutTransitionTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithTransitionTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithTransitionTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -452,7 +456,7 @@ class MachineCollectionTransitionsWithTransitionTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithSameActionsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithSameActionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -481,7 +485,7 @@ class MachineCollectionTransitionsWithSameActionsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionTransitionsWithDifferentActionsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithDifferentActionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -506,7 +510,7 @@ class MachineCollectionTransitionsWithDifferentActionsTest < Test::Unit::TestCas
   end
 end
 
-class MachineCollectionTransitionsWithExisitingTransitionsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithExisitingTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -530,7 +534,7 @@ class MachineCollectionTransitionsWithExisitingTransitionsTest < Test::Unit::Tes
   end
 end
 
-class MachineCollectionTransitionsWithCustomOptionsTest < Test::Unit::TestCase
+class MachineCollectionTransitionsWithCustomOptionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -549,7 +553,7 @@ class MachineCollectionTransitionsWithCustomOptionsTest < Test::Unit::TestCase
   end
 end
 
-class MachineCollectionFireAttributesWithValidationsTest < Test::Unit::TestCase
+class MachineCollectionFireAttributesWithValidationsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :errors

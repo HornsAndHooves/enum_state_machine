@@ -386,15 +386,20 @@ module EnumStateMachine
         end
       end
       
-      # Describes the current validation errors on the given object.  If none
+      # Describe the current validation errors on the given object.  If none
       # are specific, then the default error is interpeted as a "halt".
       def errors_for(object)
         object.errors.empty? ? 'Transition halted' : object.errors.full_messages * ', '
       end
       
-      # Resets any errors previously added when invalidating the given object
+      # Reset any errors previously added when invalidating the given object.
       def reset(object)
         object.errors.clear if supports_validations?
+      end
+
+      # Run state events around the object's validation process.
+      def around_validation(object)
+        object.class.state_machines.transitions(object, action, :after => false).perform { yield }
       end
       
       protected
@@ -417,23 +422,22 @@ module EnumStateMachine
           false
         end
         
-        # Gets the terminator to use for callbacks
+        # Get the terminator to use for callbacks.
         def callback_terminator
           @terminator ||= lambda {|result| result == false}
         end
         
-        # Determines the base scope to use when looking up translations
+        # Determine the base scope to use when looking up translations.
         def i18n_scope(klass)
           klass.i18n_scope
         end
         
-        # The default options to use when generating messages for validation
-        # errors
+        # The default options to use when generating messages for validation errors.
         def default_error_message_options(object, attribute, message)
           {:message => @messages[message]}
         end
         
-        # Translates the given key / value combo.  Translation keys are looked
+        # Translate the given key / value combo.  Translation keys are looked
         # up in the following order:
         # * <tt>#{i18n_scope}.state_machines.#{model_name}.#{machine_name}.#{plural_key}.#{value}</tt>
         # * <tt>#{i18n_scope}.state_machines.#{model_name}.#{plural_key}.#{value}</tt>
@@ -459,7 +463,7 @@ module EnumStateMachine
           klass.lookup_ancestors
         end
         
-        # Initializes class-level extensions and defaults for this machine
+        # Initialize class-level extensions and defaults for this machine.
         def after_initialize
           super
           load_locale
@@ -467,18 +471,18 @@ module EnumStateMachine
           add_default_callbacks
         end
         
-        # Loads any locale files needed for translating validation errors
+        # Load any locale files needed for translating validation errors.
         def load_locale
           I18n.load_path.unshift(@integration.locale_path) unless I18n.load_path.include?(@integration.locale_path)
         end
         
-        # Loads extensions to ActiveModel's Observers
+        # Load extensions to ActiveModel's Observers.
         def load_observer_extensions
           require 'enum_state_machine/integrations/active_model/observer'
           require 'enum_state_machine/integrations/active_model/observer_update'
         end
         
-        # Adds a set of default callbacks that utilize the Observer extensions
+        # Add a set of default callbacks that utilize the Observer extensions.
         def add_default_callbacks
           if supports_observers?
             callbacks[:before] << Callback.new(:before) {|object, transition| notify(:before, object, transition)}
@@ -487,7 +491,7 @@ module EnumStateMachine
           end
         end
         
-        # Skips defining reader/writer methods since this is done automatically
+        # Skip defining reader/writer methods since this is done automatically.
         def define_state_accessor
           name = self.name
           
@@ -497,24 +501,19 @@ module EnumStateMachine
           end if supports_validations?
         end
         
-        # Adds hooks into validation for automatically firing events
+        # Add hooks into validation for automatically firing events.
         def define_action_helpers
           super
           define_validation_hook if runs_validations_on_action?
         end
         
-        # Hooks into validations by defining around callbacks for the
-        # :validation event
+        # Hook into validations by defining around callbacks for the
+        # :validation event.
         def define_validation_hook
           owner_class.set_callback(:validation, :around, self, :prepend => true)
         end
         
-        # Runs state events around the object's validation process
-        def around_validation(object)
-          object.class.state_machines.transitions(object, action, :after => false).perform { yield }
-        end
-        
-        # Creates a new callback in the callback chain, always inserting it
+        # Create a new callback in the callback chain, always inserting it
         # before the default Observer callbacks that were created after
         # initialization.
         def add_callback(type, options, &block)
@@ -529,21 +528,21 @@ module EnumStateMachine
           end
         end
         
-        # Configures new states with the built-in humanize scheme
+        # Configure new states with the built-in humanize scheme.
         def add_states(new_states)
           super.each do |new_state|
             new_state.human_name = lambda {|state, klass| translate(klass, :state, state.name)}
           end
         end
         
-        # Configures new event with the built-in humanize scheme
+        # Configure new events with the built-in humanize scheme.
         def add_events(new_events)
           super.each do |new_event|
             new_event.human_name = lambda {|event, klass| translate(klass, :event, event.name)}
           end
         end
         
-        # Notifies observers on the given object that a callback occurred
+        # Notify observers on the given object that a callback occurred
         # involving the given transition.  This will attempt to call the
         # following methods on observers:
         # * <tt>#{type}_#{qualified_event}_from_#{from}_to_#{to}</tt>

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class PathByDefaultTest < Test::Unit::TestCase
+class PathByDefaultTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -52,7 +52,7 @@ class PathByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class PathTest < Test::Unit::TestCase
+class PathTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -60,12 +60,14 @@ class PathTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {EnumStateMachine::Path.new(@object, @machine, :invalid => true)}
+    exception = assert_raises(ArgumentError) {
+      EnumStateMachine::Path.new(@object, @machine, :invalid => true)
+    }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
 end
 
-class PathWithoutTransitionsTest < Test::Unit::TestCase
+class PathWithoutTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -87,7 +89,7 @@ class PathWithoutTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class PathWithTransitionsTest < Test::Unit::TestCase
+class PathWithTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -139,7 +141,7 @@ class PathWithTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class PathWithDuplicatesTest < Test::Unit::TestCase
+class PathWithDuplicatesTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -170,7 +172,7 @@ class PathWithDuplicatesTest < Test::Unit::TestCase
   end
 end
 
-class PathWithAvailableTransitionsTest < Test::Unit::TestCase
+class PathWithAvailableTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -223,7 +225,7 @@ class PathWithAvailableTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class PathWithGuardedTransitionsTest < Test::Unit::TestCase
+class PathWithGuardedTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -264,7 +266,7 @@ class PathWithGuardedTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class PathWithEncounteredTransitionsTest < Test::Unit::TestCase
+class PathWithEncounteredTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -297,7 +299,7 @@ class PathWithEncounteredTransitionsTest < Test::Unit::TestCase
   end
 end
 
-class PathWithUnreachedTargetTest < Test::Unit::TestCase
+class PathWithUnreachedTargetTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -326,7 +328,7 @@ class PathWithUnreachedTargetTest < Test::Unit::TestCase
   end
 end
 
-class PathWithReachedTargetTest < Test::Unit::TestCase
+class PathWithReachedTargetTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -359,7 +361,7 @@ class PathWithReachedTargetTest < Test::Unit::TestCase
   end
 end
 
-class PathWithAvailableTransitionsAfterReachingTargetTest < Test::Unit::TestCase
+class PathWithAvailableTransitionsAfterReachingTargetTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -397,7 +399,7 @@ class PathWithAvailableTransitionsAfterReachingTargetTest < Test::Unit::TestCase
   end
 end
 
-class PathWithDeepTargetTest < Test::Unit::TestCase
+class PathWithDeepTargetTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -436,7 +438,7 @@ class PathWithDeepTargetTest < Test::Unit::TestCase
   end
 end
 
-class PathWithDeepTargetReachedTest < Test::Unit::TestCase
+class PathWithDeepTargetReachedTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)

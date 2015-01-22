@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 require 'rubygems'
 
 module BaseTest  
-  class IntegrationTest < Test::Unit::TestCase
+  class IntegrationTest < MiniTest::Test
     def test_should_have_an_integration_name
       assert_equal :base, EnumStateMachine::Integrations::Base.integration_name
     end
@@ -26,7 +26,7 @@ module BaseTest
     end
   end
   
-  class IncludedTest < Test::Unit::TestCase
+  class IncludedTest < MiniTest::Test
     def setup
       @integration = Module.new
       EnumStateMachine::Integrations.const_set('Custom', @integration)

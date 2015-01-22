@@ -241,7 +241,7 @@ class TrafficLight
   end
 end
 
-class VehicleTest < Test::Unit::TestCase
+class VehicleTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -259,7 +259,7 @@ class VehicleTest < Test::Unit::TestCase
   end
 end
 
-class VehicleUnsavedTest < Test::Unit::TestCase
+class VehicleUnsavedTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -269,12 +269,12 @@ class VehicleUnsavedTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_checking_invalid_state
-    assert_raise(IndexError) { @vehicle.state?(:invalid) }
+    assert_raises(IndexError) { @vehicle.state?(:invalid) }
   end
   
   def test_should_raise_exception_if_getting_name_of_invalid_state
     @vehicle.state = 'invalid'
-    assert_raise(ArgumentError) { @vehicle.state_name }
+    assert_raises(ArgumentError) { @vehicle.state_name }
   end
   
   def test_should_be_parked
@@ -318,7 +318,7 @@ class VehicleUnsavedTest < Test::Unit::TestCase
   
   def test_should_have_a_transition_for_ignite
     transition = @vehicle.ignite_transition
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'idling', transition.to
     assert_equal :ignite, transition.event
@@ -357,7 +357,7 @@ class VehicleUnsavedTest < Test::Unit::TestCase
   end
   
   def test_should_raise_error_with_invalid_event_through_generic_event_runer
-    assert_raise(IndexError) { @vehicle.fire_state_event(:invalid) }
+    assert_raises(IndexError) { @vehicle.fire_state_event(:invalid) }
   end
   
   def test_should_allow_ignite
@@ -438,7 +438,7 @@ class VehicleUnsavedTest < Test::Unit::TestCase
   end
 end
 
-class VehicleParkedTest < Test::Unit::TestCase
+class VehicleParkedTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -481,7 +481,7 @@ class VehicleParkedTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_repair_not_allowed!
-    exception = assert_raise(EnumStateMachine::InvalidTransition) {@vehicle.repair!}
+    exception = assert_raises(EnumStateMachine::InvalidTransition) {@vehicle.repair!}
     assert_equal @vehicle, exception.object
     assert_equal Vehicle.state_machine(:state), exception.machine
     assert_equal :repair, exception.event
@@ -489,7 +489,7 @@ class VehicleParkedTest < Test::Unit::TestCase
   end
 end
 
-class VehicleIdlingTest < Test::Unit::TestCase
+class VehicleIdlingTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -508,7 +508,7 @@ class VehicleIdlingTest < Test::Unit::TestCase
   end
   
   def test_should_track_time_elapsed
-    assert_not_nil @vehicle.time_elapsed
+    refute_nil @vehicle.time_elapsed
   end
   
   def test_should_allow_park
@@ -546,7 +546,7 @@ class VehicleIdlingTest < Test::Unit::TestCase
   end
 end
 
-class VehicleFirstGearTest < Test::Unit::TestCase
+class VehicleFirstGearTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -586,7 +586,7 @@ class VehicleFirstGearTest < Test::Unit::TestCase
   end
 end
 
-class VehicleSecondGearTest < Test::Unit::TestCase
+class VehicleSecondGearTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -626,7 +626,7 @@ class VehicleSecondGearTest < Test::Unit::TestCase
   end
 end
 
-class VehicleThirdGearTest < Test::Unit::TestCase
+class VehicleThirdGearTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -666,7 +666,7 @@ class VehicleThirdGearTest < Test::Unit::TestCase
   end
 end
 
-class VehicleStalledTest < Test::Unit::TestCase
+class VehicleStalledTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -729,7 +729,7 @@ class VehicleStalledTest < Test::Unit::TestCase
   end
 end
 
-class VehicleRepairedTest < Test::Unit::TestCase
+class VehicleRepairedTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -747,7 +747,7 @@ class VehicleRepairedTest < Test::Unit::TestCase
   end
 end
 
-class VehicleLockedTest < Test::Unit::TestCase
+class VehicleLockedTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.state = 'locked'
@@ -774,7 +774,7 @@ class VehicleLockedTest < Test::Unit::TestCase
   end
 end
 
-class VehicleWithParallelEventsTest < Test::Unit::TestCase
+class VehicleWithParallelEventsTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -793,7 +793,9 @@ class VehicleWithParallelEventsTest < Test::Unit::TestCase
   end
   
   def test_should_raise_exception_if_any_event_cannot_transition_on_bang
-    exception = assert_raise(EnumStateMachine::InvalidParallelTransition) { @vehicle.fire_events!(:ignite, :cancel_insurance) }
+    exception = assert_raises(EnumStateMachine::InvalidParallelTransition) {
+      @vehicle.fire_events!(:ignite, :cancel_insurance)
+    }
     assert_equal @vehicle, exception.object
     assert_equal [:ignite, :cancel_insurance], exception.events
   end
@@ -808,7 +810,7 @@ class VehicleWithParallelEventsTest < Test::Unit::TestCase
   end
 end
 
-class VehicleWithEventAttributesTest < Test::Unit::TestCase
+class VehicleWithEventAttributesTest < MiniTest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.state_event = 'ignite'
@@ -836,7 +838,7 @@ class VehicleWithEventAttributesTest < Test::Unit::TestCase
   end
 end
 
-class MotorcycleTest < Test::Unit::TestCase
+class MotorcycleTest < MiniTest::Test
   def setup
     @motorcycle = Motorcycle.new
   end
@@ -880,7 +882,7 @@ class MotorcycleTest < Test::Unit::TestCase
   end
 end
 
-class CarTest < Test::Unit::TestCase
+class CarTest < MiniTest::Test
   def setup
     @car = Car.new
   end
@@ -927,7 +929,7 @@ class CarTest < Test::Unit::TestCase
   end
 end
 
-class CarBackingUpTest < Test::Unit::TestCase
+class CarBackingUpTest < MiniTest::Test
   def setup
     @car = Car.new
     @car.reverse
@@ -970,7 +972,7 @@ class CarBackingUpTest < Test::Unit::TestCase
   end
 end
 
-class AutoShopAvailableTest < Test::Unit::TestCase
+class AutoShopAvailableTest < MiniTest::Test
   def setup
     @auto_shop = AutoShop.new
   end
@@ -988,7 +990,7 @@ class AutoShopAvailableTest < Test::Unit::TestCase
   end
 end
 
-class AutoShopBusyTest < Test::Unit::TestCase
+class AutoShopBusyTest < MiniTest::Test
   def setup
     @auto_shop = AutoShop.new
     @auto_shop.tow_vehicle
@@ -1011,7 +1013,7 @@ class AutoShopBusyTest < Test::Unit::TestCase
   end
 end
 
-class TrafficLightStopTest < Test::Unit::TestCase
+class TrafficLightStopTest < MiniTest::Test
   def setup
     @light = TrafficLight.new
     @light.state = 'stop'
@@ -1035,7 +1037,7 @@ class TrafficLightStopTest < Test::Unit::TestCase
   end
 end
 
-class TrafficLightProceedTest < Test::Unit::TestCase
+class TrafficLightProceedTest < MiniTest::Test
   def setup
     @light = TrafficLight.new
     @light.state = 'proceed'
@@ -1050,7 +1052,7 @@ class TrafficLightProceedTest < Test::Unit::TestCase
   end
 end
 
-class TrafficLightCautionTest < Test::Unit::TestCase
+class TrafficLightCautionTest < MiniTest::Test
   def setup
     @light = TrafficLight.new
     @light.state = 'caution'

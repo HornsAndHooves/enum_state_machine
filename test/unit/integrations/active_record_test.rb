@@ -97,7 +97,7 @@ module ActiveRecordTest
     end
     
     def test_should_have_a_locale_path
-      assert_not_nil EnumStateMachine::Integrations::ActiveRecord.locale_path
+      refute_nil EnumStateMachine::Integrations::ActiveRecord.locale_path
     end
   end
   
@@ -608,7 +608,7 @@ module ActiveRecordTest
     end
     
     def test_should_raise_exception_for_predicate_if_invalid_state_specified
-      assert_raise(IndexError) { @record.state?(:invalid) }
+      assert_raises(IndexError) { @record.state?(:invalid) }
     end
   end
   
@@ -670,7 +670,7 @@ module ActiveRecordTest
     end
     
     def test_should_raise_exception_for_predicate_if_invalid_state_specified
-      assert_raise(IndexError) { @record.status?(:invalid) }
+      assert_raises(IndexError) { @record.status?(:invalid) }
     end
     
     def test_should_set_initial_state_on_created_object
@@ -710,7 +710,7 @@ module ActiveRecordTest
     end
     
     def test_should_not_delegate_attribute_predicate_with_different_attribute
-      assert_raise(ArgumentError) { @record.public_state? }
+      assert_raises(ArgumentError) { @record.public_state? }
     end
     
     def teardown
@@ -800,7 +800,7 @@ module ActiveRecordTest
       end
     else
       def test_should_update_record
-        assert_not_equal @timestamp, @record.updated_at
+        refute_equal @timestamp, @record.updated_at
       end
     end
   end
@@ -1775,12 +1775,12 @@ module ActiveRecordTest
     
     def test_should_fail_if_event_is_invalid
       @record.state_event = 'invalid'
-      assert_raise(ActiveRecord::RecordInvalid) { @record.save! }
+      assert_raises(ActiveRecord::RecordInvalid) { @record.save! }
     end
     
     def test_should_fail_if_event_has_no_transition
       @record.state = 'idling'
-      assert_raise(ActiveRecord::RecordInvalid) { @record.save! }
+      assert_raises(ActiveRecord::RecordInvalid) { @record.save! }
     end
     
     def test_should_be_successful_if_event_has_transition

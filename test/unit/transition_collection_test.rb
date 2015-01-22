@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class TransitionCollectionTest < Test::Unit::TestCase
+class TransitionCollectionTest < MiniTest::Test
   def test_should_raise_exception_if_invalid_option_specified
-    exception = assert_raise(ArgumentError) {EnumStateMachine::TransitionCollection.new([], :invalid => true)}
+    exception = assert_raises(ArgumentError) {
+      EnumStateMachine::TransitionCollection.new([], :invalid => true)
+    }
     assert_equal 'Invalid key(s): invalid', exception.message
   end
   
@@ -15,7 +17,7 @@ class TransitionCollectionTest < Test::Unit::TestCase
     
     @object = @klass.new
     
-    exception = assert_raise(ArgumentError) do
+    exception = assert_raises(ArgumentError) do
       EnumStateMachine::TransitionCollection.new([
         EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling),
         EnumStateMachine::Transition.new(@object, @machine, :ignite, :parked, :idling)
@@ -25,7 +27,7 @@ class TransitionCollectionTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionByDefaultTest < Test::Unit::TestCase
+class TransitionCollectionByDefaultTest < MiniTest::Test
   def setup
     @transitions = EnumStateMachine::TransitionCollection.new
   end
@@ -47,7 +49,7 @@ class TransitionCollectionByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionEmptyWithoutBlockTest < Test::Unit::TestCase
+class TransitionCollectionEmptyWithoutBlockTest < MiniTest::Test
   def setup
     @transitions = EnumStateMachine::TransitionCollection.new
     @result = @transitions.perform
@@ -59,13 +61,13 @@ class TransitionCollectionEmptyWithoutBlockTest < Test::Unit::TestCase
 end
 
 
-class TransitionCollectionEmptyWithBlockTest < Test::Unit::TestCase
+class TransitionCollectionEmptyWithBlockTest < MiniTest::Test
   def setup
     @transitions = EnumStateMachine::TransitionCollection.new
   end
   
   def test_should_raise_exception_if_perform_raises_exception
-    assert_raise(ArgumentError) { @transitions.perform { raise ArgumentError } }
+    assert_raises(ArgumentError) { @transitions.perform { raise ArgumentError } }
   end
   
   def test_should_use_block_result_if_non_boolean
@@ -81,7 +83,7 @@ class TransitionCollectionEmptyWithBlockTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionInvalidTest < Test::Unit::TestCase
+class TransitionCollectionInvalidTest < MiniTest::Test
   def setup
     @transitions = EnumStateMachine::TransitionCollection.new([false])
   end
@@ -101,7 +103,7 @@ class TransitionCollectionInvalidTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionPartialInvalidTest < Test::Unit::TestCase
+class TransitionCollectionPartialInvalidTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :ran_transaction
@@ -169,7 +171,7 @@ class TransitionCollectionPartialInvalidTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionValidTest < Test::Unit::TestCase
+class TransitionCollectionValidTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :persisted
@@ -225,7 +227,7 @@ class TransitionCollectionValidTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithoutTransactionsTest < Test::Unit::TestCase
+class TransitionCollectionWithoutTransactionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :ran_transaction
@@ -253,7 +255,7 @@ class TransitionCollectionWithoutTransactionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithTransactionsTest < Test::Unit::TestCase
+class TransitionCollectionWithTransactionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_accessor :running_transaction, :cancelled_transaction
@@ -317,7 +319,7 @@ class TransitionCollectionWithTransactionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithEmptyActionsTest < Test::Unit::TestCase
+class TransitionCollectionWithEmptyActionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -357,7 +359,7 @@ class TransitionCollectionWithEmptyActionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithSkippedActionsTest < Test::Unit::TestCase
+class TransitionCollectionWithSkippedActionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :actions
@@ -425,7 +427,7 @@ class TransitionCollectionWithSkippedActionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithSkippedActionsAndBlockTest < Test::Unit::TestCase
+class TransitionCollectionWithSkippedActionsAndBlockTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -458,7 +460,7 @@ class TransitionCollectionWithSkippedActionsAndBlockTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithDuplicateActionsTest < Test::Unit::TestCase
+class TransitionCollectionWithDuplicateActionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :actions
@@ -505,7 +507,7 @@ class TransitionCollectionWithDuplicateActionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithDifferentActionsTest < Test::Unit::TestCase
+class TransitionCollectionWithDifferentActionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :actions
@@ -680,7 +682,7 @@ class TransitionCollectionWithDifferentActionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithMixedActionsTest < Test::Unit::TestCase
+class TransitionCollectionWithMixedActionsTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def save
@@ -720,7 +722,7 @@ class TransitionCollectionWithMixedActionsTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithBlockTest < Test::Unit::TestCase
+class TransitionCollectionWithBlockTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :actions
@@ -765,7 +767,7 @@ class TransitionCollectionWithBlockTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithActionFailedTest < Test::Unit::TestCase
+class TransitionCollectionWithActionFailedTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def save
@@ -824,7 +826,7 @@ class TransitionCollectionWithActionFailedTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithActionErrorTest < Test::Unit::TestCase
+class TransitionCollectionWithActionErrorTest < MiniTest::Test
   def setup
     @klass = Class.new do
       def save
@@ -889,7 +891,7 @@ class TransitionCollectionWithActionErrorTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithCallbacksTest < Test::Unit::TestCase
+class TransitionCollectionWithCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1023,7 +1025,7 @@ class TransitionCollectionWithCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::TestCase
+class TransitionCollectionWithBeforeCallbackHaltTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1073,7 +1075,7 @@ class TransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestCase
+class TransitionCollectionWithAfterCallbackHaltTest < MiniTest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1119,7 +1121,7 @@ class TransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestCase
   end
 end
 
-class TransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::TestCase
+class TransitionCollectionWithSkippedAfterCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1153,7 +1155,7 @@ class TransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::TestCase
 end
 
 if EnumStateMachine::Transition.pause_supported?
-  class TransitionCollectionWithSkippedAfterCallbacksAndAroundCallbacksTest < Test::Unit::TestCase
+  class TransitionCollectionWithSkippedAfterCallbacksAndAroundCallbacksTest < MiniTest::Test
     def setup
       @klass = Class.new
       
@@ -1193,7 +1195,7 @@ if EnumStateMachine::Transition.pause_supported?
     end
   end
 else
-  class TransitionCollectionWithSkippedAfterCallbacksAndAroundCallbacksTest < Test::Unit::TestCase
+  class TransitionCollectionWithSkippedAfterCallbacksAndAroundCallbacksTest < MiniTest::Test
     def setup
       @klass = Class.new
       
@@ -1212,12 +1214,12 @@ else
     end
     
     def test_should_raise_exception
-      assert_raise(ArgumentError) { @transitions.perform }
+      assert_raises(ArgumentError) { @transitions.perform }
     end
   end
 end
 
-class TransitionCollectionWithActionHookBaseTest < Test::Unit::TestCase
+class TransitionCollectionWithActionHookBaseTest < MiniTest::Test
   def setup
     @superclass = Class.new do
       def save
@@ -1558,7 +1560,7 @@ class TransitionCollectionWithActionHookErrorTest < TransitionCollectionWithActi
   end
 end
 
-class AttributeTransitionCollectionByDefaultTest < Test::Unit::TestCase
+class AttributeTransitionCollectionByDefaultTest < MiniTest::Test
   def setup
     @transitions = EnumStateMachine::AttributeTransitionCollection.new
   end
@@ -1580,7 +1582,7 @@ class AttributeTransitionCollectionByDefaultTest < Test::Unit::TestCase
   end
 end
 
-class AttributeTransitionCollectionWithEventsTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithEventsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1623,7 +1625,7 @@ class AttributeTransitionCollectionWithEventsTest < Test::Unit::TestCase
   end
 end
 
-class AttributeTransitionCollectionWithEventTransitionsTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithEventTransitionsTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1663,7 +1665,7 @@ class AttributeTransitionCollectionWithEventTransitionsTest < Test::Unit::TestCa
   end
 end
 
-class AttributeTransitionCollectionWithActionFailedTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithActionFailedTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1706,7 +1708,7 @@ class AttributeTransitionCollectionWithActionFailedTest < Test::Unit::TestCase
   end
 end
 
-class AttributeTransitionCollectionWithActionErrorTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithActionErrorTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1746,7 +1748,7 @@ class AttributeTransitionCollectionWithActionErrorTest < Test::Unit::TestCase
   end
 end
 
-class AttributeTransitionCollectionWithCallbacksTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1813,7 +1815,7 @@ class AttributeTransitionCollectionWithCallbacksTest < Test::Unit::TestCase
   end
 end
 
-class AttributeTransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithBeforeCallbackHaltTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1845,7 +1847,7 @@ class AttributeTransitionCollectionWithBeforeCallbackHaltTest < Test::Unit::Test
   end
 end
 
-class AttributeTransitionCollectionWithBeforeCallbackErrorTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithBeforeCallbackErrorTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1873,7 +1875,7 @@ class AttributeTransitionCollectionWithBeforeCallbackErrorTest < Test::Unit::Tes
   end
 end
 
-class AttributeTransitionCollectionWithAroundCallbackBeforeYieldHaltTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithAroundCallbackBeforeYieldHaltTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1905,7 +1907,7 @@ class AttributeTransitionCollectionWithAroundCallbackBeforeYieldHaltTest < Test:
   end
 end
 
-class AttributeTransitionCollectionWithAroundAfterYieldCallbackErrorTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithAroundAfterYieldCallbackErrorTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1933,7 +1935,7 @@ class AttributeTransitionCollectionWithAroundAfterYieldCallbackErrorTest < Test:
   end
 end
 
-class AttributeTransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithSkippedAfterCallbacksTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -1974,7 +1976,7 @@ class AttributeTransitionCollectionWithSkippedAfterCallbacksTest < Test::Unit::T
   end
 end
 
-class AttributeTransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithAfterCallbackHaltTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -2006,7 +2008,7 @@ class AttributeTransitionCollectionWithAfterCallbackHaltTest < Test::Unit::TestC
   end
 end
 
-class AttributeTransitionCollectionWithAfterCallbackErrorTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithAfterCallbackErrorTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -2034,7 +2036,7 @@ class AttributeTransitionCollectionWithAfterCallbackErrorTest < Test::Unit::Test
   end
 end
 
-class AttributeTransitionCollectionWithAroundCallbackAfterYieldHaltTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithAroundCallbackAfterYieldHaltTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -2066,7 +2068,7 @@ class AttributeTransitionCollectionWithAroundCallbackAfterYieldHaltTest < Test::
   end
 end
 
-class AttributeTransitionCollectionWithAroundCallbackAfterYieldErrorTest < Test::Unit::TestCase
+class AttributeTransitionCollectionWithAroundCallbackAfterYieldErrorTest < MiniTest::Test
   def setup
     @klass = Class.new
     
@@ -2094,7 +2096,7 @@ class AttributeTransitionCollectionWithAroundCallbackAfterYieldErrorTest < Test:
   end
 end
 
-class AttributeTransitionCollectionMarshallingTest < Test::Unit::TestCase
+class AttributeTransitionCollectionMarshallingTest < MiniTest::Test
   def setup
     @klass = Class.new
     self.class.const_set('Example', @klass)

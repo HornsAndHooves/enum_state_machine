@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class IntegrationMatcherTest < Test::Unit::TestCase
+class IntegrationMatcherTest < MiniTest::Test
   def setup
     superclass = Class.new
     self.class.const_set('Vehicle', superclass)
@@ -51,7 +51,7 @@ class IntegrationMatcherTest < Test::Unit::TestCase
   end
 end
 
-class IntegrationFinderTest < Test::Unit::TestCase
+class IntegrationFinderTest < MiniTest::Test
   def test_should_find_base
     assert_equal EnumStateMachine::Integrations::Base, EnumStateMachine::Integrations.find_by_name(:base)
   end
@@ -65,7 +65,7 @@ class IntegrationFinderTest < Test::Unit::TestCase
   end
 
   def test_should_raise_an_exception_if_invalid
-    exception = assert_raise(EnumStateMachine::IntegrationNotFound) { EnumStateMachine::Integrations.find_by_name(:invalid) }
+    exception = assert_raises(EnumStateMachine::IntegrationNotFound) { EnumStateMachine::Integrations.find_by_name(:invalid) }
     assert_equal ':invalid is an invalid integration', exception.message
   end
 end

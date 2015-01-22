@@ -10,7 +10,7 @@ end
 require 'active_support/all'
 
 module ActiveModelTest
-  class BaseTestCase < Test::Unit::TestCase
+  class BaseTestCase < MiniTest::Test
     def default_test
     end
     
@@ -101,7 +101,7 @@ module ActiveModelTest
     end
     
     def test_should_have_a_locale_path
-      assert_not_nil EnumStateMachine::Integrations::ActiveModel.locale_path
+      refute_nil EnumStateMachine::Integrations::ActiveModel.locale_path
     end
   end
   
@@ -191,7 +191,7 @@ module ActiveModelTest
     end
     
     def test_should_raise_exception_for_predicate_without_parameters
-      assert_raise(ArgumentError) { @record.state? }
+      assert_raises(ArgumentError) { @record.state? }
     end
     
     def test_should_return_false_for_predicate_if_does_not_match_current_value
@@ -203,7 +203,7 @@ module ActiveModelTest
     end
     
     def test_should_raise_exception_for_predicate_if_invalid_state_specified
-      assert_raise(IndexError) { @record.state?(:invalid) }
+      assert_raises(IndexError) { @record.state?(:invalid) }
     end
   end
   

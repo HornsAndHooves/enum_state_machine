@@ -9,7 +9,7 @@ class Validateable
   end
 end
 
-class StateContextTest < Test::Unit::TestCase
+class StateContextTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -27,7 +27,7 @@ class StateContextTest < Test::Unit::TestCase
   end
 end
 
-class StateContextTransitionTest < Test::Unit::TestCase
+class StateContextTransitionTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -37,37 +37,39 @@ class StateContextTransitionTest < Test::Unit::TestCase
   end
   
   def test_should_not_allow_except_to
-    exception = assert_raise(ArgumentError) { @state_context.transition(:except_to => :idling) }
+    exception = assert_raises(ArgumentError) { @state_context.transition(:except_to => :idling) }
     assert_equal 'Invalid key(s): except_to', exception.message
   end
   
   def test_should_not_allow_except_from
-    exception = assert_raise(ArgumentError) { @state_context.transition(:except_from => :idling) }
+    exception = assert_raises(ArgumentError) { @state_context.transition(:except_from => :idling) }
     assert_equal 'Invalid key(s): except_from', exception.message
   end
   
   def test_should_not_allow_implicit_transitions
-    exception = assert_raise(ArgumentError) { @state_context.transition(:parked => :idling) }
+    exception = assert_raises(ArgumentError) { @state_context.transition(:parked => :idling) }
     assert_equal 'Invalid key(s): parked', exception.message
   end
   
   def test_should_not_allow_except_on
-    exception = assert_raise(ArgumentError) { @state_context.transition(:except_on => :park) }
+    exception = assert_raises(ArgumentError) { @state_context.transition(:except_on => :park) }
     assert_equal 'Invalid key(s): except_on', exception.message
   end
   
   def test_should_require_on_event
-    exception = assert_raise(ArgumentError) { @state_context.transition(:to => :idling) }
+    exception = assert_raises(ArgumentError) { @state_context.transition(:to => :idling) }
     assert_equal 'Must specify :on event', exception.message
   end
   
   def test_should_not_allow_missing_from_and_to
-    exception = assert_raise(ArgumentError) { @state_context.transition(:on => :ignite) }
+    exception = assert_raises(ArgumentError) { @state_context.transition(:on => :ignite) }
     assert_equal 'Must specify either :to or :from state', exception.message
   end
   
   def test_should_not_allow_from_and_to
-    exception = assert_raise(ArgumentError) { @state_context.transition(:on => :ignite, :from => :parked, :to => :idling) }
+    exception = assert_raises(ArgumentError) {
+      @state_context.transition(:on => :ignite, :from => :parked, :to => :idling)
+    }
     assert_equal 'Must specify either :to or :from state', exception.message
   end
   
@@ -130,7 +132,7 @@ class StateContextTransitionTest < Test::Unit::TestCase
   end
 end
 
-class StateContextWithMatchingTransitionTest < Test::Unit::TestCase
+class StateContextWithMatchingTransitionTest < MiniTest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -149,14 +151,14 @@ class StateContextWithMatchingTransitionTest < Test::Unit::TestCase
   
   def test_should_have_a_transition
     transition = @event.transition_for(@object)
-    assert_not_nil transition
+    refute_nil transition
     assert_equal 'parked', transition.from
     assert_equal 'idling', transition.to
     assert_equal :ignite, transition.event
   end
 end
 
-class StateContextProxyTest < Test::Unit::TestCase
+class StateContextProxyTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -181,7 +183,7 @@ class StateContextProxyTest < Test::Unit::TestCase
   end
 end
 
-class StateContextProxyWithoutConditionsTest < Test::Unit::TestCase
+class StateContextProxyWithoutConditionsTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -198,7 +200,7 @@ class StateContextProxyWithoutConditionsTest < Test::Unit::TestCase
   end
   
   def test_should_have_if_option
-    assert_not_nil @options[:if]
+    refute_nil @options[:if]
   end
   
   def test_should_be_false_if_state_is_different
@@ -211,7 +213,7 @@ class StateContextProxyWithoutConditionsTest < Test::Unit::TestCase
   end
 end
 
-class StateContextProxyWithIfConditionTest < Test::Unit::TestCase
+class StateContextProxyWithIfConditionTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -225,7 +227,7 @@ class StateContextProxyWithIfConditionTest < Test::Unit::TestCase
   end
   
   def test_should_have_if_option
-    assert_not_nil @options[:if]
+    refute_nil @options[:if]
   end
   
   def test_should_be_false_if_state_is_different
@@ -274,7 +276,7 @@ class StateContextProxyWithIfConditionTest < Test::Unit::TestCase
   end
 end
 
-class StateContextProxyWithMultipleIfConditionsTest < Test::Unit::TestCase
+class StateContextProxyWithMultipleIfConditionsTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -305,7 +307,7 @@ class StateContextProxyWithMultipleIfConditionsTest < Test::Unit::TestCase
   end
 end
 
-class StateContextProxyWithUnlessConditionTest < Test::Unit::TestCase
+class StateContextProxyWithUnlessConditionTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -319,7 +321,7 @@ class StateContextProxyWithUnlessConditionTest < Test::Unit::TestCase
   end
   
   def test_should_have_if_option
-    assert_not_nil @options[:if]
+    refute_nil @options[:if]
   end
   
   def test_should_be_false_if_state_is_different
@@ -368,7 +370,7 @@ class StateContextProxyWithUnlessConditionTest < Test::Unit::TestCase
   end
 end
 
-class StateContextProxyWithMultipleUnlessConditionsTest < Test::Unit::TestCase
+class StateContextProxyWithMultipleUnlessConditionsTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -399,7 +401,7 @@ class StateContextProxyWithMultipleUnlessConditionsTest < Test::Unit::TestCase
   end
 end
 
-class StateContextProxyWithIfAndUnlessConditionsTest < Test::Unit::TestCase
+class StateContextProxyWithIfAndUnlessConditionsTest < MiniTest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)

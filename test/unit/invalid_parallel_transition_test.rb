@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class InvalidParallelTransitionTest < Test::Unit::TestCase
+class InvalidParallelTransitionTest < MiniTest::Test
   def setup
     @object = Object.new
     @events = [:ignite, :disable_alarm]
