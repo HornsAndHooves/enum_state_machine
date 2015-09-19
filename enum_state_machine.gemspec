@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files  = %w(README.md CHANGELOG.md LICENSE)
   s.license           = 'MIT'
 
-  s.add_dependency "rails", "~> 4.0", "< 4.2"
+  s.add_dependency "rails", "~> 4.0"
 
   s.add_dependency "activerecord-deprecated_finders", "~> 1.0.3"
   #s.add_dependency "rails-observers", "~> 0.1.2"
