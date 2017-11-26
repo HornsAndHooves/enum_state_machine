@@ -247,7 +247,7 @@ class EventWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
     end
     
     assert_equal false, @object.can_ignite?
-    assert_equal nil, @object.ignite_transition
+    assert_nil @object.ignite_transition
     assert_equal false, @object.ignite
     assert_raises(EnumStateMachine::InvalidTransition) { @object.ignite! }
   end
@@ -764,7 +764,7 @@ class EventWithTransitionWithNilToStateTest < MiniTest::Test
     transition = @event.transition_for(@object)
     refute_nil transition
     assert_equal 'idling', transition.from
-    assert_equal nil, transition.to
+    assert_nil transition.to
     assert_equal :park, transition.event
   end
   
@@ -774,7 +774,7 @@ class EventWithTransitionWithNilToStateTest < MiniTest::Test
   
   def test_should_not_change_the_current_state
     @event.fire(@object)
-    assert_equal nil, @object.state
+    assert_nil @object.state
   end
 end
 

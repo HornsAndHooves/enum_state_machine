@@ -1847,10 +1847,10 @@ class MachineWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
     assert_equal 'parked', @klass.human_state_name(:parked)
     assert_equal 'ignite', @klass.human_state_event_name(:ignite)
     
-    assert_equal nil, @object.state
+    assert_nil @object.state
     @object.state = 'idling'
     assert_equal 'idling', @object.state
-    assert_equal nil, @object.status
+    assert_nil @object.status
     assert_equal false, @object.state?(:parked)
     assert_equal :idling, @object.state_name
     assert_equal 'idling', @object.human_state_name
