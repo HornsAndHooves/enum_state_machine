@@ -455,9 +455,10 @@ module EnumStateMachine
           # attributes passed into #initialize
           define_helper :class, <<-end_eval, __FILE__, __LINE__ + 1
             def column_defaults(*) #:nodoc:
-              result = super
+              super
+              result = _default_attributes.dup.to_hash
               # No need to pass in an object, since the overrides will be forced
-              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => result.deep_dup)
+              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => result)
               result
             end
           end_eval
