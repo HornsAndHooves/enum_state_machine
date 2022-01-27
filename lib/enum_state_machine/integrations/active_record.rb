@@ -456,10 +456,12 @@ module EnumStateMachine
           define_helper :class, <<-end_eval, __FILE__, __LINE__ + 1
             def column_defaults(*) #:nodoc:
               super
-              result = _default_attributes.dup.to_hash
+              @column_defaults = _default_attributes.dup.to_hash
               # No need to pass in an object, since the overrides will be forced
-              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => result)
-              result
+              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => @column_defaults)
+              @column_defaults.tap do |hash|
+                hash.freeze if Rails::VERSION::MAJOR >= 6
+              end
             end
           end_eval
         end
