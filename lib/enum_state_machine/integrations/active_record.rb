@@ -457,7 +457,7 @@ module EnumStateMachine
             def column_defaults(*) #:nodoc:
               result = super
               # No need to pass in an object, since the overrides will be forced
-              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => result)
+              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => result.deep_dup)
               result
             end
           end_eval
