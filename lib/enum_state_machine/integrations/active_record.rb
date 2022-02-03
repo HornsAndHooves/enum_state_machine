@@ -455,12 +455,11 @@ module EnumStateMachine
           # attributes passed into #initialize
           define_helper :class, <<-end_eval, __FILE__, __LINE__ + 1
             def column_defaults(*) #:nodoc:
-              super
-              @column_defaults = _default_attributes.deep_dup.to_hash
-              # No need to pass in an object, since the overrides will be forced
-              self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => @column_defaults)
-              @column_defaults.tap do |hash|
-                hash.freeze if Rails::VERSION::MAJOR >= 6
+              @column_defaults = super.tap do |defaults|
+                @column_defaults_unfrozen ||= defaults.frozen? ? defaults.deep_dup : defaults
+
+                # No need to pass in an object, since the overrides will be forced
+                self.state_machines.initialize_states(nil, :static => :force, :dynamic => false, :to => @column_defaults_unfrozen)
               end
             end
           end_eval
