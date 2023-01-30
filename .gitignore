@@ -6,4 +6,3 @@
 coverage/
 /doc/
 test/*.log
-/Gemfile.lock
