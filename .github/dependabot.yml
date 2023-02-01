@@ -1,7 +1,4 @@
 version: 2
-registries:
-  rubygems-server-gemfury-io:
-    type: "rubygems-server"
 updates:
 - package-ecosystem: "bundler"
   open-pull-requests-limit: 3
@@ -13,8 +10,6 @@ updates:
     separator: "-"
   labels:
     - dependencies
-  registries:
-    - rubygems-server-gemfury-io
   commit-message:
     include: "scope"
     prefix: "[RubyGems]"
