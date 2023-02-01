@@ -1,0 +1,71 @@
+name: Check Pull Request
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  bundle-audit:
+    name: bundle-audit
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [2.7, '3.0', 3.1, 3.2]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: install GraphViz
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y graphviz
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Bundle Audit
+        run: |
+          bundle exec bundle-audit check --update
+  rubocop:
+    name: Linting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [2.7, '3.0', 3.1, 3.2]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: install GraphViz
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y graphviz
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Rubocop
+        run: |
+          bundle exec rubocop -D
+  testing:
+    name: Testing
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [2.7, '3.0', 3.1, 3.2]
+    env:
+      RAILS_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: install GraphViz
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y graphviz
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Test::Unit
+        run: |
+          bundle exec rake test

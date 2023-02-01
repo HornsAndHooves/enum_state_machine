@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: "bundler"
+  open-pull-requests-limit: 3
+  insecure-external-code-execution: allow
+  directory: "/"
+  schedule:
+    interval: weekly
+  pull-request-branch-name:
+    separator: "-"
+  labels:
+    - dependencies
+  commit-message:
+    include: "scope"
+    prefix: "[RubyGems]"
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    # Check for updates to GitHub Actions every week
+    interval: "weekly"
+  pull-request-branch-name:
+    separator: "-"
+  open-pull-requests-limit: 3
+  labels:
+    - dependencies
