@@ -110,8 +110,6 @@ class EvalHelpersSymbolTaintedMethodTest < EvalHelpersBaseTest
       def callback
         true
       end
-      
-      taint
     end
   end
   
