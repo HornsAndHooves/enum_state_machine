@@ -450,8 +450,7 @@ module ActiveRecordTest
   
   class MachineWithSameColumnDefaultTest < BaseTestCase
     def setup
-      @io = StringIO.new
-      @original_logdev = set_rails_logger(@io)
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model do
         connection.add_column table_name, :status, :string, :default => 'parked'
@@ -476,8 +475,7 @@ module ActiveRecordTest
   
   class MachineWithDifferentColumnDefaultTest < BaseTestCase
     def setup
-      @io = StringIO.new
-      @original_logdev = set_rails_logger(@io)
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model do
         connection.add_column table_name, :status, :string, :default => 'idling'
@@ -502,8 +500,7 @@ module ActiveRecordTest
   
   class MachineWithDifferentIntegerColumnDefaultTest < BaseTestCase
     def setup
-      @io = StringIO.new
-      @original_logdev = set_rails_logger(@io)
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model do
         connection.add_column table_name, :status, :integer, :default => 0
@@ -547,8 +544,7 @@ module ActiveRecordTest
   class MachineWithConflictingStateNameTest < BaseTestCase
     def setup
       require 'stringio'
-      @io = StringIO.new
-      @original_logdev = set_rails_logger(@io)
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model
     end
@@ -706,8 +702,7 @@ module ActiveRecordTest
   class MachineWithCustomAttributeTest < BaseTestCase
     def setup
       require 'stringio'
-      @io = StringIO.new
-      @original_logdev = set_rails_logger(@io)
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model
       @machine = EnumStateMachine::Machine.new(@model, :public_state, :attribute => :state)

@@ -1132,8 +1132,7 @@ class MachineWithInstanceHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_in_superclass
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     superclass = Class.new do
       def park
@@ -1150,8 +1149,7 @@ class MachineWithInstanceHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_in_multiple_superclasses
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     superclass1 = Class.new do
       def park
@@ -1172,8 +1170,7 @@ class MachineWithInstanceHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_in_module_prior_to_helper_module
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     mod = Module.new do
       def park
@@ -1192,8 +1189,7 @@ class MachineWithInstanceHelpersTest < Minitest::Test
   
   def test_should_not_warn_if_defined_in_module_after_helper_module
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     klass = Class.new
     machine = EnumStateMachine::Machine.new(klass)
@@ -1214,8 +1210,7 @@ class MachineWithInstanceHelpersTest < Minitest::Test
   
   def test_should_define_if_ignoring_method_conflicts_and_defined_in_superclass
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     EnumStateMachine::Machine.ignore_method_conflicts = true
     
     superclass = Class.new do
@@ -1240,8 +1235,7 @@ class MachineWithInstanceHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_multiple_times
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @machine.define_helper(:instance, :park) {}
     @machine.define_helper(:instance, :park) {}
@@ -1320,8 +1314,7 @@ class MachineWithClassHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_in_superclass
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     superclass = Class.new do
       def self.park
@@ -1338,8 +1331,7 @@ class MachineWithClassHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_in_multiple_superclasses
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     superclass1 = Class.new do
       def self.park
@@ -1360,8 +1352,7 @@ class MachineWithClassHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_in_module_prior_to_helper_module
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     mod = Module.new do
       def park
@@ -1380,8 +1371,7 @@ class MachineWithClassHelpersTest < Minitest::Test
   
   def test_should_not_warn_if_defined_in_module_after_helper_module
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     klass = Class.new
     machine = EnumStateMachine::Machine.new(klass)
@@ -1402,8 +1392,7 @@ class MachineWithClassHelpersTest < Minitest::Test
   
   def test_should_define_if_ignoring_method_conflicts_and_defined_in_superclass
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     EnumStateMachine::Machine.ignore_method_conflicts = true
     
     superclass = Class.new do
@@ -1428,8 +1417,7 @@ class MachineWithClassHelpersTest < Minitest::Test
   
   def test_should_warn_if_defined_multiple_times
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @machine.define_helper(:class, :states) {}
     @machine.define_helper(:class, :states) {}
@@ -1468,8 +1456,7 @@ end
 class MachineWithConflictingHelpersBeforeDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @superclass = Class.new do
       def self.with_state
@@ -1643,8 +1630,7 @@ end
 class MachineWithConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new do
       def self.with_state
@@ -1887,8 +1873,7 @@ end
 class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @superclass = Class.new
     @klass = Class.new(@superclass)

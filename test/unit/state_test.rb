@@ -487,8 +487,7 @@ end
 class StateWithConflictingHelpersBeforeDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @superclass = Class.new do
       def parked?
@@ -517,8 +516,7 @@ end
 class StateWithConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new do
       def parked?
@@ -556,8 +554,7 @@ end
 class StateWithConflictingMachineTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new
     @state_machine = EnumStateMachine::Machine.new(@klass, :state)
@@ -593,8 +590,7 @@ end
 class StateWithConflictingMachineNameTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new
     @state_machine = EnumStateMachine::Machine.new(@klass, :state)

@@ -130,8 +130,7 @@ end
 class EventWithConflictingHelpersBeforeDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @superclass = Class.new do
       def can_ignite?
@@ -188,8 +187,7 @@ end
 class EventWithConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new do
       def can_ignite?
@@ -266,8 +264,7 @@ end
 class EventWithConflictingMachineTest < Minitest::Test
   def setup
     require 'stringio'
-    @io = StringIO.new
-    @original_logdev = set_rails_logger(@io)
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new
     @state_machine = EnumStateMachine::Machine.new(@klass, :state)
