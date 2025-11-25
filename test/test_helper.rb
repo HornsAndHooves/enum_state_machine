@@ -22,10 +22,6 @@ def set_rails_logger(io)
   end
 end
 
-def set_log_device(logdev, io)
-  logdev.instance_variable_set(:@dev, io)
-end
-
 class Minitest::Test
   def assert_nothing_raised
     yield
