@@ -6,7 +6,7 @@ class Node < Struct.new(:name, :value, :machine)
   end
 end
 
-class NodeCollectionByDefaultTest < MiniTest::Test
+class NodeCollectionByDefaultTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -26,7 +26,7 @@ class NodeCollectionByDefaultTest < MiniTest::Test
   end
 end
 
-class NodeCollectionTest < MiniTest::Test
+class NodeCollectionTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -50,7 +50,7 @@ class NodeCollectionTest < MiniTest::Test
   end
 end
 
-class NodeCollectionAfterBeingCopiedTest < MiniTest::Test
+class NodeCollectionAfterBeingCopiedTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)
@@ -94,7 +94,7 @@ class NodeCollectionAfterBeingCopiedTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithoutIndicesTest < MiniTest::Test
+class NodeCollectionWithoutIndicesTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => {})
@@ -123,7 +123,7 @@ class NodeCollectionWithoutIndicesTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithIndicesTest < MiniTest::Test
+class NodeCollectionWithIndicesTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -163,7 +163,7 @@ class NodeCollectionWithIndicesTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithNodesTest < MiniTest::Test
+class NodeCollectionWithNodesTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -207,7 +207,7 @@ class NodeCollectionWithNodesTest < MiniTest::Test
   end
 end
 
-class NodeCollectionAfterUpdateTest < MiniTest::Test
+class NodeCollectionAfterUpdateTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -241,7 +241,7 @@ class NodeCollectionAfterUpdateTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithStringIndexTest < MiniTest::Test
+class NodeCollectionWithStringIndexTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -259,7 +259,7 @@ class NodeCollectionWithStringIndexTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithSymbolIndexTest < MiniTest::Test
+class NodeCollectionWithSymbolIndexTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -277,7 +277,7 @@ class NodeCollectionWithSymbolIndexTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithNumericIndexTest < MiniTest::Test
+class NodeCollectionWithNumericIndexTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine, :index => [:name, :value])
@@ -299,7 +299,7 @@ class NodeCollectionWithNumericIndexTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithPredefinedContextsTest < MiniTest::Test
+class NodeCollectionWithPredefinedContextsTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)
@@ -320,7 +320,7 @@ class NodeCollectionWithPredefinedContextsTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithPostdefinedContextsTest < MiniTest::Test
+class NodeCollectionWithPostdefinedContextsTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)
@@ -340,7 +340,7 @@ class NodeCollectionWithPostdefinedContextsTest < MiniTest::Test
   end
 end
 
-class NodeCollectionWithMatcherContextsTest < MiniTest::Test
+class NodeCollectionWithMatcherContextsTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(machine)

@@ -8,7 +8,7 @@ begin
     (RUBY_PLATFORM =~ /darwin/) ? 'ArialMT' : 'Arial'
   end
 
-  class GraphDefaultTest < MiniTest::Test
+  class GraphDefaultTest < Minitest::Test
     def setup
       @graph = EnumStateMachine::Graph.new('test')
     end
@@ -30,7 +30,7 @@ begin
     end
   end
   
-  class GraphNodesTest < MiniTest::Test
+  class GraphNodesTest < Minitest::Test
     def setup
       @graph = EnumStateMachine::Graph.new('test')
       @node = @graph.add_nodes('parked', :shape => 'ellipse')
@@ -53,7 +53,7 @@ begin
     end
   end
   
-  class GraphEdgesTest < MiniTest::Test
+  class GraphEdgesTest < Minitest::Test
     def setup
       @graph = EnumStateMachine::Graph.new('test')
       @graph.add_nodes('parked', :shape => 'ellipse')
@@ -79,7 +79,7 @@ begin
     end
   end
   
-  class GraphOutputTest < MiniTest::Test
+  class GraphOutputTest < Minitest::Test
     def setup
       @graph_name = "test_#{rand(1000000)}"
       @graph = EnumStateMachine::Graph.new(@graph_name)

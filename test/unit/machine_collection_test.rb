@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class MachineCollectionByDefaultTest < MiniTest::Test
+class MachineCollectionByDefaultTest < Minitest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
   end
@@ -10,7 +10,7 @@ class MachineCollectionByDefaultTest < MiniTest::Test
   end
 end
 
-class MachineCollectionStateInitializationTest < MiniTest::Test
+class MachineCollectionStateInitializationTest < Minitest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
     
@@ -110,7 +110,7 @@ class MachineCollectionStateInitializationTest < MiniTest::Test
   end
 end
 
-class MachineCollectionFireTest < MiniTest::Test
+class MachineCollectionFireTest < Minitest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
     
@@ -193,7 +193,7 @@ class MachineCollectionFireTest < MiniTest::Test
   end
 end
 
-class MachineCollectionFireWithTransactionsTest < MiniTest::Test
+class MachineCollectionFireWithTransactionsTest < Minitest::Test
   def setup
     @machines = EnumStateMachine::MachineCollection.new
     
@@ -267,7 +267,7 @@ class MachineCollectionFireWithTransactionsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionFireWithValidationsTest < MiniTest::Test
+class MachineCollectionFireWithValidationsTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -335,7 +335,7 @@ class MachineCollectionFireWithValidationsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithoutEventsTest < MiniTest::Test
+class MachineCollectionTransitionsWithoutEventsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -359,7 +359,7 @@ class MachineCollectionTransitionsWithoutEventsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithBlankEventsTest < MiniTest::Test
+class MachineCollectionTransitionsWithBlankEventsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -383,7 +383,7 @@ class MachineCollectionTransitionsWithBlankEventsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithInvalidEventsTest < MiniTest::Test
+class MachineCollectionTransitionsWithInvalidEventsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -407,7 +407,7 @@ class MachineCollectionTransitionsWithInvalidEventsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithoutTransitionTest < MiniTest::Test
+class MachineCollectionTransitionsWithoutTransitionTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -432,7 +432,7 @@ class MachineCollectionTransitionsWithoutTransitionTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithTransitionTest < MiniTest::Test
+class MachineCollectionTransitionsWithTransitionTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -456,7 +456,7 @@ class MachineCollectionTransitionsWithTransitionTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithSameActionsTest < MiniTest::Test
+class MachineCollectionTransitionsWithSameActionsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -485,7 +485,7 @@ class MachineCollectionTransitionsWithSameActionsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithDifferentActionsTest < MiniTest::Test
+class MachineCollectionTransitionsWithDifferentActionsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -510,7 +510,7 @@ class MachineCollectionTransitionsWithDifferentActionsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithExisitingTransitionsTest < MiniTest::Test
+class MachineCollectionTransitionsWithExisitingTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -534,7 +534,7 @@ class MachineCollectionTransitionsWithExisitingTransitionsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionTransitionsWithCustomOptionsTest < MiniTest::Test
+class MachineCollectionTransitionsWithCustomOptionsTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -553,7 +553,7 @@ class MachineCollectionTransitionsWithCustomOptionsTest < MiniTest::Test
   end
 end
 
-class MachineCollectionFireAttributesWithValidationsTest < MiniTest::Test
+class MachineCollectionFireAttributesWithValidationsTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_accessor :errors

@@ -23,9 +23,9 @@ Gem::Specification.new do |s|
   s.add_dependency "power_enum", "> 2.8"
 
   s.add_development_dependency "rake"
-  s.add_development_dependency "minitest", "~> 5.1"
+  s.add_development_dependency "minitest"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "yard"
-  s.add_development_dependency "sqlite3", "~> 1.3.9"
+  s.add_development_dependency "sqlite3"
   s.add_development_dependency "ruby-graphviz"
 end

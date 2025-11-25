@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class CallbackTest < MiniTest::Test
+class CallbackTest < Minitest::Test
   def test_should_raise_exception_if_invalid_type_specified
     exception = assert_raises(ArgumentError) { EnumStateMachine::Callback.new(:invalid) {} }
     assert_equal 'Type must be :before, :after, :around, or :failure', exception.message
@@ -52,7 +52,7 @@ class CallbackTest < MiniTest::Test
   end
 end
 
-class CallbackByDefaultTest < MiniTest::Test
+class CallbackByDefaultTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before) {}
   end
@@ -76,7 +76,7 @@ class CallbackByDefaultTest < MiniTest::Test
   end
 end
 
-class CallbackWithMethodArgumentTest < MiniTest::Test
+class CallbackWithMethodArgumentTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, lambda {|*args| @args = args})
     
@@ -93,7 +93,7 @@ class CallbackWithMethodArgumentTest < MiniTest::Test
   end
 end
 
-class CallbackWithMultipleMethodArgumentsTest < MiniTest::Test
+class CallbackWithMultipleMethodArgumentsTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :run_1, :run_2)
     
@@ -121,7 +121,7 @@ class CallbackWithMultipleMethodArgumentsTest < MiniTest::Test
   end
 end
 
-class CallbackWithDoMethodTest < MiniTest::Test
+class CallbackWithDoMethodTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :do => lambda {|*args| @args = args})
     
@@ -138,7 +138,7 @@ class CallbackWithDoMethodTest < MiniTest::Test
   end
 end
 
-class CallbackWithMultipleDoMethodsTest < MiniTest::Test
+class CallbackWithMultipleDoMethodsTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :do => [:run_1, :run_2])
     
@@ -166,7 +166,7 @@ class CallbackWithMultipleDoMethodsTest < MiniTest::Test
   end
 end
 
-class CallbackWithBlockTest < MiniTest::Test
+class CallbackWithBlockTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before) do |*args|
       @args = args
@@ -185,7 +185,7 @@ class CallbackWithBlockTest < MiniTest::Test
   end
 end
 
-class CallbackWithMixedMethodsTest < MiniTest::Test
+class CallbackWithMixedMethodsTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :run_argument, :do => :run_do) do |object|
       object.callbacks << :block
@@ -215,7 +215,7 @@ class CallbackWithMixedMethodsTest < MiniTest::Test
   end
 end
 
-class CallbackWithExplicitRequirementsTest < MiniTest::Test
+class CallbackWithExplicitRequirementsTest < Minitest::Test
   def setup
     @object = Object.new
     @callback = EnumStateMachine::Callback.new(:before, :from => :parked, :to => :idling, :on => :ignite, :do => lambda {})
@@ -246,7 +246,7 @@ class CallbackWithExplicitRequirementsTest < MiniTest::Test
   end
 end
 
-class CallbackWithImplicitRequirementsTest < MiniTest::Test
+class CallbackWithImplicitRequirementsTest < Minitest::Test
   def setup
     @object = Object.new
     @callback = EnumStateMachine::Callback.new(:before, :parked => :idling, :on => :ignite, :do => lambda {})
@@ -277,7 +277,7 @@ class CallbackWithImplicitRequirementsTest < MiniTest::Test
   end
 end
 
-class CallbackWithIfConditionTest < MiniTest::Test
+class CallbackWithIfConditionTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -293,7 +293,7 @@ class CallbackWithIfConditionTest < MiniTest::Test
   end
 end
 
-class CallbackWithUnlessConditionTest < MiniTest::Test
+class CallbackWithUnlessConditionTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -309,7 +309,7 @@ class CallbackWithUnlessConditionTest < MiniTest::Test
   end
 end
 
-class CallbackWithoutTerminatorTest < MiniTest::Test
+class CallbackWithoutTerminatorTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -320,7 +320,7 @@ class CallbackWithoutTerminatorTest < MiniTest::Test
   end
 end
 
-class CallbackWithTerminatorTest < MiniTest::Test
+class CallbackWithTerminatorTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -341,7 +341,7 @@ class CallbackWithTerminatorTest < MiniTest::Test
   end
 end
 
-class CallbackWithoutArgumentsTest < MiniTest::Test
+class CallbackWithoutArgumentsTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :do => lambda {|object| @arg = object})
     
@@ -354,7 +354,7 @@ class CallbackWithoutArgumentsTest < MiniTest::Test
   end
 end
 
-class CallbackWithArgumentsTest < MiniTest::Test
+class CallbackWithArgumentsTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :do => lambda {|*args| @args = args})
     
@@ -367,7 +367,7 @@ class CallbackWithArgumentsTest < MiniTest::Test
   end
 end
 
-class CallbackWithUnboundMethodTest < MiniTest::Test
+class CallbackWithUnboundMethodTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:before, :do => lambda {|*args| @context = args.unshift(self)})
     
@@ -380,7 +380,7 @@ class CallbackWithUnboundMethodTest < MiniTest::Test
   end
 end
 
-class CallbackWithBoundMethodTest < MiniTest::Test
+class CallbackWithBoundMethodTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -414,7 +414,7 @@ class CallbackWithBoundMethodTest < MiniTest::Test
   end
 end
 
-class CallbackWithMultipleBoundMethodsTest < MiniTest::Test
+class CallbackWithMultipleBoundMethodsTest < Minitest::Test
   def setup
     @object = Object.new
     
@@ -434,7 +434,7 @@ class CallbackWithMultipleBoundMethodsTest < MiniTest::Test
   end
 end
 
-class CallbackWithApplicationBoundObjectTest < MiniTest::Test
+class CallbackWithApplicationBoundObjectTest < Minitest::Test
   def setup
     @original_bind_to_object = EnumStateMachine::Callback.bind_to_object
     EnumStateMachine::Callback.bind_to_object = true
@@ -456,7 +456,7 @@ class CallbackWithApplicationBoundObjectTest < MiniTest::Test
   end
 end
 
-class CallbackWithBoundMethodAndArgumentsTest < MiniTest::Test
+class CallbackWithBoundMethodAndArgumentsTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -483,7 +483,7 @@ class CallbackWithBoundMethodAndArgumentsTest < MiniTest::Test
   end
 end
 
-class CallbackWithApplicationTerminatorTest < MiniTest::Test
+class CallbackWithApplicationTerminatorTest < Minitest::Test
   def setup
     @original_terminator = EnumStateMachine::Callback.terminator
     EnumStateMachine::Callback.terminator = lambda {|result| result == false}
@@ -506,7 +506,7 @@ class CallbackWithApplicationTerminatorTest < MiniTest::Test
   end
 end
 
-class CallbackWithAroundTypeAndBlockTest < MiniTest::Test
+class CallbackWithAroundTypeAndBlockTest < Minitest::Test
   def setup
     @object = Object.new
     @callbacks = []
@@ -549,7 +549,7 @@ class CallbackWithAroundTypeAndBlockTest < MiniTest::Test
   end
 end
 
-class CallbackWithAroundTypeAndMultipleMethodsTest < MiniTest::Test
+class CallbackWithAroundTypeAndMultipleMethodsTest < Minitest::Test
   def setup
     @callback = EnumStateMachine::Callback.new(:around, :run_1, :run_2)
     
@@ -641,7 +641,7 @@ class CallbackWithAroundTypeAndMultipleMethodsTest < MiniTest::Test
   end
 end
 
-class CallbackWithAroundTypeAndArgumentsTest < MiniTest::Test
+class CallbackWithAroundTypeAndArgumentsTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -665,7 +665,7 @@ class CallbackWithAroundTypeAndArgumentsTest < MiniTest::Test
   end
 end
 
-class CallbackWithAroundTypeAndTerminatorTest < MiniTest::Test
+class CallbackWithAroundTypeAndTerminatorTest < Minitest::Test
   def setup
     @object = Object.new
   end
@@ -681,7 +681,7 @@ class CallbackWithAroundTypeAndTerminatorTest < MiniTest::Test
   end
 end
 
-class CallbackWithAroundTypeAndBoundMethodTest < MiniTest::Test
+class CallbackWithAroundTypeAndBoundMethodTest < Minitest::Test
   def setup
     @object = Object.new
   end

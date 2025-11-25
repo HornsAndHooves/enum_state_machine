@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class EnumStateMachineByDefaultTest < MiniTest::Test
+class EnumStateMachineByDefaultTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = @klass.state_machine
@@ -11,7 +11,7 @@ class EnumStateMachineByDefaultTest < MiniTest::Test
   end
 end
 
-class EnumStateMachineTest < MiniTest::Test
+class EnumStateMachineTest < Minitest::Test
   def setup
     @klass = Class.new
   end

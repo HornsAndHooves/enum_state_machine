@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class TransitionTest < MiniTest::Test
+class TransitionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -95,7 +95,7 @@ class TransitionTest < MiniTest::Test
   end
 end
 
-class TransitionWithInvalidNodesTest < MiniTest::Test
+class TransitionWithInvalidNodesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -131,7 +131,7 @@ class TransitionWithInvalidNodesTest < MiniTest::Test
   end
 end
 
-class TransitionWithDynamicToValueTest < MiniTest::Test
+class TransitionWithDynamicToValueTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -149,7 +149,7 @@ class TransitionWithDynamicToValueTest < MiniTest::Test
   end
 end
 
-class TransitionLoopbackTest < MiniTest::Test
+class TransitionLoopbackTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -166,7 +166,7 @@ class TransitionLoopbackTest < MiniTest::Test
   end
 end
 
-class TransitionWithDifferentStatesTest < MiniTest::Test
+class TransitionWithDifferentStatesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -183,7 +183,7 @@ class TransitionWithDifferentStatesTest < MiniTest::Test
   end
 end
 
-class TransitionWithNamespaceTest < MiniTest::Test
+class TransitionWithNamespaceTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
@@ -229,7 +229,7 @@ class TransitionWithNamespaceTest < MiniTest::Test
   end
 end
 
-class TransitionWithCustomMachineAttributeTest < MiniTest::Test
+class TransitionWithCustomMachineAttributeTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :state, :attribute => :state_id)
@@ -256,7 +256,7 @@ class TransitionWithCustomMachineAttributeTest < MiniTest::Test
   end
 end
 
-class TransitionWithoutReadingStateTest < MiniTest::Test
+class TransitionWithoutReadingStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -277,7 +277,7 @@ class TransitionWithoutReadingStateTest < MiniTest::Test
   end
 end
 
-class TransitionWithActionTest < MiniTest::Test
+class TransitionWithActionTest < Minitest::Test
   def setup
     @klass = Class.new do
       def save
@@ -303,7 +303,7 @@ class TransitionWithActionTest < MiniTest::Test
   end
 end
 
-class TransitionAfterBeingPersistedTest < MiniTest::Test
+class TransitionAfterBeingPersistedTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
@@ -348,7 +348,7 @@ class TransitionAfterBeingPersistedTest < MiniTest::Test
   end
 end
 
-class TransitionAfterBeingRolledBackTest < MiniTest::Test
+class TransitionAfterBeingRolledBackTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
@@ -382,7 +382,7 @@ class TransitionAfterBeingRolledBackTest < MiniTest::Test
   end
 end
 
-class TransitionWithoutCallbacksTest < MiniTest::Test
+class TransitionWithoutCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -414,7 +414,7 @@ class TransitionWithoutCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithBeforeCallbacksTest < MiniTest::Test
+class TransitionWithBeforeCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -518,7 +518,7 @@ class TransitionWithBeforeCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithMultipleBeforeCallbacksTest < MiniTest::Test
+class TransitionWithMultipleBeforeCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -557,7 +557,7 @@ class TransitionWithMultipleBeforeCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithAfterCallbacksTest < MiniTest::Test
+class TransitionWithAfterCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -650,7 +650,7 @@ class TransitionWithAfterCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithMultipleAfterCallbacksTest < MiniTest::Test
+class TransitionWithMultipleAfterCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -689,7 +689,7 @@ class TransitionWithMultipleAfterCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithAroundCallbacksTest < MiniTest::Test
+class TransitionWithAroundCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -832,7 +832,7 @@ class TransitionWithAroundCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithMultipleAroundCallbacksTest < MiniTest::Test
+class TransitionWithMultipleAroundCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -945,7 +945,7 @@ class TransitionWithMultipleAroundCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithFailureCallbacksTest < MiniTest::Test
+class TransitionWithFailureCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -1029,7 +1029,7 @@ class TransitionWithFailureCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithMultipleFailureCallbacksTest < MiniTest::Test
+class TransitionWithMultipleFailureCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -1068,7 +1068,7 @@ class TransitionWithMultipleFailureCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithMixedCallbacksTest < MiniTest::Test
+class TransitionWithMixedCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -1172,7 +1172,7 @@ class TransitionWithMixedCallbacksTest < MiniTest::Test
   end
 end
 
-class TransitionWithBeforeCallbacksSkippedTest < MiniTest::Test
+class TransitionWithBeforeCallbacksSkippedTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -1201,7 +1201,7 @@ class TransitionWithBeforeCallbacksSkippedTest < MiniTest::Test
   end
 end
 
-class TransitionWithAfterCallbacksSkippedTest < MiniTest::Test
+class TransitionWithAfterCallbacksSkippedTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -1327,7 +1327,7 @@ class TransitionWithAfterCallbacksSkippedTest < MiniTest::Test
   end
 end
 
-class TransitionAfterBeingPerformedTest < MiniTest::Test
+class TransitionAfterBeingPerformedTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved, :save_state
@@ -1374,7 +1374,7 @@ class TransitionAfterBeingPerformedTest < MiniTest::Test
   end
 end
 
-class TransitionWithPerformArgumentsTest < MiniTest::Test
+class TransitionWithPerformArgumentsTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1408,7 +1408,7 @@ class TransitionWithPerformArgumentsTest < MiniTest::Test
   end
 end
 
-class TransitionWithoutRunningActionTest < MiniTest::Test
+class TransitionWithoutRunningActionTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1454,7 +1454,7 @@ class TransitionWithoutRunningActionTest < MiniTest::Test
   end
 end
 
-class TransitionWithTransactionsTest < MiniTest::Test
+class TransitionWithTransactionsTest < Minitest::Test
   def setup
     @klass = Class.new do
       class << self
@@ -1495,7 +1495,7 @@ class TransitionWithTransactionsTest < MiniTest::Test
   end
 end
 
-class TransitionTransientTest < MiniTest::Test
+class TransitionTransientTest < Minitest::Test
   def setup
     @klass = Class.new
     
@@ -1514,7 +1514,7 @@ class TransitionTransientTest < MiniTest::Test
   end
 end
 
-class TransitionEqualityTest < MiniTest::Test
+class TransitionEqualityTest < Minitest::Test
   def setup
     @klass = Class.new
     

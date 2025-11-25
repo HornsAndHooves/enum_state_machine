@@ -10,7 +10,7 @@ end
 require 'active_support/all'
 
 module ActiveModelTest
-  class BaseTestCase < MiniTest::Test
+  class BaseTestCase < Minitest::Test
     def default_test
     end
     

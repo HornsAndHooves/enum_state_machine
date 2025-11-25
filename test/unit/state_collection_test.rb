@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class StateCollectionByDefaultTest < MiniTest::Test
+class StateCollectionByDefaultTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -19,7 +19,7 @@ class StateCollectionByDefaultTest < MiniTest::Test
   end
 end
 
-class StateCollectionTest < MiniTest::Test
+class StateCollectionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -92,7 +92,7 @@ class StateCollectionTest < MiniTest::Test
   end
 end
 
-class StateCollectionStringTest < MiniTest::Test
+class StateCollectionStringTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -126,7 +126,7 @@ class StateCollectionStringTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithNamespaceTest < MiniTest::Test
+class StateCollectionWithNamespaceTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'vehicle')
@@ -145,7 +145,7 @@ class StateCollectionWithNamespaceTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithCustomStateValuesTest < MiniTest::Test
+class StateCollectionWithCustomStateValuesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -172,7 +172,7 @@ class StateCollectionWithCustomStateValuesTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithStateMatchersTest < MiniTest::Test
+class StateCollectionWithStateMatchersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -199,7 +199,7 @@ class StateCollectionWithStateMatchersTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithInitialStateTest < MiniTest::Test
+class StateCollectionWithInitialStateTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -237,7 +237,7 @@ class StateCollectionWithInitialStateTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithStateBehaviorsTest < MiniTest::Test
+class StateCollectionWithStateBehaviorsTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -275,7 +275,7 @@ class StateCollectionWithStateBehaviorsTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithEventTransitionsTest < MiniTest::Test
+class StateCollectionWithEventTransitionsTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)
@@ -313,7 +313,7 @@ class StateCollectionWithEventTransitionsTest < MiniTest::Test
   end
 end
 
-class StateCollectionWithTransitionCallbacksTest < MiniTest::Test
+class StateCollectionWithTransitionCallbacksTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @states = EnumStateMachine::StateCollection.new(@machine)

@@ -241,7 +241,7 @@ class TrafficLight
   end
 end
 
-class VehicleTest < MiniTest::Test
+class VehicleTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -259,7 +259,7 @@ class VehicleTest < MiniTest::Test
   end
 end
 
-class VehicleUnsavedTest < MiniTest::Test
+class VehicleUnsavedTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -438,7 +438,7 @@ class VehicleUnsavedTest < MiniTest::Test
   end
 end
 
-class VehicleParkedTest < MiniTest::Test
+class VehicleParkedTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -489,7 +489,7 @@ class VehicleParkedTest < MiniTest::Test
   end
 end
 
-class VehicleIdlingTest < MiniTest::Test
+class VehicleIdlingTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -546,7 +546,7 @@ class VehicleIdlingTest < MiniTest::Test
   end
 end
 
-class VehicleFirstGearTest < MiniTest::Test
+class VehicleFirstGearTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -586,7 +586,7 @@ class VehicleFirstGearTest < MiniTest::Test
   end
 end
 
-class VehicleSecondGearTest < MiniTest::Test
+class VehicleSecondGearTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -626,7 +626,7 @@ class VehicleSecondGearTest < MiniTest::Test
   end
 end
 
-class VehicleThirdGearTest < MiniTest::Test
+class VehicleThirdGearTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -666,7 +666,7 @@ class VehicleThirdGearTest < MiniTest::Test
   end
 end
 
-class VehicleStalledTest < MiniTest::Test
+class VehicleStalledTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -729,7 +729,7 @@ class VehicleStalledTest < MiniTest::Test
   end
 end
 
-class VehicleRepairedTest < MiniTest::Test
+class VehicleRepairedTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.ignite
@@ -747,7 +747,7 @@ class VehicleRepairedTest < MiniTest::Test
   end
 end
 
-class VehicleLockedTest < MiniTest::Test
+class VehicleLockedTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.state = 'locked'
@@ -774,7 +774,7 @@ class VehicleLockedTest < MiniTest::Test
   end
 end
 
-class VehicleWithParallelEventsTest < MiniTest::Test
+class VehicleWithParallelEventsTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
   end
@@ -810,7 +810,7 @@ class VehicleWithParallelEventsTest < MiniTest::Test
   end
 end
 
-class VehicleWithEventAttributesTest < MiniTest::Test
+class VehicleWithEventAttributesTest < Minitest::Test
   def setup
     @vehicle = Vehicle.new
     @vehicle.state_event = 'ignite'
@@ -838,7 +838,7 @@ class VehicleWithEventAttributesTest < MiniTest::Test
   end
 end
 
-class MotorcycleTest < MiniTest::Test
+class MotorcycleTest < Minitest::Test
   def setup
     @motorcycle = Motorcycle.new
   end
@@ -882,7 +882,7 @@ class MotorcycleTest < MiniTest::Test
   end
 end
 
-class CarTest < MiniTest::Test
+class CarTest < Minitest::Test
   def setup
     @car = Car.new
   end
@@ -929,7 +929,7 @@ class CarTest < MiniTest::Test
   end
 end
 
-class CarBackingUpTest < MiniTest::Test
+class CarBackingUpTest < Minitest::Test
   def setup
     @car = Car.new
     @car.reverse
@@ -972,7 +972,7 @@ class CarBackingUpTest < MiniTest::Test
   end
 end
 
-class AutoShopAvailableTest < MiniTest::Test
+class AutoShopAvailableTest < Minitest::Test
   def setup
     @auto_shop = AutoShop.new
   end
@@ -990,7 +990,7 @@ class AutoShopAvailableTest < MiniTest::Test
   end
 end
 
-class AutoShopBusyTest < MiniTest::Test
+class AutoShopBusyTest < Minitest::Test
   def setup
     @auto_shop = AutoShop.new
     @auto_shop.tow_vehicle
@@ -1013,7 +1013,7 @@ class AutoShopBusyTest < MiniTest::Test
   end
 end
 
-class TrafficLightStopTest < MiniTest::Test
+class TrafficLightStopTest < Minitest::Test
   def setup
     @light = TrafficLight.new
     @light.state = 'stop'
@@ -1037,7 +1037,7 @@ class TrafficLightStopTest < MiniTest::Test
   end
 end
 
-class TrafficLightProceedTest < MiniTest::Test
+class TrafficLightProceedTest < Minitest::Test
   def setup
     @light = TrafficLight.new
     @light.state = 'proceed'
@@ -1052,7 +1052,7 @@ class TrafficLightProceedTest < MiniTest::Test
   end
 end
 
-class TrafficLightCautionTest < MiniTest::Test
+class TrafficLightCautionTest < Minitest::Test
   def setup
     @light = TrafficLight.new
     @light.state = 'caution'

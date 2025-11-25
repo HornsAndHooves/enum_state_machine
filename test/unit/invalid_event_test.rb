@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class InvalidEventTest < MiniTest::Test
+class InvalidEventTest < Minitest::Test
   def setup
     @object = Object.new
     @invalid_event = EnumStateMachine::InvalidEvent.new(@object, :invalid)

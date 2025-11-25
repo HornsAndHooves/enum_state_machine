@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class MachineByDefaultTest < MiniTest::Test
+class MachineByDefaultTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -171,7 +171,7 @@ class MachineByDefaultTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomNameTest < MiniTest::Test
+class MachineWithCustomNameTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :status)
@@ -227,7 +227,7 @@ class MachineWithCustomNameTest < MiniTest::Test
   end
 end
 
-class MachineWithoutInitializationTest < MiniTest::Test
+class MachineWithoutInitializationTest < Minitest::Test
   def setup
     @klass = Class.new do
       def initialize(attributes = {})
@@ -257,7 +257,7 @@ class MachineWithoutInitializationTest < MiniTest::Test
   end
 end
 
-class MachineWithStaticInitialStateTest < MiniTest::Test
+class MachineWithStaticInitialStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -316,7 +316,7 @@ class MachineWithStaticInitialStateTest < MiniTest::Test
   end
 end
 
-class MachineWithDynamicInitialStateTest < MiniTest::Test
+class MachineWithDynamicInitialStateTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_accessor :initial_state
@@ -380,7 +380,7 @@ class MachineWithDynamicInitialStateTest < MiniTest::Test
   end
 end
 
-class MachineStateInitializationTest < MiniTest::Test
+class MachineStateInitializationTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :state, :initial => :parked, :initialize => false)
@@ -434,7 +434,7 @@ class MachineStateInitializationTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomActionTest < MiniTest::Test
+class MachineWithCustomActionTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new, :action => :save)
   end
@@ -444,7 +444,7 @@ class MachineWithCustomActionTest < MiniTest::Test
   end
 end
 
-class MachineWithNilActionTest < MiniTest::Test
+class MachineWithNilActionTest < Minitest::Test
   def setup
     integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -464,7 +464,7 @@ class MachineWithNilActionTest < MiniTest::Test
   end
 end
 
-class MachineWithoutIntegrationTest < MiniTest::Test
+class MachineWithoutIntegrationTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -493,7 +493,7 @@ class MachineWithoutIntegrationTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomIntegrationTest < MiniTest::Test
+class MachineWithCustomIntegrationTest < Minitest::Test
   def setup
     integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -561,7 +561,7 @@ class MachineWithCustomIntegrationTest < MiniTest::Test
   end
 end
 
-class MachineWithIntegrationTest < MiniTest::Test
+class MachineWithIntegrationTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -628,7 +628,7 @@ class MachineWithIntegrationTest < MiniTest::Test
   end
 end
 
-class MachineWithActionUndefinedTest < MiniTest::Test
+class MachineWithActionUndefinedTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :action => :save)
@@ -660,7 +660,7 @@ class MachineWithActionUndefinedTest < MiniTest::Test
   end
 end
 
-class MachineWithActionDefinedInClassTest < MiniTest::Test
+class MachineWithActionDefinedInClassTest < Minitest::Test
   def setup
     @klass = Class.new do
       def save
@@ -696,7 +696,7 @@ class MachineWithActionDefinedInClassTest < MiniTest::Test
   end
 end
 
-class MachineWithActionDefinedInIncludedModuleTest < MiniTest::Test
+class MachineWithActionDefinedInIncludedModuleTest < Minitest::Test
   def setup
     @mod = mod = Module.new do
       def save
@@ -740,7 +740,7 @@ class MachineWithActionDefinedInIncludedModuleTest < MiniTest::Test
   end
 end
 
-class MachineWithActionDefinedInSuperclassTest < MiniTest::Test
+class MachineWithActionDefinedInSuperclassTest < Minitest::Test
   def setup
     @superclass = Class.new do
       def save
@@ -781,7 +781,7 @@ class MachineWithActionDefinedInSuperclassTest < MiniTest::Test
   end
 end
 
-class MachineWithPrivateActionTest < MiniTest::Test
+class MachineWithPrivateActionTest < Minitest::Test
   def setup
     @superclass = Class.new do
       private
@@ -823,7 +823,7 @@ class MachineWithPrivateActionTest < MiniTest::Test
   end
 end
 
-class MachineWithActionAlreadyOverriddenTest < MiniTest::Test
+class MachineWithActionAlreadyOverriddenTest < Minitest::Test
   def setup
     @superclass = Class.new do
       def save
@@ -845,7 +845,7 @@ class MachineWithActionAlreadyOverriddenTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomPluralTest < MiniTest::Test
+class MachineWithCustomPluralTest < Minitest::Test
   def setup
     @integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -893,7 +893,7 @@ class MachineWithCustomPluralTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomInvalidationTest < MiniTest::Test
+class MachineWithCustomInvalidationTest < Minitest::Test
   def setup
     @integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -929,7 +929,7 @@ class MachineWithCustomInvalidationTest < MiniTest::Test
   end
 end
 
-class MachineTest < MiniTest::Test
+class MachineTest < Minitest::Test
   def test_should_raise_exception_if_invalid_option_specified
     assert_raises(ArgumentError) {EnumStateMachine::Machine.new(Class.new, :invalid => true)}
   end
@@ -958,7 +958,7 @@ class MachineTest < MiniTest::Test
   end
 end
 
-class MachineAfterBeingCopiedTest < MiniTest::Test
+class MachineAfterBeingCopiedTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new, :state, :initial => :parked)
     @machine.event(:ignite) {}
@@ -1019,7 +1019,7 @@ class MachineAfterBeingCopiedTest < MiniTest::Test
   end
 end
 
-class MachineAfterChangingOwnerClassTest < MiniTest::Test
+class MachineAfterChangingOwnerClassTest < Minitest::Test
   def setup
     @original_class = Class.new
     @machine = EnumStateMachine::Machine.new(@original_class)
@@ -1048,7 +1048,7 @@ class MachineAfterChangingOwnerClassTest < MiniTest::Test
   end
 end
 
-class MachineAfterChangingInitialState < MiniTest::Test
+class MachineAfterChangingInitialState < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -1074,7 +1074,7 @@ class MachineAfterChangingInitialState < MiniTest::Test
   end
 end
 
-class MachineWithHelpersTest < MiniTest::Test
+class MachineWithHelpersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1088,7 +1088,7 @@ class MachineWithHelpersTest < MiniTest::Test
   end
 end
 
-class MachineWithInstanceHelpersTest < MiniTest::Test
+class MachineWithInstanceHelpersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1132,7 +1132,8 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
   
   def test_should_warn_if_defined_in_superclass
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     superclass = Class.new do
       def park
@@ -1142,14 +1143,15 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:instance, :park) {}
-    assert_equal "Instance method \"park\" is already defined in #{superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Instance method \"park\" is already defined in #{superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_warn_if_defined_in_multiple_superclasses
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     superclass1 = Class.new do
       def park
@@ -1163,14 +1165,15 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:instance, :park) {}
-    assert_equal "Instance method \"park\" is already defined in #{superclass1.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Instance method \"park\" is already defined in #{superclass1.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_warn_if_defined_in_module_prior_to_helper_module
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     mod = Module.new do
       def park
@@ -1182,14 +1185,15 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:instance, :park) {}
-    assert_equal "Instance method \"park\" is already defined in #{mod.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Instance method \"park\" is already defined in #{mod.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_not_warn_if_defined_in_module_after_helper_module
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     klass = Class.new
     machine = EnumStateMachine::Machine.new(klass)
@@ -1203,14 +1207,15 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
     end
     
     machine.define_helper(:instance, :park) {}
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_define_if_ignoring_method_conflicts_and_defined_in_superclass
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     EnumStateMachine::Machine.ignore_method_conflicts = true
     
     superclass = Class.new do
@@ -1221,11 +1226,11 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:instance, :park) {true}
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
     assert_equal true, klass.new.park
   ensure
     EnumStateMachine::Machine.ignore_method_conflicts = false
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_define_nonexistent_methods
@@ -1235,14 +1240,15 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
   
   def test_should_warn_if_defined_multiple_times
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     @machine.define_helper(:instance, :park) {}
     @machine.define_helper(:instance, :park) {}
     
-    assert_equal "Instance method \"park\" is already defined in #{@klass} :state instance helpers, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Instance method \"park\" is already defined in #{@klass} :state instance helpers, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_pass_context_as_arguments
@@ -1271,7 +1277,7 @@ class MachineWithInstanceHelpersTest < MiniTest::Test
   end
 end
 
-class MachineWithClassHelpersTest < MiniTest::Test
+class MachineWithClassHelpersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1314,7 +1320,8 @@ class MachineWithClassHelpersTest < MiniTest::Test
   
   def test_should_warn_if_defined_in_superclass
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     superclass = Class.new do
       def self.park
@@ -1324,14 +1331,15 @@ class MachineWithClassHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:class, :park) {}
-    assert_equal "Class method \"park\" is already defined in #{superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Class method \"park\" is already defined in #{superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_warn_if_defined_in_multiple_superclasses
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     superclass1 = Class.new do
       def self.park
@@ -1345,14 +1353,15 @@ class MachineWithClassHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:class, :park) {}
-    assert_equal "Class method \"park\" is already defined in #{superclass1.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Class method \"park\" is already defined in #{superclass1.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_warn_if_defined_in_module_prior_to_helper_module
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     mod = Module.new do
       def park
@@ -1364,14 +1373,15 @@ class MachineWithClassHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:class, :park) {}
-    assert_equal "Class method \"park\" is already defined in #{mod.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Class method \"park\" is already defined in #{mod.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_not_warn_if_defined_in_module_after_helper_module
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     klass = Class.new
     machine = EnumStateMachine::Machine.new(klass)
@@ -1385,14 +1395,15 @@ class MachineWithClassHelpersTest < MiniTest::Test
     end
     
     machine.define_helper(:class, :park) {}
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_define_if_ignoring_method_conflicts_and_defined_in_superclass
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     EnumStateMachine::Machine.ignore_method_conflicts = true
     
     superclass = Class.new do
@@ -1403,11 +1414,11 @@ class MachineWithClassHelpersTest < MiniTest::Test
     machine = EnumStateMachine::Machine.new(klass)
     
     machine.define_helper(:class, :park) {true}
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
     assert_equal true, klass.park
   ensure
     EnumStateMachine::Machine.ignore_method_conflicts = false
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_define_nonexistent_methods
@@ -1417,14 +1428,15 @@ class MachineWithClassHelpersTest < MiniTest::Test
   
   def test_should_warn_if_defined_multiple_times
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     @machine.define_helper(:class, :states) {}
     @machine.define_helper(:class, :states) {}
     
-    assert_equal "Class method \"states\" is already defined in #{@klass} :state class helpers, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", $stderr.string
+    assert_equal "Class method \"states\" is already defined in #{@klass} :state class helpers, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n", @io.string
   ensure
-    $stderr = @original_stderr
+    reset_rails_logger
   end
   
   def test_should_pass_context_as_arguments
@@ -1453,10 +1465,11 @@ class MachineWithClassHelpersTest < MiniTest::Test
   end
 end
 
-class MachineWithConflictingHelpersBeforeDefinitionTest < MiniTest::Test
+class MachineWithConflictingHelpersBeforeDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     @superclass = Class.new do
       def self.with_state
@@ -1618,19 +1631,20 @@ class MachineWithConflictingHelpersBeforeDefinitionTest < MiniTest::Test
       'Class method "without_states"'
     ].map {|method| "#{method} is already defined in #{@superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n"}.join
     
-    assert_equal expected, $stderr.string
+    assert_equal expected, @io.string
   end
   
   def teardown
-    $stderr = @original_stderr
+    reset_rails_logger
     EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
-class MachineWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
+class MachineWithConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     @klass = Class.new do
       def self.with_state
@@ -1861,19 +1875,20 @@ class MachineWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
   end
   
   def test_should_not_output_warning
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
   end
   
   def teardown
-    $stderr = @original_stderr
+    reset_rails_logger
     EnumStateMachine::Integrations.send(:remove_const, 'Custom')
   end
 end
 
-class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < MiniTest::Test
+class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    @io = StringIO.new
+    @original_logdev = set_rails_logger(@io)
     
     @superclass = Class.new
     @klass = Class.new(@superclass)
@@ -1900,11 +1915,11 @@ class MachineWithSuperclassConflictingHelpersAfterDefinitionTest < MiniTest::Tes
   end
   
   def teardown
-    $stderr = @original_stderr
+    reset_rails_logger
   end
 end
 
-class MachineWithoutInitializeTest < MiniTest::Test
+class MachineWithoutInitializeTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -1916,7 +1931,7 @@ class MachineWithoutInitializeTest < MiniTest::Test
   end
 end
 
-class MachineWithInitializeWithoutSuperTest < MiniTest::Test
+class MachineWithInitializeWithoutSuperTest < Minitest::Test
   def setup
     @klass = Class.new do
       def initialize
@@ -1931,7 +1946,7 @@ class MachineWithInitializeWithoutSuperTest < MiniTest::Test
   end
 end
 
-class MachineWithInitializeAndSuperTest < MiniTest::Test
+class MachineWithInitializeAndSuperTest < Minitest::Test
   def setup
     @klass = Class.new do
       def initialize
@@ -1947,7 +1962,7 @@ class MachineWithInitializeAndSuperTest < MiniTest::Test
   end
 end
 
-class MachineWithInitializeArgumentsAndBlockTest < MiniTest::Test
+class MachineWithInitializeArgumentsAndBlockTest < Minitest::Test
   def setup
     @superclass = Class.new do
       attr_reader :args
@@ -1976,7 +1991,7 @@ class MachineWithInitializeArgumentsAndBlockTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomInitializeTest < MiniTest::Test
+class MachineWithCustomInitializeTest < Minitest::Test
   def setup
     @klass = Class.new do
       def initialize(state = nil, options = {})
@@ -1999,7 +2014,7 @@ class MachineWithCustomInitializeTest < MiniTest::Test
   end
 end
 
-class MachinePersistenceTest < MiniTest::Test
+class MachinePersistenceTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_accessor :state_event
@@ -2051,7 +2066,7 @@ class MachinePersistenceTest < MiniTest::Test
 end
 
 
-class MachineWithStatesTest < MiniTest::Test
+class MachineWithStatesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2104,7 +2119,7 @@ class MachineWithStatesTest < MiniTest::Test
   end
 end
 
-class MachineWithStatesWithCustomValuesTest < MiniTest::Test
+class MachineWithStatesWithCustomValuesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2123,7 +2138,7 @@ class MachineWithStatesWithCustomValuesTest < MiniTest::Test
   end
 end
 
-class MachineWithStatesWithCustomHumanNamesTest < MiniTest::Test
+class MachineWithStatesWithCustomHumanNamesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2139,7 +2154,7 @@ class MachineWithStatesWithCustomHumanNamesTest < MiniTest::Test
   end
 end
 
-class MachineWithStatesWithRuntimeDependenciesTest < MiniTest::Test
+class MachineWithStatesWithRuntimeDependenciesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2156,7 +2171,7 @@ class MachineWithStatesWithRuntimeDependenciesTest < MiniTest::Test
   end
 end
 
-class MachineWithStateWithMatchersTest < MiniTest::Test
+class MachineWithStateWithMatchersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2173,7 +2188,7 @@ class MachineWithStateWithMatchersTest < MiniTest::Test
   end
 end
 
-class MachineWithCachedStateTest < MiniTest::Test
+class MachineWithCachedStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2191,7 +2206,7 @@ class MachineWithCachedStateTest < MiniTest::Test
   end
 end
 
-class MachineWithStatesWithBehaviorsTest < MiniTest::Test
+class MachineWithStatesWithBehaviorsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2213,7 +2228,7 @@ class MachineWithStatesWithBehaviorsTest < MiniTest::Test
   end
 end
 
-class MachineWithExistingStateTest < MiniTest::Test
+class MachineWithExistingStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2238,7 +2253,7 @@ class MachineWithExistingStateTest < MiniTest::Test
   end
 end
 
-class MachineWithStateMatchersTest < MiniTest::Test
+class MachineWithStateMatchersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2279,7 +2294,7 @@ class MachineWithStateMatchersTest < MiniTest::Test
   end
 end
 
-class MachineWithOtherStates < MiniTest::Test
+class MachineWithOtherStates < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2299,7 +2314,7 @@ class MachineWithOtherStates < MiniTest::Test
   end
 end
 
-class MachineWithEventsTest < MiniTest::Test
+class MachineWithEventsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2350,7 +2365,7 @@ class MachineWithEventsTest < MiniTest::Test
   end
 end
 
-class MachineWithExistingEventTest < MiniTest::Test
+class MachineWithExistingEventTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @event = @machine.event(:ignite)
@@ -2366,7 +2381,7 @@ class MachineWithExistingEventTest < MiniTest::Test
   end
 end
 
-class MachineWithEventsWithCustomHumanNamesTest < MiniTest::Test
+class MachineWithEventsWithCustomHumanNamesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2382,7 +2397,7 @@ class MachineWithEventsWithCustomHumanNamesTest < MiniTest::Test
   end
 end
 
-class MachineWithEventMatchersTest < MiniTest::Test
+class MachineWithEventMatchersTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2423,7 +2438,7 @@ class MachineWithEventMatchersTest < MiniTest::Test
   end
 end
 
-class MachineWithEventsWithTransitionsTest < MiniTest::Test
+class MachineWithEventsWithTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2458,7 +2473,7 @@ class MachineWithEventsWithTransitionsTest < MiniTest::Test
   end
 end
 
-class MachineWithMultipleEventsTest < MiniTest::Test
+class MachineWithMultipleEventsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2488,7 +2503,7 @@ class MachineWithMultipleEventsTest < MiniTest::Test
   end
 end
 
-class MachineWithTransitionsTest < MiniTest::Test
+class MachineWithTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2576,7 +2591,7 @@ class MachineWithTransitionsTest < MiniTest::Test
   end
 end
 
-class MachineWithTransitionCallbacksTest < MiniTest::Test
+class MachineWithTransitionCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_accessor :callbacks
@@ -2719,7 +2734,7 @@ class MachineWithTransitionCallbacksTest < MiniTest::Test
   end
 end
 
-class MachineWithFailureCallbacksTest < MiniTest::Test
+class MachineWithFailureCallbacksTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_accessor :callbacks
@@ -2767,7 +2782,7 @@ class MachineWithFailureCallbacksTest < MiniTest::Test
   end
 end
 
-class MachineWithPathsTest < MiniTest::Test
+class MachineWithPathsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2791,7 +2806,7 @@ class MachineWithPathsTest < MiniTest::Test
   end
 end
 
-class MachineWithOwnerSubclassTest < MiniTest::Test
+class MachineWithOwnerSubclassTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -2807,7 +2822,7 @@ class MachineWithOwnerSubclassTest < MiniTest::Test
   end
 end
 
-class MachineWithExistingMachinesOnOwnerClassTest < MiniTest::Test
+class MachineWithExistingMachinesOnOwnerClassTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2826,7 +2841,7 @@ class MachineWithExistingMachinesOnOwnerClassTest < MiniTest::Test
   end
 end
 
-class MachineWithExistingMachinesWithSameAttributesOnOwnerClassTest < MiniTest::Test
+class MachineWithExistingMachinesWithSameAttributesOnOwnerClassTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2895,7 +2910,7 @@ class MachineWithExistingMachinesWithSameAttributesOnOwnerClassTest < MiniTest::
   end
 end
 
-class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < MiniTest::Test
+class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -2925,7 +2940,7 @@ class MachineWithExistingMachinesWithSameAttributesOnOwnerSubclassTest < MiniTes
   end
 end
 
-class MachineWithNamespaceTest < MiniTest::Test
+class MachineWithNamespaceTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm', :initial => :active) do
@@ -2971,7 +2986,7 @@ class MachineWithNamespaceTest < MiniTest::Test
   end
 end
 
-class MachineWithCustomAttributeTest < MiniTest::Test
+class MachineWithCustomAttributeTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -3066,7 +3081,7 @@ class MachineWithCustomAttributeTest < MiniTest::Test
   end
 end
 
-class MachineFinderWithoutExistingMachineTest < MiniTest::Test
+class MachineFinderWithoutExistingMachineTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.find_or_create(@klass)
@@ -3090,7 +3105,7 @@ class MachineFinderWithoutExistingMachineTest < MiniTest::Test
   end
 end
 
-class MachineFinderWithExistingOnSameClassTest < MiniTest::Test
+class MachineFinderWithExistingOnSameClassTest < Minitest::Test
   def setup
     @klass = Class.new
     @existing_machine = EnumStateMachine::Machine.new(@klass)
@@ -3111,7 +3126,7 @@ class MachineFinderWithExistingOnSameClassTest < MiniTest::Test
   end
 end
 
-class MachineFinderWithExistingMachineOnSuperclassTest < MiniTest::Test
+class MachineFinderWithExistingMachineOnSuperclassTest < Minitest::Test
   def setup
     integration = Module.new do
       include EnumStateMachine::Integrations::Base
@@ -3190,7 +3205,7 @@ class MachineFinderWithExistingMachineOnSuperclassTest < MiniTest::Test
   end
 end
 
-class MachineFinderCustomOptionsTest < MiniTest::Test
+class MachineFinderCustomOptionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.find_or_create(@klass, :status, :initial => :parked)
@@ -3210,7 +3225,7 @@ begin
   # Load library
   require 'graphviz'
   
-  class MachineDrawingTest < MiniTest::Test
+  class MachineDrawingTest < Minitest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3279,7 +3294,7 @@ begin
     end
   end
   
-  class MachineDrawingWithIntegerStatesTest < MiniTest::Test
+  class MachineDrawingWithIntegerStatesTest < Minitest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3310,7 +3325,7 @@ begin
     end
   end
   
-  class MachineDrawingWithNilStatesTest < MiniTest::Test
+  class MachineDrawingWithNilStatesTest < Minitest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3340,7 +3355,7 @@ begin
     end
   end
   
-  class MachineDrawingWithDynamicStatesTest < MiniTest::Test
+  class MachineDrawingWithDynamicStatesTest < Minitest::Test
     def setup
       @klass = Class.new do
         def self.name; @name ||= "Vehicle_#{rand(1000000)}"; end
@@ -3370,7 +3385,7 @@ begin
     end
   end
   
-  class MachineClassDrawingTest < MiniTest::Test
+  class MachineClassDrawingTest < Minitest::Test
     # Needed explicitly because of Simplecov weirdness
     require File.expand_path("#{File.dirname(__FILE__)}/../files/switch")
 

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class IntegrationMatcherTest < MiniTest::Test
+class IntegrationMatcherTest < Minitest::Test
   def setup
     superclass = Class.new
     self.class.const_set('Vehicle', superclass)
@@ -51,7 +51,7 @@ class IntegrationMatcherTest < MiniTest::Test
   end
 end
 
-class IntegrationFinderTest < MiniTest::Test
+class IntegrationFinderTest < Minitest::Test
   def test_should_find_base
     assert_equal EnumStateMachine::Integrations::Base, EnumStateMachine::Integrations.find_by_name(:base)
   end

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class EventCollectionByDefaultTest < MiniTest::Test
+class EventCollectionByDefaultTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -25,7 +25,7 @@ class EventCollectionByDefaultTest < MiniTest::Test
   end
 end
 
-class EventCollectionTest < MiniTest::Test
+class EventCollectionTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new, :namespace => 'alarm')
     @events = EnumStateMachine::EventCollection.new(machine)
@@ -55,7 +55,7 @@ class EventCollectionTest < MiniTest::Test
   end
 end
 
-class EventStringCollectionTest < MiniTest::Test
+class EventStringCollectionTest < Minitest::Test
   def setup
     machine = EnumStateMachine::Machine.new(Class.new, :namespace => 'alarm')
     @events = EnumStateMachine::EventCollection.new(machine)
@@ -85,7 +85,7 @@ class EventStringCollectionTest < MiniTest::Test
   end
 end
 
-class EventCollectionWithEventsWithTransitionsTest < MiniTest::Test
+class EventCollectionWithEventsWithTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -160,7 +160,7 @@ class EventCollectionWithEventsWithTransitionsTest < MiniTest::Test
   end
 end
 
-class EventCollectionWithMultipleEventsTest < MiniTest::Test
+class EventCollectionWithMultipleEventsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -185,7 +185,7 @@ class EventCollectionWithMultipleEventsTest < MiniTest::Test
   end
 end
 
-class EventCollectionWithoutMachineActionTest < MiniTest::Test
+class EventCollectionWithoutMachineActionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -201,7 +201,7 @@ class EventCollectionWithoutMachineActionTest < MiniTest::Test
   end
 end
 
-class EventCollectionAttributeWithMachineActionTest < MiniTest::Test
+class EventCollectionAttributeWithMachineActionTest < Minitest::Test
   def setup
     @klass = Class.new do
       def save
@@ -262,7 +262,7 @@ class EventCollectionAttributeWithMachineActionTest < MiniTest::Test
   end
 end
 
-class EventCollectionAttributeWithNamespacedMachineTest < MiniTest::Test
+class EventCollectionAttributeWithNamespacedMachineTest < Minitest::Test
   def setup
     @klass = Class.new do
       def save
@@ -297,7 +297,7 @@ class EventCollectionAttributeWithNamespacedMachineTest < MiniTest::Test
   end
 end
 
-class EventCollectionWithValidationsTest < MiniTest::Test
+class EventCollectionWithValidationsTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -367,7 +367,7 @@ class EventCollectionWithValidationsTest < MiniTest::Test
   end
 end
 
-class EventCollectionWithCustomMachineAttributeTest < MiniTest::Test
+class EventCollectionWithCustomMachineAttributeTest < Minitest::Test
   def setup
     @klass = Class.new do
       def save

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class ErrorByDefaultTest < MiniTest::Test
+class ErrorByDefaultTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
@@ -20,7 +20,7 @@ class ErrorByDefaultTest < MiniTest::Test
   end
 end
 
-class ErrorWithMessageTest < MiniTest::Test
+class ErrorWithMessageTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @collection = EnumStateMachine::NodeCollection.new(@machine)
