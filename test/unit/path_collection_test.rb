@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class PathCollectionByDefaultTest < MiniTest::Test
+class PathCollectionByDefaultTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -45,7 +45,7 @@ class PathCollectionByDefaultTest < MiniTest::Test
   end
 end
 
-class PathCollectionTest < MiniTest::Test
+class PathCollectionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -74,7 +74,7 @@ class PathCollectionTest < MiniTest::Test
   end
 end
 
-class PathCollectionWithPathsTest < MiniTest::Test
+class PathCollectionWithPathsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -120,7 +120,7 @@ class PathCollectionWithPathsTest < MiniTest::Test
   end
 end
 
-class PathWithGuardedPathsTest < MiniTest::Test
+class PathWithGuardedPathsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -145,7 +145,7 @@ class PathWithGuardedPathsTest < MiniTest::Test
   end
 end
 
-class PathCollectionWithDuplicateNodesTest < MiniTest::Test
+class PathCollectionWithDuplicateNodesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -175,7 +175,7 @@ class PathCollectionWithDuplicateNodesTest < MiniTest::Test
   end
 end
 
-class PathCollectionWithFromStateTest < MiniTest::Test
+class PathCollectionWithFromStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -201,7 +201,7 @@ class PathCollectionWithFromStateTest < MiniTest::Test
   end
 end
 
-class PathCollectionWithToStateTest < MiniTest::Test
+class PathCollectionWithToStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -229,7 +229,7 @@ class PathCollectionWithToStateTest < MiniTest::Test
   end
 end
 
-class PathCollectionWithDeepPathsTest < MiniTest::Test
+class PathCollectionWithDeepPathsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)

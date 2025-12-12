@@ -74,7 +74,7 @@ module EnumStateMachine
         # for a different attribute
         if conflict = conflicting_machines.detect {|other_name, other_machine| other_machine.attribute != machine.attribute}
           name, other_machine = conflict
-          warn "State #{qualified_name.inspect} for #{machine.name.inspect} is already defined in #{other_machine.name.inspect}"
+          Rails.logger.warn "State #{qualified_name.inspect} for #{machine.name.inspect} is already defined in #{other_machine.name.inspect}"
         elsif conflicting_machines.empty?
           # Only bother adding predicates when another machine for the same
           # attribute hasn't already done so

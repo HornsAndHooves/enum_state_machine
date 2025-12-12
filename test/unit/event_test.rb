@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class EventByDefaultTest < MiniTest::Test
+class EventByDefaultTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -58,7 +58,7 @@ class EventByDefaultTest < MiniTest::Test
   end
 end
 
-class EventTest < MiniTest::Test
+class EventTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
@@ -91,7 +91,7 @@ class EventTest < MiniTest::Test
   end
 end
 
-class EventWithHumanNameTest < MiniTest::Test
+class EventWithHumanNameTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -103,7 +103,7 @@ class EventWithHumanNameTest < MiniTest::Test
   end
 end
 
-class EventWithDynamicHumanNameTest < MiniTest::Test
+class EventWithDynamicHumanNameTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -127,10 +127,10 @@ class EventWithDynamicHumanNameTest < MiniTest::Test
   end
 end
 
-class EventWithConflictingHelpersBeforeDefinitionTest < MiniTest::Test
+class EventWithConflictingHelpersBeforeDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    set_rails_logger(@io = StringIO.new)
     
     @superclass = Class.new do
       def can_ignite?
@@ -176,18 +176,18 @@ class EventWithConflictingHelpersBeforeDefinitionTest < MiniTest::Test
       "Instance method \"#{method}\" is already defined in #{@superclass.to_s}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true.\n"
     end.join
     
-    assert_equal expected, $stderr.string
+    assert_equal expected, @io.string
   end
   
   def teardown
-    $stderr = @original_stderr
+    reset_rails_logger
   end
 end
 
-class EventWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
+class EventWithConflictingHelpersAfterDefinitionTest < Minitest::Test
   def setup
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new do
       def can_ignite?
@@ -253,18 +253,18 @@ class EventWithConflictingHelpersAfterDefinitionTest < MiniTest::Test
   end
   
   def test_should_not_output_warning
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
   end
   
   def teardown
-    $stderr = @original_stderr
+    reset_rails_logger
   end
 end
 
-class EventWithConflictingMachineTest < MiniTest::Test
+class EventWithConflictingMachineTest < Minitest::Test
   def setup
     require 'stringio'
-    @original_stderr, $stderr = $stderr, StringIO.new
+    set_rails_logger(@io = StringIO.new)
     
     @klass = Class.new
     @state_machine = EnumStateMachine::Machine.new(@klass, :state)
@@ -293,22 +293,22 @@ class EventWithConflictingMachineTest < MiniTest::Test
     @status_machine = EnumStateMachine::Machine.new(@klass, :status)
     @status_machine.events << @status_event = EnumStateMachine::Event.new(@status_machine, :ignite)
     
-    assert_equal "Event :ignite for :status is already defined in :state\n", $stderr.string
+    assert_equal "Event :ignite for :status is already defined in :state\n", @io.string
   end
   
   def test_should_not_output_warning_if_using_different_namespace
     @status_machine = EnumStateMachine::Machine.new(@klass, :status, :namespace => 'alarm')
     @status_machine.events << @status_event = EnumStateMachine::Event.new(@status_machine, :ignite)
     
-    assert_equal '', $stderr.string
+    assert_equal '', @io.string
   end
   
   def teardown
-    $stderr = @original_stderr
+    reset_rails_logger
   end
 end
 
-class EventWithNamespaceTest < MiniTest::Test
+class EventWithNamespaceTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
@@ -341,7 +341,7 @@ class EventWithNamespaceTest < MiniTest::Test
   end
 end
 
-class EventContextTest < MiniTest::Test
+class EventContextTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -355,7 +355,7 @@ class EventContextTest < MiniTest::Test
   end
 end
 
-class EventTransitionsTest < MiniTest::Test
+class EventTransitionsTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
@@ -415,7 +415,7 @@ class EventTransitionsTest < MiniTest::Test
   end
 end
 
-class EventAfterBeingCopiedTest < MiniTest::Test
+class EventAfterBeingCopiedTest < Minitest::Test
   def setup
     @machine = EnumStateMachine::Machine.new(Class.new)
     @machine.events << @event = EnumStateMachine::Event.new(@machine, :ignite)
@@ -431,7 +431,7 @@ class EventAfterBeingCopiedTest < MiniTest::Test
   end
 end
 
-class EventWithoutTransitionsTest < MiniTest::Test
+class EventWithoutTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -457,7 +457,7 @@ class EventWithoutTransitionsTest < MiniTest::Test
   end
 end
 
-class EventWithTransitionsTest < MiniTest::Test
+class EventWithTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -487,7 +487,7 @@ class EventWithTransitionsTest < MiniTest::Test
   end
 end
 
-class EventWithoutMatchingTransitionsTest < MiniTest::Test
+class EventWithoutMatchingTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -526,7 +526,7 @@ class EventWithoutMatchingTransitionsTest < MiniTest::Test
   end
 end
 
-class EventWithMatchingDisabledTransitionsTest < MiniTest::Test
+class EventWithMatchingDisabledTransitionsTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -637,7 +637,7 @@ class EventWithMatchingDisabledTransitionsTest < MiniTest::Test
   end
 end
 
-class EventWithMatchingEnabledTransitionsTest < MiniTest::Test
+class EventWithMatchingEnabledTransitionsTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -708,7 +708,7 @@ class EventWithMatchingEnabledTransitionsTest < MiniTest::Test
   end
 end
 
-class EventWithTransitionWithoutToStateTest < MiniTest::Test
+class EventWithTransitionWithoutToStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -743,7 +743,7 @@ class EventWithTransitionWithoutToStateTest < MiniTest::Test
   end
 end
 
-class EventWithTransitionWithNilToStateTest < MiniTest::Test
+class EventWithTransitionWithNilToStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -778,7 +778,7 @@ class EventWithTransitionWithNilToStateTest < MiniTest::Test
   end
 end
 
-class EventWithTransitionWithLoopbackStateTest < MiniTest::Test
+class EventWithTransitionWithLoopbackStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -813,7 +813,7 @@ class EventWithTransitionWithLoopbackStateTest < MiniTest::Test
   end
 end
 
-class EventWithTransitionWithBlacklistedToStateTest < MiniTest::Test
+class EventWithTransitionWithBlacklistedToStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -873,7 +873,7 @@ class EventWithTransitionWithBlacklistedToStateTest < MiniTest::Test
   end
 end
 
-class EventWithTransitionWithWhitelistedToStateTest < MiniTest::Test
+class EventWithTransitionWithWhitelistedToStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -922,7 +922,7 @@ class EventWithTransitionWithWhitelistedToStateTest < MiniTest::Test
   end
 end
 
-class EventWithMultipleTransitionsTest < MiniTest::Test
+class EventWithMultipleTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -982,7 +982,7 @@ class EventWithMultipleTransitionsTest < MiniTest::Test
   end
 end
 
-class EventWithMachineActionTest < MiniTest::Test
+class EventWithMachineActionTest < Minitest::Test
   def setup
     @klass = Class.new do
       attr_reader :saved
@@ -1013,7 +1013,7 @@ class EventWithMachineActionTest < MiniTest::Test
   end
 end
 
-class EventWithInvalidCurrentStateTest < MiniTest::Test
+class EventWithInvalidCurrentStateTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -1042,7 +1042,7 @@ class EventWithInvalidCurrentStateTest < MiniTest::Test
   end
 end
 
-class EventOnFailureTest < MiniTest::Test
+class EventOnFailureTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base
@@ -1094,7 +1094,7 @@ class EventOnFailureTest < MiniTest::Test
   end
 end
 
-class EventWithMarshallingTest < MiniTest::Test
+class EventWithMarshallingTest < Minitest::Test
   def setup
     @klass = Class.new do
       def save
@@ -1143,7 +1143,7 @@ begin
   # Load library
   require 'graphviz'
   
-  class EventDrawingTest < MiniTest::Test
+  class EventDrawingTest < Minitest::Test
     def setup
       states = [:parked, :idling, :first_gear]
       
@@ -1170,7 +1170,7 @@ begin
     end
   end
   
-  class EventDrawingWithHumanNameTest < MiniTest::Test
+  class EventDrawingWithHumanNameTest < Minitest::Test
     def setup
       states = [:parked, :idling]
       

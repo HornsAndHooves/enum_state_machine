@@ -8,7 +8,21 @@ require 'minitest'
 require "minitest/autorun"
 require 'enum_state_machine'
 
-class MiniTest::Test
+def reset_rails_logger
+  Rails.logger = Logger.new(STDERR).tap do |logger|
+    logger.formatter = proc { |*, msg| "#{msg}\n" }
+  end
+end
+
+reset_rails_logger
+
+def set_rails_logger(io)
+  Rails.logger.instance_variable_get(:@logdev).tap do
+    Rails.logger.instance_variable_set(:@logdev, Logger::LogDevice.new(io))
+  end
+end
+
+class Minitest::Test
   def assert_nothing_raised
     yield
   rescue => ex

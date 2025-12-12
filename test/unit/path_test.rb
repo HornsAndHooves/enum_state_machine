@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class PathByDefaultTest < MiniTest::Test
+class PathByDefaultTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -52,7 +52,7 @@ class PathByDefaultTest < MiniTest::Test
   end
 end
 
-class PathTest < MiniTest::Test
+class PathTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -67,7 +67,7 @@ class PathTest < MiniTest::Test
   end
 end
 
-class PathWithoutTransitionsTest < MiniTest::Test
+class PathWithoutTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -89,7 +89,7 @@ class PathWithoutTransitionsTest < MiniTest::Test
   end
 end
 
-class PathWithTransitionsTest < MiniTest::Test
+class PathWithTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -141,7 +141,7 @@ class PathWithTransitionsTest < MiniTest::Test
   end
 end
 
-class PathWithDuplicatesTest < MiniTest::Test
+class PathWithDuplicatesTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -172,7 +172,7 @@ class PathWithDuplicatesTest < MiniTest::Test
   end
 end
 
-class PathWithAvailableTransitionsTest < MiniTest::Test
+class PathWithAvailableTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -225,7 +225,7 @@ class PathWithAvailableTransitionsTest < MiniTest::Test
   end
 end
 
-class PathWithGuardedTransitionsTest < MiniTest::Test
+class PathWithGuardedTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -266,7 +266,7 @@ class PathWithGuardedTransitionsTest < MiniTest::Test
   end
 end
 
-class PathWithEncounteredTransitionsTest < MiniTest::Test
+class PathWithEncounteredTransitionsTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -299,7 +299,7 @@ class PathWithEncounteredTransitionsTest < MiniTest::Test
   end
 end
 
-class PathWithUnreachedTargetTest < MiniTest::Test
+class PathWithUnreachedTargetTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -328,7 +328,7 @@ class PathWithUnreachedTargetTest < MiniTest::Test
   end
 end
 
-class PathWithReachedTargetTest < MiniTest::Test
+class PathWithReachedTargetTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -361,7 +361,7 @@ class PathWithReachedTargetTest < MiniTest::Test
   end
 end
 
-class PathWithAvailableTransitionsAfterReachingTargetTest < MiniTest::Test
+class PathWithAvailableTransitionsAfterReachingTargetTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -399,7 +399,7 @@ class PathWithAvailableTransitionsAfterReachingTargetTest < MiniTest::Test
   end
 end
 
-class PathWithDeepTargetTest < MiniTest::Test
+class PathWithDeepTargetTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -438,7 +438,7 @@ class PathWithDeepTargetTest < MiniTest::Test
   end
 end
 
-class PathWithDeepTargetReachedTest < MiniTest::Test
+class PathWithDeepTargetReachedTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)

@@ -637,7 +637,7 @@ module EnumStateMachine
       # attribute
       initial_state = states.detect {|state| state.initial}
       if !owner_class_attribute_default.nil? && (dynamic_initial_state? || !owner_class_attribute_default_matches?(initial_state))
-        warn(
+        Rails.logger.warn(
           "Both #{owner_class.name} and its #{name.inspect} machine have defined "\
           "a different default for \"#{attribute}\". Use only one or the other for "\
           "defining defaults to avoid unexpected behaviors."
@@ -757,7 +757,7 @@ module EnumStateMachine
       if block_given?
         if !self.class.ignore_method_conflicts && conflicting_ancestor = owner_class_ancestor_has_method?(scope, method)
           ancestor_name = conflicting_ancestor.name && !conflicting_ancestor.name.empty? ? conflicting_ancestor.name : conflicting_ancestor.to_s
-          warn "#{scope == :class ? 'Class' : 'Instance'} method \"#{method}\" is already defined in #{ancestor_name}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true."
+          Rails.logger.warn "#{scope == :class ? 'Class' : 'Instance'} method \"#{method}\" is already defined in #{ancestor_name}, use generic helper instead or set EnumStateMachine::Machine.ignore_method_conflicts = true."
         else
           name = self.name
           helper_module.class_eval do

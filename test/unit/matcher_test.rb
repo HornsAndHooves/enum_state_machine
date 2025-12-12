@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class MatcherByDefaultTest < MiniTest::Test
+class MatcherByDefaultTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::Matcher.new
   end
@@ -14,7 +14,7 @@ class MatcherByDefaultTest < MiniTest::Test
   end
 end
 
-class MatcherWithValueTest < MiniTest::Test
+class MatcherWithValueTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::Matcher.new(nil)
   end
@@ -28,7 +28,7 @@ class MatcherWithValueTest < MiniTest::Test
   end
 end
 
-class MatcherWithMultipleValuesTest < MiniTest::Test
+class MatcherWithMultipleValuesTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::Matcher.new([:parked, :idling])
   end
@@ -42,7 +42,7 @@ class MatcherWithMultipleValuesTest < MiniTest::Test
   end
 end
 
-class AllMatcherTest < MiniTest::Test
+class AllMatcherTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::AllMatcher.instance
   end
@@ -70,7 +70,7 @@ class AllMatcherTest < MiniTest::Test
   end
 end
 
-class WhitelistMatcherTest < MiniTest::Test
+class WhitelistMatcherTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::WhitelistMatcher.new([:parked, :idling])
   end
@@ -99,7 +99,7 @@ class WhitelistMatcherTest < MiniTest::Test
   end
 end
 
-class BlacklistMatcherTest < MiniTest::Test
+class BlacklistMatcherTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::BlacklistMatcher.new([:parked, :idling])
   end
@@ -128,7 +128,7 @@ class BlacklistMatcherTest < MiniTest::Test
   end
 end
 
-class LoopbackMatcherTest < MiniTest::Test
+class LoopbackMatcherTest < Minitest::Test
   def setup
     @matcher = EnumStateMachine::LoopbackMatcher.instance
   end

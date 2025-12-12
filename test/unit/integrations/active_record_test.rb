@@ -450,7 +450,7 @@ module ActiveRecordTest
   
   class MachineWithSameColumnDefaultTest < BaseTestCase
     def setup
-      @original_stderr, $stderr = $stderr, StringIO.new
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model do
         connection.add_column table_name, :status, :string, :default => 'parked'
@@ -464,18 +464,18 @@ module ActiveRecordTest
     end
     
     def test_should_not_generate_a_warning
-      assert_no_match(/have defined a different default/, $stderr.string)
+      assert_no_match(/have defined a different default/, @io.string)
     end
     
     def teardown
-      $stderr = @original_stderr
+      reset_rails_logger
       super
     end
   end
   
   class MachineWithDifferentColumnDefaultTest < BaseTestCase
     def setup
-      @original_stderr, $stderr = $stderr, StringIO.new
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model do
         connection.add_column table_name, :status, :string, :default => 'idling'
@@ -489,18 +489,18 @@ module ActiveRecordTest
     end
     
     def test_should_generate_a_warning
-      assert_match(/Both ActiveRecordTest::Foo and its :status machine have defined a different default for "status". Use only one or the other for defining defaults to avoid unexpected behaviors\./, $stderr.string)
+      assert_match(/Both ActiveRecordTest::Foo and its :status machine have defined a different default for "status". Use only one or the other for defining defaults to avoid unexpected behaviors\./, @io.string)
     end
     
     def teardown
-      $stderr = @original_stderr
+      reset_rails_logger
       super
     end
   end
   
   class MachineWithDifferentIntegerColumnDefaultTest < BaseTestCase
     def setup
-      @original_stderr, $stderr = $stderr, StringIO.new
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model do
         connection.add_column table_name, :status, :integer, :default => 0
@@ -515,11 +515,11 @@ module ActiveRecordTest
     end
     
     def test_should_generate_a_warning
-      assert_match(/Both ActiveRecordTest::Foo and its :status machine have defined a different default for "status". Use only one or the other for defining defaults to avoid unexpected behaviors\./, $stderr.string)
+      assert_match(/Both ActiveRecordTest::Foo and its :status machine have defined a different default for "status". Use only one or the other for defining defaults to avoid unexpected behaviors\./, @io.string)
     end
     
     def teardown
-      $stderr = @original_stderr
+      reset_rails_logger
       super
     end
   end
@@ -544,7 +544,7 @@ module ActiveRecordTest
   class MachineWithConflictingStateNameTest < BaseTestCase
     def setup
       require 'stringio'
-      @original_stderr, $stderr = $stderr, StringIO.new
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model
     end
@@ -553,18 +553,18 @@ module ActiveRecordTest
       @machine = EnumStateMachine::Machine.new(@model)
       @machine.state :state
       
-      assert_match(/^Instance method "state\?" is already defined in ActiveRecordTest::Foo, use generic helper instead.*\n$/, $stderr.string)
+      assert_match(/^Instance method "state\?" is already defined in ActiveRecordTest::Foo, use generic helper instead.*\n$/, @io.string)
     end
     
     def test_should_output_warning_with_same_machine_attribute
       @machine = EnumStateMachine::Machine.new(@model, :public_state, :attribute => :state)
       @machine.state :state
       
-      assert_match(/^Instance method "state\?" is already defined in ActiveRecordTest::Foo, use generic helper instead.*\n$/, $stderr.string)
+      assert_match(/^Instance method "state\?" is already defined in ActiveRecordTest::Foo, use generic helper instead.*\n$/, @io.string)
     end
     
     def teardown
-      $stderr = @original_stderr
+      reset_rails_logger
       super
     end
   end
@@ -702,7 +702,7 @@ module ActiveRecordTest
   class MachineWithCustomAttributeTest < BaseTestCase
     def setup
       require 'stringio'
-      @original_stderr, $stderr = $stderr, StringIO.new
+      set_rails_logger(@io = StringIO.new)
       
       @model = new_model
       @machine = EnumStateMachine::Machine.new(@model, :public_state, :attribute => :state)
@@ -714,7 +714,7 @@ module ActiveRecordTest
     end
     
     def teardown
-      $stderr = @original_stderr
+      reset_rails_logger
       super
     end
   end

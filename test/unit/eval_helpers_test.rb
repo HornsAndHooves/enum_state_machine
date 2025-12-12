@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class EvalHelpersBaseTest < MiniTest::Test
+class EvalHelpersBaseTest < Minitest::Test
   include EnumStateMachine::EvalHelpers
   
   def default_test

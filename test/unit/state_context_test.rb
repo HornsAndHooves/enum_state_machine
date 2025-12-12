@@ -9,7 +9,7 @@ class Validateable
   end
 end
 
-class StateContextTest < MiniTest::Test
+class StateContextTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -27,7 +27,7 @@ class StateContextTest < MiniTest::Test
   end
 end
 
-class StateContextTransitionTest < MiniTest::Test
+class StateContextTransitionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -132,7 +132,7 @@ class StateContextTransitionTest < MiniTest::Test
   end
 end
 
-class StateContextWithMatchingTransitionTest < MiniTest::Test
+class StateContextWithMatchingTransitionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -158,7 +158,7 @@ class StateContextWithMatchingTransitionTest < MiniTest::Test
   end
 end
 
-class StateContextProxyTest < MiniTest::Test
+class StateContextProxyTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -183,7 +183,7 @@ class StateContextProxyTest < MiniTest::Test
   end
 end
 
-class StateContextProxyWithoutConditionsTest < MiniTest::Test
+class StateContextProxyWithoutConditionsTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -213,7 +213,7 @@ class StateContextProxyWithoutConditionsTest < MiniTest::Test
   end
 end
 
-class StateContextProxyWithIfConditionTest < MiniTest::Test
+class StateContextProxyWithIfConditionTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -276,7 +276,7 @@ class StateContextProxyWithIfConditionTest < MiniTest::Test
   end
 end
 
-class StateContextProxyWithMultipleIfConditionsTest < MiniTest::Test
+class StateContextProxyWithMultipleIfConditionsTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -307,7 +307,7 @@ class StateContextProxyWithMultipleIfConditionsTest < MiniTest::Test
   end
 end
 
-class StateContextProxyWithUnlessConditionTest < MiniTest::Test
+class StateContextProxyWithUnlessConditionTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -370,7 +370,7 @@ class StateContextProxyWithUnlessConditionTest < MiniTest::Test
   end
 end
 
-class StateContextProxyWithMultipleUnlessConditionsTest < MiniTest::Test
+class StateContextProxyWithMultipleUnlessConditionsTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)
@@ -401,7 +401,7 @@ class StateContextProxyWithMultipleUnlessConditionsTest < MiniTest::Test
   end
 end
 
-class StateContextProxyWithIfAndUnlessConditionsTest < MiniTest::Test
+class StateContextProxyWithIfAndUnlessConditionsTest < Minitest::Test
   def setup
     @klass = Class.new(Validateable)
     machine = EnumStateMachine::Machine.new(@klass, :initial => :parked)

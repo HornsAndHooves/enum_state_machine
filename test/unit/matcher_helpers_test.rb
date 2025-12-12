@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class MatcherHelpersAllTest < MiniTest::Test
+class MatcherHelpersAllTest < Minitest::Test
   include EnumStateMachine::MatcherHelpers
   
   def setup
@@ -12,7 +12,7 @@ class MatcherHelpersAllTest < MiniTest::Test
   end
 end
 
-class MatcherHelpersAnyTest < MiniTest::Test
+class MatcherHelpersAnyTest < Minitest::Test
   include EnumStateMachine::MatcherHelpers
   
   def setup
@@ -24,7 +24,7 @@ class MatcherHelpersAnyTest < MiniTest::Test
   end
 end
 
-class MatcherHelpersSameTest < MiniTest::Test
+class MatcherHelpersSameTest < Minitest::Test
   include EnumStateMachine::MatcherHelpers
   
   def setup

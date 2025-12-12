@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class InvalidTransitionTest < MiniTest::Test
+class InvalidTransitionTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass)
@@ -46,7 +46,7 @@ class InvalidTransitionTest < MiniTest::Test
   end
 end
 
-class InvalidTransitionWithNamespaceTest < MiniTest::Test
+class InvalidTransitionWithNamespaceTest < Minitest::Test
   def setup
     @klass = Class.new
     @machine = EnumStateMachine::Machine.new(@klass, :namespace => 'alarm')
@@ -76,7 +76,7 @@ class InvalidTransitionWithNamespaceTest < MiniTest::Test
   end
 end
 
-class InvalidTransitionWithIntegrationTest < MiniTest::Test
+class InvalidTransitionWithIntegrationTest < Minitest::Test
   def setup
     EnumStateMachine::Integrations.const_set('Custom', Module.new do
       include EnumStateMachine::Integrations::Base

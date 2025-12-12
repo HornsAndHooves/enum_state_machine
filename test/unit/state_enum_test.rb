@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class StateEnumTest < MiniTest::Test
+class StateEnumTest < Minitest::Test
   def setup
     @klass = Class.new do
       def self.has_enumerated enum_attr, enum_opts
