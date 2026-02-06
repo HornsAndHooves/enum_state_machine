@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.license           = 'MIT'
 
   s.add_dependency "rails", ">= 6.0", "< 8.0"
-  s.add_dependency "activerecord-deprecated_finders", ">= 1.0.3"
+  # s.add_dependency "activerecord-deprecated_finders", ">= 1.0.3" # Removed: not actually used and incompatible with Ruby 3.3
   #s.add_dependency "rails-observers", ">= 0.1.2"
   s.add_dependency "power_enum", "> 2.8"
 
@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "minitest", "~> 5.1"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "yard"
-  s.add_development_dependency "sqlite3", "~> 1.3.9"
+  s.add_development_dependency "sqlite3", "~> 1.4"
   s.add_development_dependency "ruby-graphviz"
 end
